@@ -48,6 +48,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/typography" className="hover:opacity-60 transition-opacity">
               Typography
             </Link>
+            <Link href="/shadow" className="hover:opacity-60 transition-opacity">
+              Shadow
+            </Link>
           </nav>
         </header>
         <main className="flex-1">{children}</main>

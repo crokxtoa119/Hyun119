@@ -32,6 +32,12 @@ export function hslToHex({ h, s, l }: HSL): string {
   return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
 }
 
+/** "#RRGGBB"와 0~1 알파를 "rgba(r, g, b, a)" 문자열로 바꾼다. */
+export function hexToRgba(hex: string, alpha: number): string {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  return `rgba(${r}, ${g}, ${b}, ${Number(alpha.toFixed(2))})`;
+}
+
 /** 상대 휘도 기반으로 위에 올릴 글자색(흑/백)을 고른다. */
 export function readableTextColor(hex: string): "#000000" | "#FFFFFF" {
   const [r, g, b] = [1, 3, 5].map((i) => {
