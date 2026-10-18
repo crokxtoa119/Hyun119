@@ -3,8 +3,10 @@
 import { useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
+import PresetBar from "@/components/ui/PresetBar";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -26,6 +28,17 @@ const FAMILIES: Family[] = [
 ];
 
 const DIRECTIONS: Direction[] = ["in", "out", "inOut"];
+
+type EasingPreset = { family: string; direction: Direction; duration: number };
+
+function isEasingPreset(d: unknown): d is EasingPreset {
+  return (
+    isRecord(d) &&
+    FAMILIES.some((f) => f.key === d.family) &&
+    DIRECTIONS.some((x) => x === d.direction) &&
+    isFiniteNumber(d.duration)
+  );
+}
 
 const SAMPLES = 120;
 // 오버슈트(back, elastic)가 잘리지 않도록 viewBox 위아래에 여유를 둔다
@@ -50,6 +63,14 @@ export default function EasingVisualizer() {
 
   const ease = `${family}.${direction}`;
   const path = useMemo(() => curvePath(ease), [ease]);
+
+  const { presets, save, remove, isFull } = usePresets("sc-easing-presets", isEasingPreset);
+
+  const loadPreset = (p: EasingPreset) => {
+    setFamily(p.family);
+    setDirection(p.direction);
+    setDuration(Math.min(3, Math.max(0.3, p.duration)));
+  };
 
   useGSAP(
     () => {
@@ -142,6 +163,16 @@ export default function EasingVisualizer() {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="mt-8">
+        <PresetBar
+          presets={presets}
+          isFull={isFull}
+          onSave={(name) => save(name, { family, direction, duration })}
+          onLoad={loadPreset}
+          onRemove={remove}
+        />
       </div>
 
       <div className="mt-8">

@@ -4,8 +4,10 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { hexToRgba } from "@/lib/color";
+import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
+import PresetBar from "@/components/ui/PresetBar";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -16,6 +18,50 @@ const MODES: { value: Mode; label: string }[] = [
   { value: "shadow", label: "그림자" },
   { value: "glass", label: "글래스모피즘" },
 ];
+
+type ShadowPreset = {
+  mode: Mode;
+  x: number;
+  y: number;
+  blur: number;
+  spread: number;
+  shadowColor: string;
+  shadowAlpha: number;
+  inset: boolean;
+  glassBlur: number;
+  glassAlpha: number;
+  borderAlpha: number;
+  saturate: number;
+  tint: string;
+};
+
+const HEX = /^#[0-9a-f]{6}$/i;
+const NUMBER_KEYS = [
+  "x",
+  "y",
+  "blur",
+  "spread",
+  "shadowAlpha",
+  "glassBlur",
+  "glassAlpha",
+  "borderAlpha",
+  "saturate",
+] as const;
+
+function isShadowPreset(d: unknown): d is ShadowPreset {
+  return (
+    isRecord(d) &&
+    MODES.some((m) => m.value === d.mode) &&
+    NUMBER_KEYS.every((k) => isFiniteNumber(d[k])) &&
+    typeof d.inset === "boolean" &&
+    typeof d.shadowColor === "string" &&
+    HEX.test(d.shadowColor) &&
+    typeof d.tint === "string" &&
+    HEX.test(d.tint)
+  );
+}
+
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
 export default function ShadowGenerator() {
   const root = useRef<HTMLDivElement>(null);
@@ -48,6 +94,26 @@ export default function ShadowGenerator() {
 
   const changeMode = (value: Mode) => {
     setMode(value);
+    pop();
+  };
+
+  const { presets, save, remove, isFull } = usePresets("sc-shadow-presets", isShadowPreset);
+
+  // 슬라이더 범위와 같은 값으로 보정해서 불러온다
+  const loadPreset = (p: ShadowPreset) => {
+    setMode(p.mode);
+    setX(clamp(p.x, -50, 50));
+    setY(clamp(p.y, -50, 50));
+    setBlur(clamp(p.blur, 0, 100));
+    setSpread(clamp(p.spread, -30, 30));
+    setShadowColor(p.shadowColor.toUpperCase());
+    setShadowAlpha(clamp(p.shadowAlpha, 0, 1));
+    setInset(p.inset);
+    setGlassBlur(clamp(p.glassBlur, 0, 40));
+    setGlassAlpha(clamp(p.glassAlpha, 0, 1));
+    setBorderAlpha(clamp(p.borderAlpha, 0, 1));
+    setSaturate(clamp(p.saturate, 100, 250));
+    setTint(p.tint.toUpperCase());
     pop();
   };
 
@@ -185,6 +251,32 @@ export default function ShadowGenerator() {
             </label>
           </>
         )}
+      </div>
+
+      <div className="mt-8">
+        <PresetBar
+          presets={presets}
+          isFull={isFull}
+          onSave={(name) =>
+            save(name, {
+              mode,
+              x,
+              y,
+              blur,
+              spread,
+              shadowColor,
+              shadowAlpha,
+              inset,
+              glassBlur,
+              glassAlpha,
+              borderAlpha,
+              saturate,
+              tint,
+            })
+          }
+          onLoad={loadPreset}
+          onRemove={remove}
+        />
       </div>
 
       <div className="mt-8">
