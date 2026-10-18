@@ -27,6 +27,7 @@
 - [Next.js](https://nextjs.org) 16.4 (App Router) · React 19 · TypeScript
 - [Tailwind CSS](https://tailwindcss.com) 4
 - [GSAP](https://gsap.com) 3 + `@gsap/react` (`useGSAP`), ScrollTrigger
+- 테스트: [Vitest](https://vitest.dev) 5 + jsdom + Testing Library
 - 배포: [Vercel](https://vercel.com) (`main` 브랜치에 푸시하면 자동 배포)
 
 ## 시작하기
@@ -46,6 +47,23 @@ npm run dev
 | `npm run build` | 프로덕션 빌드 |
 | `npm run start` | 빌드 결과 실행 |
 | `npm run lint` | ESLint |
+| `npm test` | 단위 테스트 1회 실행 (Vitest) |
+| `npm run test:watch` | 파일을 저장할 때마다 테스트를 다시 실행 |
+
+## 테스트
+
+`src/lib`의 순수 로직과 훅을 테스트합니다. 테스트 파일은 대상 파일 옆에 `*.test.ts(x)`로 둡니다.
+
+| 파일 | 확인하는 것 |
+|---|---|
+| `color.test.ts` | HSL→HEX 변환(원색, 반올림, 경계), 글자색 대비 선택, `rgba` 변환, 배색 5종의 색상 규칙과 값 범위 |
+| `shareLink.test.tsx` | 공유 링크 인코딩 왕복(한글, 이모지, HTML 문자), 깨진·변조·과대 입력 거부, 해시 변화에 반응하는 훅 |
+| `usePresets.test.tsx` | 저장·삭제·최대 12개·id 규칙, 손상된 저장 데이터와 `localStorage` 차단 상황 처리 |
+| `motion.test.tsx` | "움직임 줄이기" 설정 읽기와 변경 반영, 리스너 정리 |
+
+테스트가 실제로 버그를 잡는지도 확인했습니다. 소스에 버그를 일부러 11가지 넣었을 때(반올림 방식 변경, 검증 생략, 길이 제한 변경 등) 매번 정확히 1개 테스트가 실패했고, 원복하면 모두 통과합니다.
+
+화면 컴포넌트(React 컴포넌트, GSAP 연출, 페이지 전환)는 단위 테스트가 없고 브라우저에서 직접 확인했습니다.
 
 ## 폴더 구조
 
@@ -66,7 +84,9 @@ src/
    ├─ fonts.ts               next/font 설정 (한글 폰트는 preload 끔)
    ├─ useCopy.ts             클립보드 복사 훅
    ├─ usePresets.ts          localStorage 프리셋 훅 (형식 검증 포함)
-   └─ shareLink.ts           공유 링크 인코딩/디코딩 훅
+   ├─ shareLink.ts           공유 링크 인코딩/디코딩 훅
+   ├─ motion.ts              "움직임 줄이기" 설정 확인
+   └─ *.test.ts(x)           단위 테스트 (Vitest 설정: vitest.config.mts)
 ```
 
 ## 구현 메모
@@ -81,4 +101,5 @@ src/
 - 프리셋은 브라우저별로 저장되며 기기 간에 동기화되지 않습니다. 다른 기기와 나눌 때는 공유 링크를 쓰세요.
 - 클립보드 복사는 HTTPS(또는 `localhost`)에서만 동작합니다.
 - 개발 서버를 켜 둔 채 `npm run build`를 돌리면 개발 서버가 오래된 CSS를 내보내는 일이 있었습니다. 이상하면 개발 서버를 멈추고 `.next` 폴더를 지운 뒤 다시 시작하세요.
+- `npm audit`이 개발 의존성에서 고위험 5건을 알려 줍니다. 모두 `eslint-config-next` → `braces` 체인(린트 도구)에서 오며 운영 의존성은 0건입니다. `npm audit fix --force`는 Next 14용 설정으로 내리는 파괴적 변경이라 적용하지 않았습니다.
 - 이 저장소의 `AGENTS.md`는 `next dev`가 자동으로 만드는 파일로, 이 Next.js 버전이 기존 지식과 다를 수 있다는 안내가 들어 있습니다.
