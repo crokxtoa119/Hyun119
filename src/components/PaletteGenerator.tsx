@@ -74,7 +74,7 @@ export default function PaletteGenerator() {
             type="button"
             onClick={() => copy(hex)}
             style={{ backgroundColor: hex, color: readableTextColor(hex) }}
-            className="swatch flex flex-1 items-end justify-center p-3 font-mono text-xs transition-[flex-grow,background-color] duration-300 hover:flex-[1.6] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-current"
+            className="swatch flex min-w-0 flex-1 items-end justify-center p-1.5 font-mono text-[10px] transition-[flex-grow,background-color] sm:p-3 sm:text-xs duration-300 hover:flex-[1.6] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-current"
             aria-label={`${hex} 복사`}
           >
             {copied === hex ? "Copied!" : hex}

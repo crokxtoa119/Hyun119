@@ -25,11 +25,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <header className="flex items-center justify-between px-6 py-4 border-b border-foreground/10">
+        <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4 border-b border-foreground/10">
           <Link href="/" className="font-mono text-sm font-semibold">
             SketchCraft
           </Link>
-          <nav className="flex gap-6 text-sm">
+          <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm sm:gap-x-6">
             <Link href="/" className="hover:opacity-60 transition-opacity">
               Home
             </Link>

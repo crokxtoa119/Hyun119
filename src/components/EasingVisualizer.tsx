@@ -94,7 +94,7 @@ export default function EasingVisualizer() {
         <div className="rounded-2xl border border-foreground/10 p-4">
           <svg
             viewBox={`-6 ${VIEW_TOP} 112 ${VIEW_HEIGHT}`}
-            className="w-full"
+            className="mx-auto h-auto max-h-56 w-full md:max-h-none"
             role="img"
             aria-label={`${ease} 곡선`}
           >
