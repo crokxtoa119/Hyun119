@@ -61,6 +61,34 @@ function subscribe(callback: () => void) {
   };
 }
 
+/** 해당 키에 저장된 프리셋을 모두 지운다. 같은 키를 쓰는 usePresets 훅도 함께 갱신된다. */
+export function clearPresets(key: string) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    return;
+  }
+  listeners.forEach((l) => l());
+}
+
+function readCount(key: string): number {
+  try {
+    const arr: unknown = JSON.parse(localStorage.getItem(key) ?? "[]");
+    return Array.isArray(arr) ? Math.min(arr.length, MAX_PRESETS) : 0;
+  } catch {
+    return 0;
+  }
+}
+
+/** 저장된 프리셋 개수(설정 화면용). 항목 형식은 검사하지 않고 배열 길이만 센다. */
+export function usePresetCount(key: string): number {
+  return useSyncExternalStore(
+    subscribe,
+    () => readCount(key),
+    () => 0,
+  );
+}
+
 /**
  * localStorage에 프리셋 목록을 저장하는 훅.
  * validate는 저장된 값이 손상됐거나 옛 형식일 때 걸러내는 타입 가드다.

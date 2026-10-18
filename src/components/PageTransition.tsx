@@ -12,6 +12,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { readTransitionsEnabled } from "@/lib/settings";
 
 gsap.registerPlugin(useGSAP);
 
@@ -65,7 +66,7 @@ export function PageTransitionProvider({ children }: { children: React.ReactNode
     (href: string) => {
       const el = curtain.current;
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!el || reduced) {
+      if (!el || reduced || !readTransitionsEnabled()) {
         router.push(href);
         return;
       }

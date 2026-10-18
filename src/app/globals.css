@@ -50,3 +50,8 @@ body {
   /* Geist에는 한글이 없어서 한글은 시스템 폰트로 대체된다 */
   font-family: var(--font-geist-sans), system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
+
+/* 설정 모달이 열려 있는 동안 뒤쪽 페이지가 스크롤되지 않게 한다 */
+body:has(dialog[open]) {
+  overflow: hidden;
+}

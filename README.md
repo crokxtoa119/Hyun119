@@ -90,7 +90,7 @@ src/
 │  ├─ *Generator/Editor/Visualizer/Playground.tsx   실험 페이지 본체 (클라이언트 컴포넌트)
 │  ├─ HeroIntro.tsx · HomeSections.tsx              홈 화면 (GSAP 인트로, ScrollTrigger)
 │  ├─ PageTransition.tsx     커튼 전환 Provider와 TransitionLink
-│  ├─ ThemeToggle.tsx        테마 토글
+│  ├─ SettingsDialog.tsx     설정 모달 (테마, 전환 효과, 프리셋 삭제)
 │  └─ ui/                    공통 부품: Chip, Slider, CodeBlock, PresetBar, Share
 └─ lib/
    ├─ color.ts               HSL/HEX 변환, 배색 규칙, 대비 색 계산
