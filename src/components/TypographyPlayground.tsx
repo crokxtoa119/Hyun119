@@ -7,6 +7,7 @@ import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
+import { ShareButton, SharedNotice } from "@/components/ui/Share";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -175,6 +176,8 @@ export default function TypographyPlayground() {
         폰트와 크기, 굵기, 자간, 행간을 조절하며 결과를 미리 보고 CSS를 복사하세요.
       </p>
 
+      <SharedNotice validate={isTypographyPreset} onApply={loadPreset} />
+
       <div className="mt-8 overflow-hidden rounded-2xl border border-foreground/10 p-6 sm:p-10">
         <p
           className="preview-text whitespace-pre-wrap break-words"
@@ -275,6 +278,11 @@ export default function TypographyPlayground() {
           onLoad={loadPreset}
           onRemove={remove}
         />
+        <div className="mt-4">
+          <ShareButton
+            current={{ fontKey, text, size, weight, tracking, leading, align }}
+          />
+        </div>
       </div>
 
       <div className="mt-8">

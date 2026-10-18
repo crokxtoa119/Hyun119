@@ -8,6 +8,7 @@ import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
+import { ShareButton, SharedNotice } from "@/components/ui/Share";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -138,6 +139,8 @@ export default function ShadowGenerator() {
       <p className="mt-2 text-foreground/70">
         box-shadow와 글래스모피즘 값을 조절하고 CSS를 복사하세요.
       </p>
+
+      <SharedNotice validate={isShadowPreset} onApply={loadPreset} />
 
       <div className="mt-8 flex gap-2">
         {MODES.map(({ value, label }) => (
@@ -277,6 +280,25 @@ export default function ShadowGenerator() {
           onLoad={loadPreset}
           onRemove={remove}
         />
+        <div className="mt-4">
+          <ShareButton
+            current={{
+              mode,
+              x,
+              y,
+              blur,
+              spread,
+              shadowColor,
+              shadowAlpha,
+              inset,
+              glassBlur,
+              glassAlpha,
+              borderAlpha,
+              saturate,
+              tint,
+            }}
+          />
+        </div>
       </div>
 
       <div className="mt-8">

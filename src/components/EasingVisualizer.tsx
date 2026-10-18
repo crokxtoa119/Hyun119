@@ -7,6 +7,7 @@ import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
+import { ShareButton, SharedNotice } from "@/components/ui/Share";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -103,6 +104,8 @@ export default function EasingVisualizer() {
         GSAP 이징을 고르면 곡선과 실제 움직임을 함께 볼 수 있습니다.
       </p>
 
+      <SharedNotice validate={isEasingPreset} onApply={loadPreset} />
+
       <div className="mt-8 grid gap-6 md:grid-cols-[1fr_1.4fr]">
         <div className="rounded-2xl border border-foreground/10 p-4">
           <svg
@@ -173,6 +176,9 @@ export default function EasingVisualizer() {
           onLoad={loadPreset}
           onRemove={remove}
         />
+        <div className="mt-4">
+          <ShareButton current={{ family, direction, duration }} />
+        </div>
       </div>
 
       <div className="mt-8">

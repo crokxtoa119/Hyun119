@@ -17,6 +17,7 @@ import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
+import { ShareButton, SharedNotice } from "@/components/ui/Share";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -83,6 +84,8 @@ export default function PaletteGenerator() {
       <p className="mt-2 text-foreground/70">
         기준 색과 배색 규칙을 고르면 5색 팔레트를 만들어 줍니다. 색을 클릭하면 HEX가 복사됩니다.
       </p>
+
+      <SharedNotice validate={isPalettePreset} onApply={loadPreset} />
 
       <div className="mt-8 flex h-64 overflow-hidden rounded-2xl border border-foreground/10">
         {colors.map((hex, i) => (
@@ -156,6 +159,9 @@ export default function PaletteGenerator() {
           onLoad={loadPreset}
           onRemove={remove}
         />
+        <div className="mt-4">
+          <ShareButton current={{ ...base, harmony }} />
+        </div>
       </div>
 
       <div className="mt-8">

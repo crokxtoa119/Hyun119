@@ -8,6 +8,7 @@ import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
+import { ShareButton, SharedNotice } from "@/components/ui/Share";
 import Slider, { RangeInput } from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -126,6 +127,8 @@ export default function GradientEditor() {
         색 정지점과 각도를 조절해 CSS 그라디언트를 만들고 코드를 복사하세요.
       </p>
 
+      <SharedNotice validate={isGradientPreset} onApply={loadPreset} />
+
       <div
         className="preview mt-8 flex h-64 items-center justify-center rounded-2xl border border-foreground/10 font-mono text-sm"
         style={{ background: css, color: textColor }}
@@ -218,6 +221,15 @@ export default function GradientEditor() {
           onLoad={loadPreset}
           onRemove={remove}
         />
+        <div className="mt-4">
+          <ShareButton
+            current={{
+              kind,
+              angle,
+              stops: stops.map(({ color, pos }) => ({ color, pos })),
+            }}
+          />
+        </div>
       </div>
 
       <div className="mt-8">
