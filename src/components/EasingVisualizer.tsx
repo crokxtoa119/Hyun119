@@ -3,6 +3,9 @@
 import { useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import Chip from "@/components/ui/Chip";
+import CodeBlock from "@/components/ui/CodeBlock";
+import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
 
@@ -44,7 +47,6 @@ export default function EasingVisualizer() {
   const [family, setFamily] = useState("power2");
   const [direction, setDirection] = useState<Direction>("out");
   const [duration, setDuration] = useState(1.2);
-  const [copied, setCopied] = useState(false);
 
   const ease = `${family}.${direction}`;
   const path = useMemo(() => curvePath(ease), [ease]);
@@ -72,16 +74,6 @@ export default function EasingVisualizer() {
   );
 
   const snippet = `gsap.to(".box", { x: 300, duration: ${duration}, ease: "${ease}" });`;
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(snippet);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1200);
-    } catch {
-      // 클립보드 권한이 없는 환경에서는 조용히 무시
-    }
-  };
 
   return (
     <div ref={root} className="mx-auto max-w-5xl px-6 py-12">
@@ -117,21 +109,15 @@ export default function EasingVisualizer() {
             <div className="ball absolute left-2 top-1/2 size-10 -translate-y-1/2 rounded-full bg-foreground" />
           </div>
 
-          <label className="block">
-            <span className="mb-1 flex justify-between text-sm font-medium">
-              Duration
-              <span className="font-mono text-foreground/60">{duration.toFixed(1)}s</span>
-            </span>
-            <input
-              type="range"
-              min={0.3}
-              max={3}
-              step={0.1}
-              value={duration}
-              onChange={(e) => setDuration(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-foreground/15 accent-foreground"
-            />
-          </label>
+          <Slider
+            label="Duration"
+            value={duration}
+            min={0.3}
+            max={3}
+            step={0.1}
+            display={`${duration.toFixed(1)}s`}
+            onChange={setDuration}
+          />
         </div>
       </div>
 
@@ -159,45 +145,8 @@ export default function EasingVisualizer() {
       </div>
 
       <div className="mt-8">
-        <div className="mb-2 flex items-center justify-between">
-          <p className="text-sm font-medium">GSAP 코드</p>
-          <button
-            type="button"
-            onClick={copy}
-            className="text-xs text-foreground/60 underline hover:text-foreground"
-          >
-            {copied ? "Copied!" : "복사"}
-          </button>
-        </div>
-        <pre className="overflow-x-auto rounded-xl bg-foreground/5 p-4 font-mono text-xs leading-relaxed">
-          {snippet}
-        </pre>
+        <CodeBlock title="GSAP 코드" code={snippet} />
       </div>
     </div>
-  );
-}
-
-function Chip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`rounded-full border px-3 py-1 text-sm transition-colors ${
-        active
-          ? "border-foreground bg-foreground text-background"
-          : "border-foreground/20 hover:border-foreground/50"
-      }`}
-    >
-      {children}
-    </button>
   );
 }

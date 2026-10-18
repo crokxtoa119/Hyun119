@@ -12,6 +12,10 @@ import {
   type Harmony,
   type HSL,
 } from "@/lib/color";
+import { useCopy } from "@/lib/useCopy";
+import Chip from "@/components/ui/Chip";
+import CodeBlock from "@/components/ui/CodeBlock";
+import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
 
@@ -19,7 +23,7 @@ export default function PaletteGenerator() {
   const root = useRef<HTMLDivElement>(null);
   const [base, setBase] = useState<HSL>({ h: 220, s: 70, l: 55 });
   const [harmony, setHarmony] = useState<Harmony>("analogous");
-  const [copied, setCopied] = useState<string | null>(null);
+  const { copied, copy } = useCopy();
 
   const colors = useMemo(
     () => generatePalette(base, harmony).map(hslToHex),
@@ -46,16 +50,6 @@ export default function PaletteGenerator() {
   const shuffle = () => {
     setBase(randomBase());
     playIntro();
-  };
-
-  const copy = async (hex: string) => {
-    try {
-      await navigator.clipboard.writeText(hex);
-      setCopied(hex);
-      setTimeout(() => setCopied((c) => (c === hex ? null : c)), 1200);
-    } catch {
-      // 클립보드 권한이 없는 환경에서는 조용히 무시
-    }
   };
 
   const cssVars = colors.map((c, i) => `  --color-${i + 1}: ${c};`).join("\n");
@@ -110,19 +104,13 @@ export default function PaletteGenerator() {
             <p className="mb-2 text-sm font-medium">배색 규칙</p>
             <div className="flex flex-wrap gap-2">
               {HARMONIES.map(({ value, label }) => (
-                <button
+                <Chip
                   key={value}
-                  type="button"
+                  active={harmony === value}
                   onClick={() => changeHarmony(value)}
-                  aria-pressed={harmony === value}
-                  className={`rounded-full border px-3 py-1 text-sm transition-colors ${
-                    harmony === value
-                      ? "border-foreground bg-foreground text-background"
-                      : "border-foreground/20 hover:border-foreground/50"
-                  }`}
                 >
                   {label}
-                </button>
+                </Chip>
               ))}
             </div>
           </div>
@@ -137,48 +125,12 @@ export default function PaletteGenerator() {
       </div>
 
       <div className="mt-8">
-        <div className="mb-2 flex items-center justify-between">
-          <p className="text-sm font-medium">CSS 변수</p>
-          <button
-            type="button"
-            onClick={() => copy(`:root {\n${cssVars}\n}`)}
-            className="text-xs text-foreground/60 underline hover:text-foreground"
-          >
-            전체 복사
-          </button>
-        </div>
-        <pre className="overflow-x-auto rounded-xl bg-foreground/5 p-4 font-mono text-xs leading-relaxed">
-          {`:root {\n${cssVars}\n}`}
-        </pre>
+        <CodeBlock
+          title="CSS 변수"
+          code={`:root {\n${cssVars}\n}`}
+          copyLabel="전체 복사"
+        />
       </div>
     </div>
-  );
-}
-
-type SliderProps = {
-  label: string;
-  value: number;
-  max: number;
-  onChange: (v: number) => void;
-  track?: string;
-};
-
-function Slider({ label, value, max, onChange, track }: SliderProps) {
-  return (
-    <label className="block">
-      <span className="mb-1 flex justify-between text-sm font-medium">
-        {label}
-        <span className="font-mono text-foreground/60">{value}</span>
-      </span>
-      <input
-        type="range"
-        min={0}
-        max={max}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        style={track ? { background: track } : undefined}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-foreground/15 accent-foreground"
-      />
-    </label>
   );
 }
