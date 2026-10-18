@@ -1,0 +1,134 @@
+"use client";
+
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+const STACK = [
+  { name: "Next.js", note: "App Router, 정적 배포" },
+  { name: "React", note: "상태 기반 UI" },
+  { name: "TypeScript", note: "타입 안전한 컴포넌트" },
+  { name: "Tailwind CSS", note: "유틸리티 스타일링" },
+  { name: "GSAP", note: "타임라인, ScrollTrigger" },
+  { name: "Vercel", note: "GitHub 푸시 자동 배포" },
+];
+
+const LOG = [
+  { title: "Color Palette", text: "HSL 기반 배색 규칙으로 5색 팔레트를 만듭니다." },
+  { title: "Gradient Editor", text: "정지점과 각도를 조절해 CSS 코드를 얻습니다." },
+  { title: "Easing Visualizer", text: "GSAP 이징 곡선과 실제 움직임을 비교합니다." },
+];
+
+export default function HomeSections() {
+  const root = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      // 움직임 줄이기 설정이면 연출 없이 바로 보여준다
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.utils.toArray<HTMLElement>(".reveal").forEach((el) => {
+          gsap.from(el, {
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            // 페이지 맨 아래 요소도 최대 스크롤에서 반드시 트리거되도록 95%로 둔다
+            scrollTrigger: { trigger: el, start: "top 95%", once: true },
+          });
+        });
+
+        gsap.from(".stack-item", {
+          y: 24,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "power2.out",
+          scrollTrigger: { trigger: ".stack-grid", start: "top 85%", once: true },
+        });
+
+        gsap.to(".progress", {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: { scrub: 0.3, start: 0, end: "max" },
+        });
+      });
+    },
+    { scope: root },
+  );
+
+  return (
+    <div ref={root}>
+      <div
+        className="progress fixed inset-x-0 top-0 z-50 h-0.5 origin-left scale-x-0 bg-foreground"
+        aria-hidden
+      />
+
+      <section id="about" className="mx-auto max-w-4xl px-6 py-24">
+        <p className="reveal font-mono text-xs uppercase tracking-widest text-foreground/50">
+          About
+        </p>
+        <h2 className="reveal mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+          만들면서 배우는 실험실
+        </h2>
+        <p className="reveal mt-5 max-w-2xl leading-relaxed text-foreground/70">
+          이 사이트는 웹 디자인과 인터랙션을 직접 만들어 보며 익히기 위한 공간입니다.
+          작은 도구를 하나씩 만들고, 배운 것을 페이지로 남깁니다.
+        </p>
+      </section>
+
+      <section id="log" className="mx-auto max-w-4xl px-6 pb-24">
+        <p className="reveal font-mono text-xs uppercase tracking-widest text-foreground/50">
+          Experiments
+        </p>
+        <ol className="mt-6 divide-y divide-foreground/10 border-y border-foreground/10">
+          {LOG.map((item, i) => (
+            <li key={item.title} className="reveal flex gap-6 py-6">
+              <span className="font-mono text-sm text-foreground/40">0{i + 1}</span>
+              <div>
+                <h3 className="font-semibold">{item.title}</h3>
+                <p className="mt-1 text-sm text-foreground/70">{item.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section id="stack" className="mx-auto max-w-4xl px-6 pb-24">
+        <p className="reveal font-mono text-xs uppercase tracking-widest text-foreground/50">
+          Stack
+        </p>
+        <div className="stack-grid mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+          {STACK.map((s) => (
+            <div
+              key={s.name}
+              className="stack-item rounded-xl border border-foreground/10 p-5"
+            >
+              <p className="font-semibold">{s.name}</p>
+              <p className="mt-1 text-sm text-foreground/60">{s.note}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" className="border-t border-foreground/10">
+        <div className="mx-auto max-w-4xl px-6 py-20 text-center">
+          <h2 className="reveal text-2xl font-bold tracking-tight sm:text-3xl">
+            코드가 궁금하신가요?
+          </h2>
+          <a
+            href="https://github.com/crokxtoa119/Hyun119"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="reveal mt-6 inline-block rounded-full bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-80"
+          >
+            GitHub에서 보기
+          </a>
+        </div>
+      </section>
+    </div>
+  );
+}
