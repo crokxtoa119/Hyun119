@@ -30,10 +30,10 @@ export default function HeroIntro() {
     <div ref={root} className="mx-auto max-w-4xl px-6 py-24">
       <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-[1.05]">
         <span className="block overflow-hidden">
-          <span className="hero-line block">Design</span>
+          <span className="hero-line block">Sketch</span>
         </span>
         <span className="block overflow-hidden">
-          <span className="hero-line block">Lab.</span>
+          <span className="hero-line block">Craft.</span>
         </span>
       </h1>
       <p className="hero-sub mt-6 max-w-xl text-lg text-foreground/70">

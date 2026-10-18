@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import EasingVisualizer from "@/components/EasingVisualizer";
 
 export const metadata: Metadata = {
-  title: "Easing Visualizer · Design Lab",
+  title: "Easing Visualizer · SketchCraft",
 };
 
 export default function EasingPage() {

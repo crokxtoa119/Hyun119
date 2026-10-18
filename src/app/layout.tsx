@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Design Lab",
+  title: "SketchCraft",
   description: "디자인과 인터랙션을 실험하는 학습용 사이트",
 };
 
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <header className="flex items-center justify-between px-6 py-4 border-b border-foreground/10">
           <Link href="/" className="font-mono text-sm font-semibold">
-            design-lab
+            SketchCraft
           </Link>
           <nav className="flex gap-6 text-sm">
             <Link href="/" className="hover:opacity-60 transition-opacity">
