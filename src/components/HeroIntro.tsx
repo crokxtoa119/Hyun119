@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
+import { TransitionLink } from "@/components/PageTransition";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -54,13 +54,13 @@ export default function HeroIntro() {
           );
           const cls = "hero-card rounded-xl border border-foreground/10 p-5";
           return href ? (
-            <Link
+            <TransitionLink
               key={title}
               href={href}
               className={`${cls} transition-colors hover:border-foreground/40`}
             >
               {card}
-            </Link>
+            </TransitionLink>
           ) : (
             <div key={title} className={cls}>
               {card}
