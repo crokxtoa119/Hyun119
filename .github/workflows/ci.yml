@@ -1,0 +1,43 @@
+name: CI
+
+# main에 푸시하거나 PR을 열면 린트, 테스트, 빌드를 돌린다.
+# 배포(Vercel)와는 별개로 동작하며, 실패해도 배포를 막지는 않는다.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# 같은 브랜치에서 새 푸시가 오면 이전 실행은 취소한다
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: 설치 (package-lock.json 기준)
+        run: npm ci
+
+      - name: 린트
+        run: npm run lint
+
+      - name: 단위 테스트
+        run: npm test
+
+      # next build는 타입 검사까지 함께 한다
+      - name: 빌드
+        run: npm run build
