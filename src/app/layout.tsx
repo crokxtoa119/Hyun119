@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { PageTransitionProvider, TransitionLink } from "@/components/PageTransition";
+import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,19 +30,27 @@ const NAV = [
   { href: "/shadow", label: "Shadow" },
 ];
 
+// 저장된 테마를 첫 페인트 전에 적용해 라이트/다크 깜빡임을 막는다
+const THEME_INIT = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="ko"
+      // data-theme을 스크립트가 미리 바꾸므로 서버 HTML과 속성이 달라도 경고하지 않는다
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <Script id="theme-init" strategy="beforeInteractive">
+          {THEME_INIT}
+        </Script>
         <PageTransitionProvider>
           <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4 border-b border-foreground/10">
             <TransitionLink href="/" className="font-mono text-sm font-semibold">
               SketchCraft
             </TransitionLink>
-            <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm sm:gap-x-6">
+            <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm sm:gap-x-6">
               {NAV.map(({ href, label }) => (
                 <TransitionLink
                   key={href}
@@ -50,6 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                   {label}
                 </TransitionLink>
               ))}
+              <ThemeToggle />
             </nav>
           </header>
           <main className="flex-1">{children}</main>
