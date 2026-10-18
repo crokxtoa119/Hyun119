@@ -70,7 +70,7 @@ export default function HomeSections() {
       />
 
       <section id="about" className="mx-auto max-w-4xl px-6 py-24">
-        <p className="reveal font-mono text-xs uppercase tracking-widest text-foreground/50">
+        <p className="reveal font-mono text-xs uppercase tracking-widest text-foreground/60">
           About
         </p>
         <h2 className="reveal mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -83,13 +83,13 @@ export default function HomeSections() {
       </section>
 
       <section id="log" className="mx-auto max-w-4xl px-6 pb-24">
-        <p className="reveal font-mono text-xs uppercase tracking-widest text-foreground/50">
+        <p className="reveal font-mono text-xs uppercase tracking-widest text-foreground/60">
           Experiments
         </p>
         <ol className="mt-6 divide-y divide-foreground/10 border-y border-foreground/10">
           {LOG.map((item, i) => (
             <li key={item.title} className="reveal flex gap-6 py-6">
-              <span className="font-mono text-sm text-foreground/40">0{i + 1}</span>
+              <span className="font-mono text-sm text-foreground/60">0{i + 1}</span>
               <div>
                 <h3 className="font-semibold">{item.title}</h3>
                 <p className="mt-1 text-sm text-foreground/70">{item.text}</p>
@@ -100,7 +100,7 @@ export default function HomeSections() {
       </section>
 
       <section id="stack" className="mx-auto max-w-4xl px-6 pb-24">
-        <p className="reveal font-mono text-xs uppercase tracking-widest text-foreground/50">
+        <p className="reveal font-mono text-xs uppercase tracking-widest text-foreground/60">
           Stack
         </p>
         <div className="stack-grid mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3">

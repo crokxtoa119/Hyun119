@@ -28,6 +28,12 @@
   color-scheme: dark;
 }
 
+/* 키보드로 이동할 때 어디에 있는지 보이는 포커스 링. :where라 개별 컴포넌트의 outline 클래스가 우선한다 */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+
 html {
   scroll-behavior: smooth;
 }

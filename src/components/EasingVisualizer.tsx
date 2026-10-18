@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useReducedMotion } from "@/lib/motion";
 import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
@@ -73,12 +74,17 @@ export default function EasingVisualizer() {
     setDuration(Math.min(3, Math.max(0.3, p.duration)));
   };
 
+  // 자동으로 계속 움직이는 요소는 멈출 수 있어야 한다. "움직임 줄이기"를 켠 경우 기본은 정지.
+  const reducedMotion = useReducedMotion();
+  const [userPaused, setUserPaused] = useState<boolean | null>(null);
+  const paused = userPaused ?? reducedMotion;
+
   useGSAP(
     () => {
       const track = root.current?.querySelector<HTMLElement>(".track");
       const ball = root.current?.querySelector<HTMLElement>(".ball");
       if (!track || !ball) return;
-      gsap.fromTo(
+      const tween = gsap.fromTo(
         ball,
         { x: 0 },
         {
@@ -91,8 +97,9 @@ export default function EasingVisualizer() {
           repeatRefresh: true,
         },
       );
+      if (paused) tween.pause(0);
     },
-    { scope: root, dependencies: [ease, duration], revertOnUpdate: true },
+    { scope: root, dependencies: [ease, duration, paused], revertOnUpdate: true },
   );
 
   const snippet = `gsap.to(".box", { x: 300, duration: ${duration}, ease: "${ease}" });`;
@@ -131,6 +138,16 @@ export default function EasingVisualizer() {
         <div className="flex flex-col justify-center gap-6">
           <div className="track relative h-14 rounded-full bg-foreground/5">
             <div className="ball absolute left-2 top-1/2 size-10 -translate-y-1/2 rounded-full bg-foreground" />
+          </div>
+
+          <div>
+            <button
+              type="button"
+              onClick={() => setUserPaused(!paused)}
+              className="rounded-lg border border-foreground/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-foreground/5"
+            >
+              {paused ? "▶ 재생" : "⏸ 일시정지"}
+            </button>
           </div>
 
           <Slider

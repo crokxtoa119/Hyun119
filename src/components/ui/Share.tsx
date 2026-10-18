@@ -8,15 +8,20 @@ export function ShareButton<T>({ current }: { current: T }) {
   const { copied, copy } = useCopy(1800);
 
   return (
-    <button
-      type="button"
-      // 주소는 클릭할 때만 만든다(렌더 중에는 window를 읽지 않는다)
-      onClick={() => copy(buildShareUrl(current))}
-      className="rounded-lg border border-foreground/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-foreground/5"
-      aria-label="현재 설정 공유 링크 복사"
-    >
-      {copied ? "링크 복사됨!" : "공유 링크 복사"}
-    </button>
+    <>
+      <button
+        type="button"
+        // 주소는 클릭할 때만 만든다(렌더 중에는 window를 읽지 않는다)
+        onClick={() => copy(buildShareUrl(current))}
+        className="rounded-lg border border-foreground/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-foreground/5"
+        aria-label="현재 설정 공유 링크 복사"
+      >
+        {copied ? "링크 복사됨!" : "공유 링크 복사"}
+      </button>
+      <span role="status" className="sr-only">
+        {copied ? "공유 링크를 클립보드에 복사했습니다." : ""}
+      </span>
+    </>
   );
 }
 

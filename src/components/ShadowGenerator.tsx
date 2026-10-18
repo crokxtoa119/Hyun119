@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { hexToRgba } from "@/lib/color";
+import { prefersReducedMotion } from "@/lib/motion";
 import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
@@ -86,6 +87,7 @@ export default function ShadowGenerator() {
 
   const { contextSafe } = useGSAP({ scope: root });
   const pop = contextSafe(() => {
+    if (prefersReducedMotion()) return;
     gsap.fromTo(
       ".demo-card",
       { scale: 0.94, opacity: 0.5 },

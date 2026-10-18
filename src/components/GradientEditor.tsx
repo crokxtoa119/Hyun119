@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { readableTextColor } from "@/lib/color";
+import { prefersReducedMotion } from "@/lib/motion";
 import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
@@ -75,6 +76,7 @@ export default function GradientEditor() {
 
   const { contextSafe } = useGSAP({ scope: root });
   const pulsePreview = contextSafe(() => {
+    if (prefersReducedMotion()) return;
     gsap.fromTo(
       ".preview",
       { scale: 0.97 },
@@ -197,7 +199,7 @@ export default function GradientEditor() {
                 type="button"
                 onClick={() => removeStop(s.id)}
                 disabled={stops.length <= MIN_STOPS}
-                className="shrink-0 text-foreground/50 hover:text-foreground disabled:opacity-30"
+                className="shrink-0 text-foreground/60 hover:text-foreground disabled:opacity-30"
                 aria-label="정지점 삭제"
               >
                 ✕

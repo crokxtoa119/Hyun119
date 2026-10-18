@@ -107,10 +107,13 @@ type TransitionLinkProps = Omit<ComponentProps<typeof Link>, "href"> & { href: s
 export function TransitionLink({ href, onNavigate, ...props }: TransitionLinkProps) {
   const ctx = useContext(TransitionContext);
   const pathname = usePathname();
+  // 해시 없는 링크가 지금 보고 있는 페이지를 가리키면 현재 페이지로 표시한다
+  const isCurrent = !href.includes("#") && pathOf(href) === pathname;
 
   return (
     <Link
       href={href}
+      aria-current={isCurrent ? "page" : undefined}
       onNavigate={(e) => {
         onNavigate?.(e);
         // 같은 페이지 안의 앵커 이동이거나 Provider 밖이면 기본 동작을 따른다

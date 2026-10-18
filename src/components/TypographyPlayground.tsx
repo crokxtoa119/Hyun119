@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { prefersReducedMotion } from "@/lib/motion";
 import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
@@ -132,6 +133,7 @@ export default function TypographyPlayground() {
 
   const { contextSafe } = useGSAP({ scope: root });
   const flash = contextSafe(() => {
+    if (prefersReducedMotion()) return;
     gsap.fromTo(
       ".preview-text",
       { opacity: 0.2, y: 8 },
@@ -193,7 +195,7 @@ export default function TypographyPlayground() {
           {text || " "}
         </p>
       </div>
-      <p className="mt-2 text-xs text-foreground/50">
+      <p className="mt-2 text-xs text-foreground/60">
         한글은 &quot;(한글)&quot; 표시가 있는 폰트에서만 해당 폰트로 보이고, 나머지는 기본 폰트로 대체됩니다.
       </p>
 
@@ -215,7 +217,7 @@ export default function TypographyPlayground() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={2}
-            className="w-full resize-y rounded-lg border border-foreground/20 bg-transparent p-3 text-sm focus-visible:outline-2 focus-visible:outline-foreground/50"
+            className="w-full resize-y rounded-lg border border-foreground/20 bg-transparent p-3 text-sm focus-visible:outline-2 focus-visible:outline-foreground"
           />
         </label>
 

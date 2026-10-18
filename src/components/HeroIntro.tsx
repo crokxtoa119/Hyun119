@@ -20,10 +20,14 @@ export default function HeroIntro() {
 
   useGSAP(
     () => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.from(".hero-line", { yPercent: 110, duration: 0.9, stagger: 0.12 })
-        .from(".hero-sub", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4")
-        .from(".hero-card", { y: 30, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.3");
+      // "움직임 줄이기"를 켠 경우에는 연출 없이 바로 보여준다
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        tl.from(".hero-line", { yPercent: 110, duration: 0.9, stagger: 0.12 })
+          .from(".hero-sub", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4")
+          .from(".hero-card", { y: 30, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.3");
+      });
     },
     { scope: root },
   );
@@ -46,7 +50,7 @@ export default function HeroIntro() {
         {experiments.map(({ title, href }) => {
           const card = (
             <>
-              <p className="font-mono text-xs text-foreground/50">
+              <p className="font-mono text-xs text-foreground/60">
                 {href ? "Open" : "Coming soon"}
               </p>
               <p className="mt-2 font-semibold">{title}</p>

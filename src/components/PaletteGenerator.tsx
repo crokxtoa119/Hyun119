@@ -12,6 +12,7 @@ import {
   type Harmony,
   type HSL,
 } from "@/lib/color";
+import { prefersReducedMotion } from "@/lib/motion";
 import { useCopy } from "@/lib/useCopy";
 import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
@@ -51,6 +52,7 @@ export default function PaletteGenerator() {
   // 배색 규칙이 바뀌거나 랜덤 생성 시 스와치가 순서대로 올라오는 연출
   const { contextSafe } = useGSAP({ scope: root });
   const playIntro = contextSafe(() => {
+    if (prefersReducedMotion()) return;
     gsap.fromTo(
       ".swatch",
       { yPercent: 12, opacity: 0.4 },
@@ -86,6 +88,10 @@ export default function PaletteGenerator() {
       </p>
 
       <SharedNotice validate={isPalettePreset} onApply={loadPreset} />
+
+      <p role="status" className="sr-only">
+        {copied ? `${copied} 색상을 복사했습니다.` : ""}
+      </p>
 
       <div className="mt-8 flex h-64 overflow-hidden rounded-2xl border border-foreground/10">
         {colors.map((hex, i) => (

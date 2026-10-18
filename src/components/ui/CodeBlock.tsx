@@ -23,6 +23,9 @@ export default function CodeBlock({ title, code, copyLabel = "복사" }: CodeBlo
         >
           {copied === code ? "Copied!" : copyLabel}
         </button>
+        <span role="status" className="sr-only">
+          {copied === code ? "클립보드에 복사했습니다." : ""}
+        </span>
       </div>
       <pre className="overflow-x-auto rounded-xl bg-foreground/5 p-4 font-mono text-xs leading-relaxed">
         {code}

@@ -45,17 +45,26 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Script id="theme-init" strategy="beforeInteractive">
           {THEME_INIT}
         </Script>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-lg focus:bg-foreground focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-background"
+        >
+          본문으로 건너뛰기
+        </a>
         <PageTransitionProvider>
           <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4 border-b border-foreground/10">
             <TransitionLink href="/" className="font-mono text-sm font-semibold">
               SketchCraft
             </TransitionLink>
-            <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm sm:gap-x-6">
+            <nav
+              aria-label="주 메뉴"
+              className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm sm:gap-x-6"
+            >
               {NAV.map(({ href, label }) => (
                 <TransitionLink
                   key={href}
                   href={href}
-                  className="hover:opacity-60 transition-opacity"
+                  className="transition-opacity hover:opacity-60 aria-[current=page]:underline aria-[current=page]:underline-offset-4"
                 >
                   {label}
                 </TransitionLink>
@@ -63,7 +72,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <ThemeToggle />
             </nav>
           </header>
-          <main className="flex-1">{children}</main>
+          <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
+            {children}
+          </main>
         </PageTransitionProvider>
       </body>
     </html>
