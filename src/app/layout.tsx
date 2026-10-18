@@ -33,6 +33,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/" className="hover:opacity-60 transition-opacity">
               Home
             </Link>
+            <Link href="/#about" className="hover:opacity-60 transition-opacity">
+              About
+            </Link>
             <Link href="/palette" className="hover:opacity-60 transition-opacity">
               Palette
             </Link>
