@@ -54,6 +54,22 @@ const FONTS: FontOption[] = [
     wMax: 900,
   },
   {
+    key: "notosans",
+    label: "Noto Sans KR (한글)",
+    stack: "var(--font-noto-sans-kr), sans-serif",
+    cssName: '"Noto Sans KR", sans-serif',
+    wMin: 100,
+    wMax: 900,
+  },
+  {
+    key: "notoserif",
+    label: "Noto Serif KR (한글)",
+    stack: "var(--font-noto-serif-kr), serif",
+    cssName: '"Noto Serif KR", serif',
+    wMin: 200,
+    wMax: 900,
+  },
+  {
     key: "mono",
     label: "Geist Mono",
     stack: "var(--font-geist-mono), monospace",
@@ -70,7 +86,7 @@ const ALIGNS: { value: Align; label: string }[] = [
   { value: "right", label: "오른쪽" },
 ];
 
-const SAMPLE = "The quick brown fox jumps over the lazy dog.";
+const SAMPLE = "The quick brown fox jumps over the lazy dog.\n다람쥐 헌 쳇바퀴에 타고파.";
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
@@ -120,7 +136,7 @@ export default function TypographyPlayground() {
 
       <div className="mt-8 overflow-hidden rounded-2xl border border-foreground/10 p-6 sm:p-10">
         <p
-          className="preview-text break-words"
+          className="preview-text whitespace-pre-wrap break-words"
           style={{
             fontFamily: font.stack,
             fontSize: size,
@@ -134,7 +150,7 @@ export default function TypographyPlayground() {
         </p>
       </div>
       <p className="mt-2 text-xs text-foreground/50">
-        한글은 이 폰트들에 없어서 기본 폰트로 대체되어 보일 수 있습니다.
+        한글은 &quot;(한글)&quot; 표시가 있는 폰트에서만 해당 폰트로 보이고, 나머지는 기본 폰트로 대체됩니다.
       </p>
 
       <div className="mt-8 space-y-6">
