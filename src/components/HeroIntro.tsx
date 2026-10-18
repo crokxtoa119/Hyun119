@@ -11,6 +11,7 @@ const experiments: { title: string; href?: string }[] = [
   { title: "Color Palette", href: "/palette" },
   { title: "Gradient Editor", href: "/gradient" },
   { title: "Easing Visualizer", href: "/easing" },
+  { title: "Typography Playground", href: "/typography" },
 ];
 
 export default function HeroIntro() {
@@ -40,7 +41,7 @@ export default function HeroIntro() {
         Next.js, Tailwind, GSAP로 디자인과 인터랙션을 하나씩 실험하는 공간입니다.
       </p>
 
-      <div className="mt-16 grid gap-4 sm:grid-cols-3">
+      <div className="mt-16 grid gap-4 sm:grid-cols-2">
         {experiments.map(({ title, href }) => {
           const card = (
             <>

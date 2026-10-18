@@ -20,6 +20,7 @@ const LOG = [
   { title: "Color Palette", text: "HSL 기반 배색 규칙으로 5색 팔레트를 만듭니다." },
   { title: "Gradient Editor", text: "정지점과 각도를 조절해 CSS 코드를 얻습니다." },
   { title: "Easing Visualizer", text: "GSAP 이징 곡선과 실제 움직임을 비교합니다." },
+  { title: "Typography Playground", text: "폰트, 크기, 자간, 행간을 조절하고 CSS를 복사합니다." },
 ];
 
 export default function HomeSections() {
