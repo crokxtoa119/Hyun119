@@ -83,3 +83,47 @@ describe("프리셋 개수와 전체 삭제", () => {
     expect(localStorage.getItem("other")).not.toBeNull();
   });
 });
+
+describe("테마 전환 애니메이션", () => {
+  const mockMatchMedia = (reduced: boolean) =>
+    vi.stubGlobal("matchMedia", () => ({ matches: reduced }));
+
+  const mockViewTransition = () => {
+    const start = vi.fn((cb: () => void) => {
+      cb();
+      return { ready: Promise.resolve() };
+    });
+    Object.defineProperty(document, "startViewTransition", { value: start, configurable: true });
+    return start;
+  };
+
+  afterEach(() => {
+    Reflect.deleteProperty(document, "startViewTransition");
+    vi.unstubAllGlobals();
+  });
+
+  it("지원하는 브라우저에서는 View Transition 안에서 테마를 적용한다", () => {
+    mockMatchMedia(false);
+    const start = mockViewTransition();
+    setTheme("dark", { x: 10, y: 20 });
+    expect(start).toHaveBeenCalledTimes(1);
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+  });
+
+  it("움직임 줄이기가 켜져 있으면 전환 없이 바로 적용한다", () => {
+    mockMatchMedia(true);
+    const start = mockViewTransition();
+    setTheme("dark");
+    expect(start).not.toHaveBeenCalled();
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+  });
+
+  it("설정에서 전환 효과를 껐으면 전환 없이 바로 적용한다", () => {
+    mockMatchMedia(false);
+    const start = mockViewTransition();
+    setTransitionsEnabled(false);
+    setTheme("light");
+    expect(start).not.toHaveBeenCalled();
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+  });
+});

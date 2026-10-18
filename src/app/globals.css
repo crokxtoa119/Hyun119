@@ -55,3 +55,10 @@ body {
 body:has(dialog[open]) {
   overflow: hidden;
 }
+
+/* 테마 전환: 기본 크로스페이드를 끄고, 새 화면이 원형으로 퍼지는 효과는 lib/theme.ts가 그린다 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

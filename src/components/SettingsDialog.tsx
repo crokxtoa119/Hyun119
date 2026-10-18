@@ -112,7 +112,11 @@ export default function SettingsDialog() {
                     name="theme"
                     value={value}
                     checked={theme === value}
-                    onChange={() => setTheme(value)}
+                    onChange={(e) => {
+                      // 라벨(보이는 버튼)의 중심에서 원이 퍼지게 한다
+                      const r = e.currentTarget.parentElement!.getBoundingClientRect();
+                      setTheme(value, { x: r.left + r.width / 2, y: r.top + r.height / 2 });
+                    }}
                     className="sr-only"
                   />
                   {label}
