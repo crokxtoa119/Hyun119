@@ -28,6 +28,7 @@ const NAV = [
   { href: "/easing", label: "Easing" },
   { href: "/typography", label: "Typography" },
   { href: "/shadow", label: "Shadow" },
+  { href: "/timeline", label: "Timeline" },
 ];
 
 // 저장된 테마를 첫 페인트 전에 적용해 라이트/다크 깜빡임을 막는다

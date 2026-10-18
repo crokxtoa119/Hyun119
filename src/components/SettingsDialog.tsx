@@ -12,6 +12,7 @@ const PRESET_PAGES = [
   { key: "sc-easing-presets", label: "Easing" },
   { key: "sc-typography-presets", label: "Typography" },
   { key: "sc-shadow-presets", label: "Shadow" },
+  { key: "sc-timeline-presets", label: "Timeline" },
 ];
 
 function PresetRow({ storageKey, label }: { storageKey: string; label: string }) {

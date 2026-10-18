@@ -14,6 +14,7 @@
 | Easing Visualizer | `/easing` | GSAP 이징 10종 × 방향 3종의 곡선 그래프와 실제 움직임 비교, GSAP 코드 복사 |
 | Typography Playground | `/typography` | 폰트 7종(한글 폰트 2종 포함)의 크기, 굵기, 자간, 행간, 정렬 조절, CSS 복사 |
 | Shadow & Glass | `/shadow` | `box-shadow`와 글래스모피즘(`backdrop-filter`) 값 조절, CSS 복사 |
+| Timeline Editor | `/timeline` | 트윈 최대 3개(상자, 속성, 도착 값, 시작, 길이, 이징)로 GSAP 타임라인을 만들고, 막대 그래프와 재생 위치 슬라이더로 확인, 코드 복사 |
 
 ### 모든 실험 페이지 공통 기능
 
@@ -60,6 +61,8 @@ npm run dev
 | `shareLink.test.tsx` | 공유 링크 인코딩 왕복(한글, 이모지, HTML 문자), 깨진·변조·과대 입력 거부, 해시 변화에 반응하는 훅 |
 | `usePresets.test.tsx` | 저장·삭제·최대 12개·id 규칙, 손상된 저장 데이터와 `localStorage` 차단 상황 처리 |
 | `motion.test.tsx` | "움직임 줄이기" 설정 읽기와 변경 반영, 리스너 정리 |
+| `settings.test.tsx` | 전환 효과 설정, 테마 저장과 적용, 테마 전환 애니메이션이 켜지는 조건 3가지, 프리셋 개수와 전체 삭제 |
+| `timeline.test.ts` | 타임라인 트윈 검증(개수, 속성, 이징, 범위, NaN), 범위 보정, 총 길이, GSAP 코드 생성 |
 
 테스트가 실제로 버그를 잡는지도 확인했습니다. 소스에 버그를 일부러 11가지 넣었을 때(반올림 방식 변경, 검증 생략, 길이 제한 변경 등) 매번 정확히 1개 테스트가 실패했고, 원복하면 모두 통과합니다.
 
@@ -85,7 +88,7 @@ src/
 ├─ app/                      라우트 (페이지마다 얇은 page.tsx + 메타데이터)
 │  ├─ layout.tsx             공통 레이아웃: 헤더, 테마 초기화 스크립트, 페이지 전환
 │  ├─ globals.css            테마 변수(라이트/다크)와 전역 스타일
-│  └─ palette · gradient · easing · typography · shadow/
+│  └─ palette · gradient · easing · typography · shadow · timeline/
 ├─ components/
 │  ├─ *Generator/Editor/Visualizer/Playground.tsx   실험 페이지 본체 (클라이언트 컴포넌트)
 │  ├─ HeroIntro.tsx · HomeSections.tsx              홈 화면 (GSAP 인트로, ScrollTrigger)

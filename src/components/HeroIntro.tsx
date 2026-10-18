@@ -13,6 +13,7 @@ const experiments: { title: string; href?: string }[] = [
   { title: "Easing Visualizer", href: "/easing" },
   { title: "Typography Playground", href: "/typography" },
   { title: "Shadow & Glass", href: "/shadow" },
+  { title: "Timeline Editor", href: "/timeline" },
 ];
 
 export default function HeroIntro() {
