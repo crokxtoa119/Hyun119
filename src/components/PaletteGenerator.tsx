@@ -13,17 +13,34 @@ import {
   type HSL,
 } from "@/lib/color";
 import { useCopy } from "@/lib/useCopy";
+import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
+import PresetBar from "@/components/ui/PresetBar";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
+
+type PalettePreset = HSL & { harmony: Harmony };
+
+function isPalettePreset(d: unknown): d is PalettePreset {
+  return (
+    isRecord(d) &&
+    isFiniteNumber(d.h) &&
+    isFiniteNumber(d.s) &&
+    isFiniteNumber(d.l) &&
+    HARMONIES.some((h) => h.value === d.harmony)
+  );
+}
+
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
 export default function PaletteGenerator() {
   const root = useRef<HTMLDivElement>(null);
   const [base, setBase] = useState<HSL>({ h: 220, s: 70, l: 55 });
   const [harmony, setHarmony] = useState<Harmony>("analogous");
   const { copied, copy } = useCopy();
+  const { presets, save, remove, isFull } = usePresets("sc-palette-presets", isPalettePreset);
 
   const colors = useMemo(
     () => generatePalette(base, harmony).map(hslToHex),
@@ -52,6 +69,12 @@ export default function PaletteGenerator() {
     playIntro();
   };
 
+  const loadPreset = (p: PalettePreset) => {
+    setBase({ h: clamp(p.h, 0, 360), s: clamp(p.s, 0, 100), l: clamp(p.l, 0, 100) });
+    setHarmony(p.harmony);
+    playIntro();
+  };
+
   const cssVars = colors.map((c, i) => `  --color-${i + 1}: ${c};`).join("\n");
 
   return (
@@ -62,9 +85,10 @@ export default function PaletteGenerator() {
       </p>
 
       <div className="mt-8 flex h-64 overflow-hidden rounded-2xl border border-foreground/10">
-        {colors.map((hex) => (
+        {colors.map((hex, i) => (
           <button
-            key={hex}
+            // 색이 겹칠 수 있으므로(예: 채도 0, 명도 100) 색 대신 칸 순서를 key로 쓴다
+            key={i}
             type="button"
             onClick={() => copy(hex)}
             style={{ backgroundColor: hex, color: readableTextColor(hex) }}
@@ -122,6 +146,16 @@ export default function PaletteGenerator() {
             랜덤 생성
           </button>
         </div>
+      </div>
+
+      <div className="mt-8">
+        <PresetBar
+          presets={presets}
+          isFull={isFull}
+          onSave={(name) => save(name, { ...base, harmony })}
+          onLoad={loadPreset}
+          onRemove={remove}
+        />
       </div>
 
       <div className="mt-8">

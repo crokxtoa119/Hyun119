@@ -3,8 +3,10 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
+import PresetBar from "@/components/ui/PresetBar";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -90,6 +92,29 @@ const SAMPLE = "The quick brown fox jumps over the lazy dog.\n다람쥐 헌 쳇�
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
+type TypographyPreset = {
+  fontKey: string;
+  text: string;
+  size: number;
+  weight: number;
+  tracking: number;
+  leading: number;
+  align: Align;
+};
+
+function isTypographyPreset(d: unknown): d is TypographyPreset {
+  return (
+    isRecord(d) &&
+    FONTS.some((f) => f.key === d.fontKey) &&
+    typeof d.text === "string" &&
+    isFiniteNumber(d.size) &&
+    isFiniteNumber(d.weight) &&
+    isFiniteNumber(d.tracking) &&
+    isFiniteNumber(d.leading) &&
+    ALIGNS.some((a) => a.value === d.align)
+  );
+}
+
 export default function TypographyPlayground() {
   const root = useRef<HTMLDivElement>(null);
   const [fontKey, setFontKey] = useState("playfair");
@@ -115,6 +140,22 @@ export default function TypographyPlayground() {
 
   const changeFont = (key: string) => {
     setFontKey(key);
+    flash();
+  };
+
+  const { presets, save, remove, isFull } = usePresets(
+    "sc-typography-presets",
+    isTypographyPreset,
+  );
+
+  const loadPreset = (p: TypographyPreset) => {
+    setFontKey(p.fontKey);
+    setText(p.text.slice(0, 500));
+    setSize(clamp(p.size, 12, 120));
+    setWeight(clamp(p.weight, 100, 900));
+    setTracking(clamp(p.tracking, -0.1, 0.5));
+    setLeading(clamp(p.leading, 0.8, 2.4));
+    setAlign(p.align);
     flash();
   };
 
@@ -222,6 +263,18 @@ export default function TypographyPlayground() {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="mt-8">
+        <PresetBar
+          presets={presets}
+          isFull={isFull}
+          onSave={(name) =>
+            save(name, { fontKey, text, size, weight, tracking, leading, align })
+          }
+          onLoad={loadPreset}
+          onRemove={remove}
+        />
       </div>
 
       <div className="mt-8">

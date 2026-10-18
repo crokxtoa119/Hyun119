@@ -4,8 +4,10 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { readableTextColor } from "@/lib/color";
+import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
+import PresetBar from "@/components/ui/PresetBar";
 import Slider, { RangeInput } from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -18,6 +20,28 @@ const KINDS: { value: Kind; label: string }[] = [
   { value: "radial", label: "원형" },
   { value: "conic", label: "원뿔" },
 ];
+
+type GradientPreset = { kind: Kind; angle: number; stops: { color: string; pos: number }[] };
+
+function isGradientPreset(d: unknown): d is GradientPreset {
+  return (
+    isRecord(d) &&
+    KINDS.some((k) => k.value === d.kind) &&
+    isFiniteNumber(d.angle) &&
+    Array.isArray(d.stops) &&
+    d.stops.length >= 2 &&
+    d.stops.length <= 5 &&
+    d.stops.every(
+      (s) =>
+        isRecord(s) &&
+        typeof s.color === "string" &&
+        /^#[0-9a-f]{6}$/i.test(s.color) &&
+        isFiniteNumber(s.pos),
+    )
+  );
+}
+
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
 const EXTRA_COLORS = ["#F59E0B", "#10B981", "#3B82F6", "#EF4444", "#8B5CF6"];
 
@@ -76,6 +100,22 @@ export default function GradientEditor() {
 
   const changeKind = (value: Kind) => {
     setKind(value);
+    pulsePreview();
+  };
+
+  const { presets, save, remove, isFull } = usePresets("sc-gradient-presets", isGradientPreset);
+
+  const loadPreset = (p: GradientPreset) => {
+    setKind(p.kind);
+    setAngle(clamp(p.angle, 0, 360));
+    // 정지점마다 새 id를 부여해 React key가 겹치지 않게 한다
+    setStops(
+      p.stops.map((s) => ({
+        id: nextId.current++,
+        color: s.color.toUpperCase(),
+        pos: clamp(s.pos, 0, 100),
+      })),
+    );
     pulsePreview();
   };
 
@@ -162,6 +202,22 @@ export default function GradientEditor() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="mt-8">
+        <PresetBar
+          presets={presets}
+          isFull={isFull}
+          onSave={(name) =>
+            save(name, {
+              kind,
+              angle,
+              stops: stops.map(({ color, pos }) => ({ color, pos })),
+            })
+          }
+          onLoad={loadPreset}
+          onRemove={remove}
+        />
       </div>
 
       <div className="mt-8">
