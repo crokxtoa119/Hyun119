@@ -65,6 +65,19 @@ npm run dev
 
 화면 컴포넌트(React 컴포넌트, GSAP 연출, 페이지 전환)는 단위 테스트가 없고 브라우저에서 직접 확인했습니다.
 
+## CI
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml)이 `main`에 푸시하거나 PR을 열 때마다 GitHub Actions에서 아래 순서로 실행합니다.
+
+1. `npm ci` (`package-lock.json` 기준 설치)
+2. `npm run lint`
+3. `npm test`
+4. `npm run build` (타입 검사 포함)
+
+- 같은 브랜치에 새 푸시가 오면 이전 실행은 취소합니다.
+- Vercel 배포와는 **별개**입니다. CI가 실패해도 Vercel은 그대로 배포하니, 푸시한 뒤 저장소의 **Actions** 탭에서 결과를 확인하세요. 실패 시 배포를 막으려면 GitHub 브랜치 보호 규칙과 Vercel 설정이 따로 필요합니다.
+- 로컬에서 같은 결과를 보려면 `npm ci && npm run lint && npm test && npm run build`를 실행하세요.
+
 ## 폴더 구조
 
 ```
