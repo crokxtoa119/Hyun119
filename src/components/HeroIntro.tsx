@@ -3,9 +3,10 @@
 import { useRef } from "react";
 import { TransitionLink } from "@/components/PageTransition";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const experiments: { title: string; href?: string }[] = [
   { title: "Color Palette", href: "/palette" },
@@ -28,6 +29,19 @@ export default function HeroIntro() {
         tl.from(".hero-line", { yPercent: 110, duration: 0.9, stagger: 0.12 })
           .from(".hero-sub", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4")
           .from(".hero-card", { y: 30, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.3");
+
+        // 스크롤을 내리면 히어로가 천천히 위로 밀리며 흐려진다 (intro 트윈과 겹치지 않게 컨테이너에 건다)
+        gsap.to(root.current, {
+          yPercent: -8,
+          opacity: 0.2,
+          ease: "none",
+          scrollTrigger: {
+            trigger: root.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
       });
     },
     { scope: root },

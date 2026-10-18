@@ -58,6 +58,50 @@ export default function HomeSections() {
           ease: "none",
           scrollTrigger: { scrub: 0.3, start: 0, end: "max" },
         });
+
+        // 화면 중앙 근처에 온 실험 항목만 또렷하게 보여준다. 스크롤을 되돌리면 다시 흐려진다
+        gsap.utils.toArray<HTMLElement>(".log-body").forEach((body) => {
+          gsap.fromTo(
+            body,
+            { opacity: 0.35, x: 0 },
+            {
+              opacity: 1,
+              x: 8,
+              duration: 0.35,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: body,
+                start: "top 70%",
+                end: "bottom 40%",
+                toggleActions: "play reverse play reverse",
+              },
+            },
+          );
+        });
+      });
+
+      // 마우스가 있는 환경에서만 버튼이 커서를 살짝 따라온다
+      mm.add("(prefers-reduced-motion: no-preference) and (pointer: fine)", () => {
+        const wrap = root.current?.querySelector<HTMLElement>(".magnet");
+        if (!wrap) return;
+        const moveX = gsap.quickTo(wrap, "x", { duration: 0.4, ease: "power3.out" });
+        const moveY = gsap.quickTo(wrap, "y", { duration: 0.4, ease: "power3.out" });
+
+        const onMove = (e: MouseEvent) => {
+          const r = wrap.getBoundingClientRect();
+          moveX((e.clientX - (r.left + r.width / 2)) * 0.3);
+          moveY((e.clientY - (r.top + r.height / 2)) * 0.3);
+        };
+        const onLeave = () => {
+          moveX(0);
+          moveY(0);
+        };
+        wrap.addEventListener("mousemove", onMove);
+        wrap.addEventListener("mouseleave", onLeave);
+        return () => {
+          wrap.removeEventListener("mousemove", onMove);
+          wrap.removeEventListener("mouseleave", onLeave);
+        };
       });
     },
     { scope: root },
@@ -89,11 +133,13 @@ export default function HomeSections() {
         </p>
         <ol className="mt-6 divide-y divide-foreground/10 border-y border-foreground/10">
           {LOG.map((item, i) => (
-            <li key={item.title} className="reveal flex gap-6 py-6">
-              <span className="font-mono text-sm text-foreground/60">0{i + 1}</span>
-              <div>
-                <h3 className="font-semibold">{item.title}</h3>
-                <p className="mt-1 text-sm text-foreground/70">{item.text}</p>
+            <li key={item.title} className="reveal py-6">
+              <div className="log-body flex gap-6">
+                <span className="font-mono text-sm text-foreground/60">0{i + 1}</span>
+                <div>
+                  <h3 className="font-semibold">{item.title}</h3>
+                  <p className="mt-1 text-sm text-foreground/70">{item.text}</p>
+                </div>
               </div>
             </li>
           ))}
@@ -122,14 +168,16 @@ export default function HomeSections() {
           <h2 className="reveal text-2xl font-bold tracking-tight sm:text-3xl">
             코드가 궁금하신가요?
           </h2>
-          <a
-            href="https://github.com/crokxtoa119/Hyun119"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="reveal mt-6 inline-block rounded-full bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-80"
-          >
-            GitHub에서 보기
-          </a>
+          <div className="magnet mt-6 inline-block">
+            <a
+              href="https://github.com/crokxtoa119/Hyun119"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="reveal inline-block rounded-full bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-80"
+            >
+              GitHub에서 보기
+            </a>
+          </div>
         </div>
       </section>
     </div>
