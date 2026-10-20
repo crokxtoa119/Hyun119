@@ -21,6 +21,7 @@ const PRESET_PAGES = [
   { key: "sc-transform-presets", label: "Transform" },
   { key: "sc-text-effects-presets", label: "Text Effects" },
   { key: "sc-blend-presets", label: "Blend Mode" },
+  { key: "sc-scroll-snap-presets", label: "Scroll Snap" },
   { key: "sc-keyframes-presets", label: "Keyframes" },
 ];
 

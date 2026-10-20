@@ -187,6 +187,18 @@ export const EXPERIMENTS: Experiment[] = [
     tech: ["mix-blend-mode", "lib/blend.ts"],
   },
   {
+    slug: "scroll-snap",
+    category: "shape",
+    title: "Scroll Snap",
+    href: "/scroll-snap",
+    summary: "스크롤이 멈추는 지점을 정하는 scroll-snap 설정을 바꿔 봅니다.",
+    learned: [
+      "scroll-snap-type은 컨테이너에, scroll-snap-align은 아이템에 써야 하고, mandatory는 항상 붙고 proximity는 가까울 때만 붙는다.",
+      "스크롤 컨테이너는 키보드로도 움직일 수 있게 tabindex와 이름을 주어 포커스를 받게 한다.",
+    ],
+    tech: ["scroll-snap", "lib/scrollSnap.ts"],
+  },
+  {
     slug: "keyframes",
     category: "motion",
     title: "Keyframes",
