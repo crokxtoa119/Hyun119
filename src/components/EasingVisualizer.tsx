@@ -4,7 +4,8 @@ import { useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useReducedMotion } from "@/lib/motion";
-import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
+import { isEasingPreset, type EasingDirection, type EasingPreset } from "@/lib/presetValidators";
+import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
@@ -14,7 +15,7 @@ import Slider from "@/components/ui/Slider";
 gsap.registerPlugin(useGSAP);
 
 type Family = { name: string; key: string };
-type Direction = "in" | "out" | "inOut";
+type Direction = EasingDirection;
 
 const FAMILIES: Family[] = [
   { name: "Power1", key: "power1" },
@@ -30,17 +31,6 @@ const FAMILIES: Family[] = [
 ];
 
 const DIRECTIONS: Direction[] = ["in", "out", "inOut"];
-
-type EasingPreset = { family: string; direction: Direction; duration: number };
-
-function isEasingPreset(d: unknown): d is EasingPreset {
-  return (
-    isRecord(d) &&
-    FAMILIES.some((f) => f.key === d.family) &&
-    DIRECTIONS.some((x) => x === d.direction) &&
-    isFiniteNumber(d.duration)
-  );
-}
 
 const SAMPLES = 120;
 // 오버슈트(back, elastic)가 잘리지 않도록 viewBox 위아래에 여유를 둔다

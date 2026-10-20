@@ -5,7 +5,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { hexToRgba } from "@/lib/color";
 import { prefersReducedMotion } from "@/lib/motion";
-import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
+import { isShadowPreset, type ShadowMode, type ShadowPreset } from "@/lib/presetValidators";
+import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
@@ -14,54 +15,12 @@ import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
 
-type Mode = "shadow" | "glass";
+type Mode = ShadowMode;
 
 const MODES: { value: Mode; label: string }[] = [
   { value: "shadow", label: "그림자" },
   { value: "glass", label: "글래스모피즘" },
 ];
-
-type ShadowPreset = {
-  mode: Mode;
-  x: number;
-  y: number;
-  blur: number;
-  spread: number;
-  shadowColor: string;
-  shadowAlpha: number;
-  inset: boolean;
-  glassBlur: number;
-  glassAlpha: number;
-  borderAlpha: number;
-  saturate: number;
-  tint: string;
-};
-
-const HEX = /^#[0-9a-f]{6}$/i;
-const NUMBER_KEYS = [
-  "x",
-  "y",
-  "blur",
-  "spread",
-  "shadowAlpha",
-  "glassBlur",
-  "glassAlpha",
-  "borderAlpha",
-  "saturate",
-] as const;
-
-function isShadowPreset(d: unknown): d is ShadowPreset {
-  return (
-    isRecord(d) &&
-    MODES.some((m) => m.value === d.mode) &&
-    NUMBER_KEYS.every((k) => isFiniteNumber(d[k])) &&
-    typeof d.inset === "boolean" &&
-    typeof d.shadowColor === "string" &&
-    HEX.test(d.shadowColor) &&
-    typeof d.tint === "string" &&
-    HEX.test(d.tint)
-  );
-}
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 

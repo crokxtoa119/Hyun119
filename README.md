@@ -56,7 +56,8 @@
 - **홈 `/`**: GSAP 인트로, 스크롤하면 히어로가 위로 밀리며 흐려지는 효과, 화면 중앙에 온 실험 항목 강조, 마우스에서만 쓰이는 자석 버튼. "움직임 줄이기" 설정이면 모두 꺼집니다.
 - **실험 목록 `/experiments`**: 색, 모양·레이아웃, 글자, 모션으로 묶은 도구 목록.
 - **실험 기록 `/log`, `/log/[slug]`**: 도구마다 무엇을 배웠는지 적은 기록과 이전/다음 이동.
-- **설정 모달**: 헤더의 "설정"에서 테마(Auto, Light, Dark), 페이지 전환 효과 켜기/끄기, 저장된 프리셋 삭제. 테마는 저장되고 첫 화면이 깜빡이지 않도록 렌더링 전에 적용되며, 바꿀 때 누른 버튼에서 원이 퍼집니다.
+- **설정 모달**: 헤더의 "설정"에서 테마(Auto, Light, Dark), 페이지 전환 효과 켜기/끄기, 저장된 프리셋 삭제, 프리셋 백업. 테마는 저장되고 첫 화면이 깜빡이지 않도록 렌더링 전에 적용되며, 바꿀 때 누른 버튼에서 원이 퍼집니다.
+- **프리셋 백업**: 설정 모달에서 모든 도구의 프리셋을 JSON 파일 하나로 내려받고(`sketchcraft-presets-날짜.json`), 그 파일로 복원합니다. 가져올 때 "합치기"(기존 유지, 같은 이름과 내용은 건너뜀) 또는 "덮어쓰기"(파일에 들어 있는 도구만 파일 내용으로 교체, 확인 창을 거침)를 고릅니다. 파일은 브라우저 안에서만 처리하고 서버로 보내지 않습니다.
 - **페이지 전환**: 링크를 누르면 GSAP 커튼이 화면을 덮고 새 페이지에서 걷힙니다. 시스템의 "움직임 줄이기" 설정이면 전환 없이 이동합니다.
 - **검색 노출(SEO)**: 페이지별 제목과 설명, `sitemap.xml`, `robots.txt`, 공유 미리보기 이미지(Open Graph). 사이트 주소는 환경 변수 `NEXT_PUBLIC_SITE_URL`(기본 `https://hyun119.vercel.app`)로 바꿉니다.
 - **접근성**: 본문으로 건너뛰기 링크, 모든 입력의 라벨, 키보드 포커스 표시, 4.5:1 이상의 글자 대비, 24px 이상의 조작 영역을 지향합니다. Lighthouse 접근성 100점으로 측정했습니다(홈, Contrast, Radius, 새 도구 7개와 `/experiments`).
@@ -103,6 +104,8 @@ npm run dev
 | `experiments.test.ts` | 실험 목록의 슬러그·경로 규칙, 분류와 묶기, 이전/다음 이동 |
 | `shareLink.test.tsx` | 공유 링크 인코딩 왕복(한글, 이모지), 깨진·변조·과대 입력 거부 |
 | `usePresets.test.tsx` | 저장·삭제·최대 12개, 손상된 저장 데이터와 `localStorage` 차단 처리 |
+| `presetBackup.test.ts` | 백업 파일 만들기와 읽기 왕복, 큰 파일·깨진 JSON·다른 앱 파일·다른 버전 거부, 알 수 없는 도구와 형식이 틀린 항목 건너뛰기, 이름 20자 제한, 도구당 12개 한도, 합치기·덮어쓰기 규칙, 저장소 연동과 차단 처리 |
+| `presetRegistry.test.ts` | 프리셋 도구 목록이 실험 목록과 일치하는지, 저장 키 규칙, 컴포넌트가 실제로 쓰는 `usePresets` 키와 일치하는지(소스를 읽어 비교) |
 | `motion.test.tsx` · `settings.test.tsx` | "움직임 줄이기" 설정, 테마와 전환 효과 설정, 프리셋 전체 삭제 |
 | `app/seo.test.ts` | 사이트맵 주소(모두 절대 주소, 중복 없음), `robots` |
 | `app/log/log.test.tsx` · `app/experiments/experiments.test.tsx` · `components/home.test.tsx` | 기록·목록·홈이 공용 데이터를 순서대로 보여주는지, 링크와 접근성 속성 |
@@ -140,6 +143,7 @@ src/
 │  ├─ HeroIntro.tsx · HomeSections.tsx              홈 화면 (GSAP 인트로, ScrollTrigger)
 │  ├─ PageTransition.tsx     커튼 전환 Provider와 TransitionLink
 │  ├─ SettingsDialog.tsx     설정 모달 (테마, 전환 효과, 프리셋 삭제)
+│  ├─ PresetBackup.tsx       프리셋 내보내기·가져오기 영역
 │  └─ ui/                    공통 부품: Chip, Slider, CodeBlock, PresetBar, Share
 └─ lib/
    ├─ experiments.ts         실험 목록과 분류 (홈, 목록, 기록, 사이트맵의 원본)
@@ -149,7 +153,10 @@ src/
    │                         도구별 값 보정, 검증, CSS/코드 생성 (순수 함수)
    ├─ fonts.ts               next/font 설정 (한글 폰트는 preload 끔)
    ├─ useCopy.ts             클립보드 복사 훅
-   ├─ usePresets.ts          localStorage 프리셋 훅 (형식 검증 포함)
+   ├─ usePresets.ts          localStorage 프리셋 훅 (형식 검증 포함), 훅 밖 읽기·쓰기 함수
+   ├─ presetValidators.ts    도구별 프리셋 타입 가드 (화면 코드와 분리한 순수 모듈)
+   ├─ presetRegistry.ts      프리셋을 저장하는 도구 목록 (설정 모달과 백업이 공유)
+   ├─ presetBackup.ts        프리셋 백업 파일 만들기, 검증, 합치기·덮어쓰기
    ├─ shareLink.ts           공유 링크 인코딩/디코딩 훅
    ├─ theme.ts · settings.ts 테마와 전환 효과 설정 저장
    ├─ motion.ts              "움직임 줄이기" 설정 확인
@@ -161,7 +168,7 @@ src/
 1. `src/lib/<이름>.ts`에 상태 타입, 기본값, 범위 보정(`clamp`), CSS 생성, 타입 가드(`is...State`)를 만들고 옆에 테스트를 둡니다.
 2. `src/components/<이름>.tsx`(클라이언트 컴포넌트)와 `src/app/<경로>/page.tsx`(메타데이터)를 만듭니다. `usePresets`, `ShareButton`, `SharedNotice`, `PresetBar`, `CodeBlock`을 그대로 씁니다.
 3. `src/lib/experiments.ts`의 `EXPERIMENTS`에 항목(슬러그, 분류, 제목, 요약, 배운 점, 기술)을 추가합니다. 홈, 목록, 기록, 사이트맵에 자동으로 나타납니다. 슬러그는 `/경로`와 같아야 합니다.
-4. `SettingsDialog.tsx`의 `PRESET_PAGES`에 프리셋 저장 키를 추가합니다.
+4. `src/lib/presetRegistry.ts`의 `PRESET_TOOLS`에 슬러그, 표시 이름, 타입 가드를 추가합니다. 저장 키는 `sc-<슬러그>-presets`로 정해지고, 설정 모달의 개수 표시와 삭제, 프리셋 백업이 모두 이 목록을 씁니다. 빠뜨리거나 컴포넌트의 키와 다르면 `presetRegistry.test.ts`가 실패합니다.
 
 ## 구현 메모
 
@@ -174,7 +181,7 @@ src/
 
 ## 알려진 사항
 
-- 프리셋은 브라우저별로 저장되며 기기 간에 동기화되지 않습니다. 다른 기기와 나눌 때는 공유 링크를 쓰세요.
+- 프리셋은 브라우저별로 저장되며 기기 간에 자동으로 동기화되지 않습니다. 옮길 때는 설정 모달의 프리셋 백업을, 하나만 나눌 때는 공유 링크를 쓰세요.
 - 클립보드 복사는 HTTPS(또는 `localhost`)에서만 동작합니다.
 - Text Effects의 그라데이션 글자와 줄 수 제한은 `-webkit-` 접두사가 붙은 속성을 함께 씁니다. 복사한 CSS에도 그대로 들어 있습니다.
 - 개발 서버를 켜 둔 채 `npm run build`를 돌리면 개발 서버가 오래된 CSS를 내보내는 일이 있었습니다. 이상하면 개발 서버를 멈추고 `.next` 폴더를 지운 뒤 다시 시작하세요.

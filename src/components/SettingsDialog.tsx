@@ -2,28 +2,11 @@
 
 import { useRef } from "react";
 import gsap from "gsap";
+import PresetBackup from "@/components/PresetBackup";
+import { PRESET_TOOLS } from "@/lib/presetRegistry";
 import { clearPresets, usePresetCount } from "@/lib/usePresets";
 import { setTheme, THEMES, useTheme } from "@/lib/theme";
 import { setTransitionsEnabled, useTransitionsEnabled } from "@/lib/settings";
-
-const PRESET_PAGES = [
-  { key: "sc-palette-presets", label: "Palette" },
-  { key: "sc-gradient-presets", label: "Gradient" },
-  { key: "sc-easing-presets", label: "Easing" },
-  { key: "sc-typography-presets", label: "Typography" },
-  { key: "sc-shadow-presets", label: "Shadow" },
-  { key: "sc-timeline-presets", label: "Timeline" },
-  { key: "sc-radius-presets", label: "Radius" },
-  { key: "sc-contrast-presets", label: "Contrast" },
-  { key: "sc-flexbox-presets", label: "Flexbox" },
-  { key: "sc-grid-presets", label: "Grid" },
-  { key: "sc-filter-presets", label: "Filter" },
-  { key: "sc-transform-presets", label: "Transform" },
-  { key: "sc-text-effects-presets", label: "Text Effects" },
-  { key: "sc-blend-presets", label: "Blend Mode" },
-  { key: "sc-scroll-snap-presets", label: "Scroll Snap" },
-  { key: "sc-keyframes-presets", label: "Keyframes" },
-];
 
 function PresetRow({ storageKey, label }: { storageKey: string; label: string }) {
   const count = usePresetCount(storageKey);
@@ -176,11 +159,13 @@ export default function SettingsDialog() {
               이 브라우저에 저장된 프리셋입니다. 삭제하면 되돌릴 수 없습니다.
             </p>
             <ul className="mt-2 divide-y divide-foreground/10">
-              {PRESET_PAGES.map(({ key, label }) => (
+              {PRESET_TOOLS.map(({ key, label }) => (
                 <PresetRow key={key} storageKey={key} label={label} />
               ))}
             </ul>
           </section>
+
+          <PresetBackup />
         </div>
       </dialog>
     </>

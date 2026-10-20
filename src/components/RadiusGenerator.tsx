@@ -4,27 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
 import {
   DEFAULT_RADIUS,
-  RADIUS_KEYS,
   clampRadius,
   linkVertical,
   radiusToCss,
   randomBlob,
   type Radius,
 } from "@/lib/radius";
-import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
+import { isRadiusPreset, type RadiusPreset } from "@/lib/presetValidators";
+import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
 import { ShareButton, SharedNotice } from "@/components/ui/Share";
 import Slider from "@/components/ui/Slider";
-
-type RadiusPreset = Radius & { linked: boolean };
-
-function isRadiusPreset(d: unknown): d is RadiusPreset {
-  return (
-    isRecord(d) && typeof d.linked === "boolean" && RADIUS_KEYS.every((k) => isFiniteNumber(d[k]))
-  );
-}
 
 const CORNERS: { key: "tl" | "tr" | "br" | "bl"; label: string }[] = [
   { key: "tl", label: "왼쪽 위" },

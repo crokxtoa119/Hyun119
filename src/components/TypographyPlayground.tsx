@@ -4,7 +4,8 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { prefersReducedMotion } from "@/lib/motion";
-import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
+import { isTypographyPreset, type TypographyAlign, type TypographyPreset } from "@/lib/presetValidators";
+import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
@@ -83,7 +84,7 @@ const FONTS: FontOption[] = [
   },
 ];
 
-type Align = "left" | "center" | "right";
+type Align = TypographyAlign;
 const ALIGNS: { value: Align; label: string }[] = [
   { value: "left", label: "왼쪽" },
   { value: "center", label: "가운데" },
@@ -93,29 +94,6 @@ const ALIGNS: { value: Align; label: string }[] = [
 const SAMPLE = "The quick brown fox jumps over the lazy dog.\n다람쥐 헌 쳇바퀴에 타고파.";
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
-
-type TypographyPreset = {
-  fontKey: string;
-  text: string;
-  size: number;
-  weight: number;
-  tracking: number;
-  leading: number;
-  align: Align;
-};
-
-function isTypographyPreset(d: unknown): d is TypographyPreset {
-  return (
-    isRecord(d) &&
-    FONTS.some((f) => f.key === d.fontKey) &&
-    typeof d.text === "string" &&
-    isFiniteNumber(d.size) &&
-    isFiniteNumber(d.weight) &&
-    isFiniteNumber(d.tracking) &&
-    isFiniteNumber(d.leading) &&
-    ALIGNS.some((a) => a.value === d.align)
-  );
-}
 
 export default function TypographyPlayground() {
   const root = useRef<HTMLDivElement>(null);

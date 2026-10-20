@@ -14,7 +14,8 @@ import {
 } from "@/lib/color";
 import { prefersReducedMotion } from "@/lib/motion";
 import { useCopy } from "@/lib/useCopy";
-import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
+import { isPalettePreset, type PalettePreset } from "@/lib/presetValidators";
+import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
@@ -22,18 +23,6 @@ import { ShareButton, SharedNotice } from "@/components/ui/Share";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
-
-type PalettePreset = HSL & { harmony: Harmony };
-
-function isPalettePreset(d: unknown): d is PalettePreset {
-  return (
-    isRecord(d) &&
-    isFiniteNumber(d.h) &&
-    isFiniteNumber(d.s) &&
-    isFiniteNumber(d.l) &&
-    HARMONIES.some((h) => h.value === d.harmony)
-  );
-}
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 

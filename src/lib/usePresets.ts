@@ -89,6 +89,22 @@ export function usePresetCount(key: string): number {
   );
 }
 
+/** 훅 밖에서 저장된 프리셋을 읽는다(내보내기용). 형식이 틀린 항목은 걸러진다. */
+export function readPresets(key: string, validate: (d: unknown) => boolean): Preset<unknown>[] {
+  return snapshot(key, validate);
+}
+
+/** 훅 밖에서 프리셋 목록을 통째로 저장한다(가져오기용). 저장에 실패하면 false. */
+export function writePresets(key: string, next: Preset<unknown>[]): boolean {
+  try {
+    localStorage.setItem(key, JSON.stringify(next.slice(0, MAX_PRESETS)));
+  } catch {
+    return false;
+  }
+  listeners.forEach((l) => l());
+  return true;
+}
+
 /**
  * localStorage에 프리셋 목록을 저장하는 훅.
  * validate는 저장된 값이 손상됐거나 옛 형식일 때 걸러내는 타입 가드다.

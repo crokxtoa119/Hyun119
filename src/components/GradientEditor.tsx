@@ -5,7 +5,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { readableTextColor } from "@/lib/color";
 import { prefersReducedMotion } from "@/lib/motion";
-import { isFiniteNumber, isRecord, usePresets } from "@/lib/usePresets";
+import { isGradientPreset, type GradientKind, type GradientPreset } from "@/lib/presetValidators";
+import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
 import CodeBlock from "@/components/ui/CodeBlock";
 import PresetBar from "@/components/ui/PresetBar";
@@ -14,7 +15,7 @@ import Slider, { RangeInput } from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
 
-type Kind = "linear" | "radial" | "conic";
+type Kind = GradientKind;
 type Stop = { id: number; color: string; pos: number };
 
 const KINDS: { value: Kind; label: string }[] = [
@@ -22,26 +23,6 @@ const KINDS: { value: Kind; label: string }[] = [
   { value: "radial", label: "원형" },
   { value: "conic", label: "원뿔" },
 ];
-
-type GradientPreset = { kind: Kind; angle: number; stops: { color: string; pos: number }[] };
-
-function isGradientPreset(d: unknown): d is GradientPreset {
-  return (
-    isRecord(d) &&
-    KINDS.some((k) => k.value === d.kind) &&
-    isFiniteNumber(d.angle) &&
-    Array.isArray(d.stops) &&
-    d.stops.length >= 2 &&
-    d.stops.length <= 5 &&
-    d.stops.every(
-      (s) =>
-        isRecord(s) &&
-        typeof s.color === "string" &&
-        /^#[0-9a-f]{6}$/i.test(s.color) &&
-        isFiniteNumber(s.pos),
-    )
-  );
-}
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
