@@ -15,6 +15,7 @@ const PRESET_PAGES = [
   { key: "sc-timeline-presets", label: "Timeline" },
   { key: "sc-radius-presets", label: "Radius" },
   { key: "sc-contrast-presets", label: "Contrast" },
+  { key: "sc-flexbox-presets", label: "Flexbox" },
 ];
 
 function PresetRow({ storageKey, label }: { storageKey: string; label: string }) {

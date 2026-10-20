@@ -96,6 +96,17 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["WCAG", "lib/contrast.ts"],
   },
+  {
+    slug: "flexbox",
+    title: "Flexbox",
+    href: "/flexbox",
+    summary: "방향, 줄바꿈, 정렬, 간격을 바꿔 보며 flexbox 동작을 익힙니다.",
+    learned: [
+      "justify-content는 주축, align-items는 교차축을 정렬하므로 flex-direction이 바뀌면 두 속성의 화면상 방향도 바뀐다.",
+      "align-items: stretch는 아이템에 교차축 크기가 지정돼 있지 않을 때만 늘어난다.",
+    ],
+    tech: ["flexbox", "lib/flex.ts"],
+  },
 ];
 
 export function getExperiment(slug: string): Experiment | undefined {
