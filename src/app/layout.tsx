@@ -28,16 +28,7 @@ export const metadata: Metadata = {
 const NAV = [
   { href: "/", label: "Home" },
   { href: "/#about", label: "About" },
-  { href: "/palette", label: "Palette" },
-  { href: "/gradient", label: "Gradient" },
-  { href: "/easing", label: "Easing" },
-  { href: "/typography", label: "Typography" },
-  { href: "/shadow", label: "Shadow" },
-  { href: "/timeline", label: "Timeline" },
-  { href: "/radius", label: "Radius" },
-  { href: "/contrast", label: "Contrast" },
-  { href: "/flexbox", label: "Flexbox" },
-  { href: "/keyframes", label: "Keyframes" },
+  { href: "/experiments", label: "Experiments" },
   { href: "/log", label: "Log" },
 ];
 

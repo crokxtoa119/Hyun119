@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { EXPERIMENTS, getExperiment, getNeighbors } from "./experiments";
+import {
+  CATEGORIES,
+  EXPERIMENTS,
+  categoryLabel,
+  getExperiment,
+  getNeighbors,
+  groupExperiments,
+} from "./experiments";
 
 describe("EXPERIMENTS", () => {
   it("has unique slugs and hrefs", () => {
@@ -42,5 +49,32 @@ describe("getNeighbors", () => {
 
   it("returns both nulls for an unknown slug", () => {
     expect(getNeighbors("nope")).toEqual({ prev: null, next: null });
+  });
+});
+
+describe("categories", () => {
+  it("모든 실험이 정의된 분류에 속한다", () => {
+    const ids = CATEGORIES.map((c) => c.id) as string[];
+    for (const e of EXPERIMENTS) expect(ids).toContain(e.category);
+  });
+
+  it("groupExperiments는 모든 실험을 한 번씩만 담고 순서를 유지한다", () => {
+    const groups = groupExperiments();
+    const flat = groups.flatMap((g) => g.items.map((e) => e.slug));
+    expect([...flat].sort()).toEqual(EXPERIMENTS.map((e) => e.slug).sort());
+    for (const g of groups) {
+      const order = g.items.map((e) => EXPERIMENTS.indexOf(e));
+      expect(order).toEqual([...order].sort((a, b) => a - b));
+    }
+  });
+
+  it("비어 있는 분류는 빼고 분류 순서를 따른다", () => {
+    const ids = groupExperiments().map((g) => g.id);
+    expect(ids).toEqual(CATEGORIES.map((c) => c.id).filter((id) => ids.includes(id)));
+    groupExperiments().forEach((g) => expect(g.items.length).toBeGreaterThan(0));
+  });
+
+  it("categoryLabel은 한글 이름을 돌려준다", () => {
+    expect(categoryLabel("color")).toBe("색");
   });
 });

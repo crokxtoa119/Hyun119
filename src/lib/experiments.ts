@@ -1,5 +1,15 @@
+export const CATEGORIES = [
+  { id: "color", label: "색" },
+  { id: "shape", label: "모양·레이아웃" },
+  { id: "type", label: "글자" },
+  { id: "motion", label: "모션" },
+] as const;
+
+export type CategoryId = (typeof CATEGORIES)[number]["id"];
+
 export type Experiment = {
   slug: string;
+  category: CategoryId;
   title: string;
   href: string;
   summary: string;
@@ -10,6 +20,7 @@ export type Experiment = {
 export const EXPERIMENTS: Experiment[] = [
   {
     slug: "palette",
+    category: "color",
     title: "Color Palette",
     href: "/palette",
     summary: "HSL 기반 배색 규칙으로 5색 팔레트를 만듭니다.",
@@ -21,6 +32,7 @@ export const EXPERIMENTS: Experiment[] = [
   },
   {
     slug: "gradient",
+    category: "color",
     title: "Gradient Editor",
     href: "/gradient",
     summary: "정지점과 각도를 조절해 CSS 코드를 얻습니다.",
@@ -32,6 +44,7 @@ export const EXPERIMENTS: Experiment[] = [
   },
   {
     slug: "easing",
+    category: "motion",
     title: "Easing Visualizer",
     href: "/easing",
     summary: "GSAP 이징 곡선과 실제 움직임을 비교합니다.",
@@ -43,6 +56,7 @@ export const EXPERIMENTS: Experiment[] = [
   },
   {
     slug: "typography",
+    category: "type",
     title: "Typography Playground",
     href: "/typography",
     summary: "폰트, 크기, 자간, 행간을 조절하고 CSS를 복사합니다.",
@@ -54,6 +68,7 @@ export const EXPERIMENTS: Experiment[] = [
   },
   {
     slug: "shadow",
+    category: "shape",
     title: "Shadow & Glass",
     href: "/shadow",
     summary: "box-shadow와 글래스모피즘 값을 조절하고 CSS를 복사합니다.",
@@ -65,6 +80,7 @@ export const EXPERIMENTS: Experiment[] = [
   },
   {
     slug: "timeline",
+    category: "motion",
     title: "Timeline Editor",
     href: "/timeline",
     summary: "트윈 3개의 시작과 길이를 조절해 GSAP 타임라인 코드를 얻습니다.",
@@ -76,6 +92,7 @@ export const EXPERIMENTS: Experiment[] = [
   },
   {
     slug: "radius",
+    category: "shape",
     title: "Border Radius",
     href: "/radius",
     summary: "모서리 여덟 값을 조절해 덩어리 모양을 만들고 CSS를 복사합니다.",
@@ -87,6 +104,7 @@ export const EXPERIMENTS: Experiment[] = [
   },
   {
     slug: "contrast",
+    category: "color",
     title: "Contrast Checker",
     href: "/contrast",
     summary: "글자색과 배경색의 명암비를 계산하고 WCAG 통과 여부를 확인합니다.",
@@ -98,6 +116,7 @@ export const EXPERIMENTS: Experiment[] = [
   },
   {
     slug: "flexbox",
+    category: "shape",
     title: "Flexbox",
     href: "/flexbox",
     summary: "방향, 줄바꿈, 정렬, 간격을 바꿔 보며 flexbox 동작을 익힙니다.",
@@ -109,6 +128,7 @@ export const EXPERIMENTS: Experiment[] = [
   },
   {
     slug: "keyframes",
+    category: "motion",
     title: "Keyframes",
     href: "/keyframes",
     summary: "세 개의 키프레임으로 CSS 애니메이션을 만들고 코드를 복사합니다.",
@@ -119,6 +139,19 @@ export const EXPERIMENTS: Experiment[] = [
     tech: ["@keyframes", "lib/keyframes.ts"],
   },
 ];
+
+export function categoryLabel(id: CategoryId): string {
+  return CATEGORIES.find((c) => c.id === id)?.label ?? id;
+}
+
+/** 분류 순서대로 묶는다. 같은 분류 안에서는 EXPERIMENTS 순서를 유지하고, 비어 있는 분류는 뺀다. */
+export function groupExperiments(): { id: CategoryId; label: string; items: Experiment[] }[] {
+  return CATEGORIES.map((c) => ({
+    id: c.id,
+    label: c.label,
+    items: EXPERIMENTS.filter((e) => e.category === c.id),
+  })).filter((g) => g.items.length > 0);
+}
 
 export function getExperiment(slug: string): Experiment | undefined {
   return EXPERIMENTS.find((e) => e.slug === slug);

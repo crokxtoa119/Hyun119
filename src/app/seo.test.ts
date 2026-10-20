@@ -10,11 +10,12 @@ describe("sitemap", () => {
   it("홈, 실험 페이지, 기록 목록과 상세를 모두 담는다", () => {
     expect(urls).toContain(SITE_URL);
     expect(urls).toContain(`${SITE_URL}/log`);
+    expect(urls).toContain(`${SITE_URL}/experiments`);
     for (const e of EXPERIMENTS) {
       expect(urls).toContain(`${SITE_URL}${e.href}`);
       expect(urls).toContain(`${SITE_URL}/log/${e.slug}`);
     }
-    expect(urls).toHaveLength(2 + EXPERIMENTS.length * 2);
+    expect(urls).toHaveLength(3 + EXPERIMENTS.length * 2);
   });
 
   it("중복이 없고 모두 절대 주소다", () => {

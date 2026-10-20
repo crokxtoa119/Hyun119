@@ -5,6 +5,7 @@ import { SITE_URL } from "@/lib/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths = [
     "/",
+    "/experiments",
     ...EXPERIMENTS.map((e) => e.href),
     "/log",
     ...EXPERIMENTS.map((e) => `/log/${e.slug}`),

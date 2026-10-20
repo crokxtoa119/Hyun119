@@ -2,14 +2,12 @@
 
 import { useRef } from "react";
 import { TransitionLink } from "@/components/PageTransition";
-import { EXPERIMENTS } from "@/lib/experiments";
+import { EXPERIMENTS, categoryLabel } from "@/lib/experiments";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-const experiments: { title: string; href?: string }[] = EXPERIMENTS;
 
 export default function HeroIntro() {
   const root = useRef<HTMLDivElement>(null);
@@ -56,28 +54,23 @@ export default function HeroIntro() {
       </p>
 
       <div className="mt-16 grid gap-4 sm:grid-cols-2">
-        {experiments.map(({ title, href }) => {
+        {EXPERIMENTS.map(({ title, href, category }) => {
           const card = (
             <>
               <p className="font-mono text-xs text-foreground/60">
-                {href ? "Open" : "Coming soon"}
+                {categoryLabel(category)}
               </p>
               <p className="mt-2 font-semibold">{title}</p>
             </>
           );
-          const cls = "hero-card rounded-xl border border-foreground/10 p-5";
-          return href ? (
+          return (
             <TransitionLink
               key={title}
               href={href}
-              className={`${cls} transition-colors hover:border-foreground/40`}
+              className="hero-card rounded-xl border border-foreground/10 p-5 transition-colors hover:border-foreground/40"
             >
               {card}
             </TransitionLink>
-          ) : (
-            <div key={title} className={cls}>
-              {card}
-            </div>
           );
         })}
       </div>
