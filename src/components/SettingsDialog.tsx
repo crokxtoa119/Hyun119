@@ -17,6 +17,7 @@ const PRESET_PAGES = [
   { key: "sc-contrast-presets", label: "Contrast" },
   { key: "sc-flexbox-presets", label: "Flexbox" },
   { key: "sc-grid-presets", label: "Grid" },
+  { key: "sc-filter-presets", label: "Filter" },
   { key: "sc-keyframes-presets", label: "Keyframes" },
 ];
 

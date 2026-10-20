@@ -139,6 +139,18 @@ export const EXPERIMENTS: Experiment[] = [
     tech: ["CSS Grid", "lib/grid.ts"],
   },
   {
+    slug: "filter",
+    category: "color",
+    title: "Filter",
+    href: "/filter",
+    summary: "흐림, 밝기, 대비, 색조 같은 CSS filter 값을 조절합니다.",
+    learned: [
+      "filter 함수는 쓴 순서대로 차례로 적용되므로 순서를 바꾸면 결과도 달라질 수 있다.",
+      "효과가 없는 값(brightness 100% 등)은 CSS에서 빼면 코드가 짧아지고, 모두 빼면 filter: none이다.",
+    ],
+    tech: ["CSS filter", "lib/filter.ts"],
+  },
+  {
     slug: "keyframes",
     category: "motion",
     title: "Keyframes",
