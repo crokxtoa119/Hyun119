@@ -4,6 +4,8 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { TransitionLink } from "@/components/PageTransition";
+import { EXPERIMENTS } from "@/lib/experiments";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -16,14 +18,6 @@ const STACK = [
   { name: "Vercel", note: "GitHub 푸시 자동 배포" },
 ];
 
-const LOG = [
-  { title: "Color Palette", text: "HSL 기반 배색 규칙으로 5색 팔레트를 만듭니다." },
-  { title: "Gradient Editor", text: "정지점과 각도를 조절해 CSS 코드를 얻습니다." },
-  { title: "Easing Visualizer", text: "GSAP 이징 곡선과 실제 움직임을 비교합니다." },
-  { title: "Typography Playground", text: "폰트, 크기, 자간, 행간을 조절하고 CSS를 복사합니다." },
-  { title: "Shadow & Glass", text: "box-shadow와 글래스모피즘 값을 조절하고 CSS를 복사합니다." },
-  { title: "Timeline Editor", text: "트윈 3개의 시작과 길이를 조절해 GSAP 타임라인 코드를 얻습니다." },
-];
 
 export default function HomeSections() {
   const root = useRef<HTMLDivElement>(null);
@@ -132,18 +126,24 @@ export default function HomeSections() {
           Experiments
         </p>
         <ol className="mt-6 divide-y divide-foreground/10 border-y border-foreground/10">
-          {LOG.map((item, i) => (
-            <li key={item.title} className="reveal py-6">
+          {EXPERIMENTS.map((item, i) => (
+            <li key={item.slug} className="reveal py-6">
               <div className="log-body flex gap-6">
                 <span className="font-mono text-sm text-foreground/60">0{i + 1}</span>
                 <div>
                   <h3 className="font-semibold">{item.title}</h3>
-                  <p className="mt-1 text-sm text-foreground/70">{item.text}</p>
+                  <p className="mt-1 text-sm text-foreground/70">{item.summary}</p>
                 </div>
               </div>
             </li>
           ))}
         </ol>
+        <TransitionLink
+          href="/log"
+          className="reveal mt-6 inline-block text-sm font-medium underline-offset-4 hover:underline"
+        >
+          배운 점 기록 보기 →
+        </TransitionLink>
       </section>
 
       <section id="stack" className="mx-auto max-w-4xl px-6 pb-24">

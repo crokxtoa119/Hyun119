@@ -2,20 +2,14 @@
 
 import { useRef } from "react";
 import { TransitionLink } from "@/components/PageTransition";
+import { EXPERIMENTS } from "@/lib/experiments";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const experiments: { title: string; href?: string }[] = [
-  { title: "Color Palette", href: "/palette" },
-  { title: "Gradient Editor", href: "/gradient" },
-  { title: "Easing Visualizer", href: "/easing" },
-  { title: "Typography Playground", href: "/typography" },
-  { title: "Shadow & Glass", href: "/shadow" },
-  { title: "Timeline Editor", href: "/timeline" },
-];
+const experiments: { title: string; href?: string }[] = EXPERIMENTS;
 
 export default function HeroIntro() {
   const root = useRef<HTMLDivElement>(null);
