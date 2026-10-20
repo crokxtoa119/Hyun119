@@ -74,6 +74,17 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["GSAP timeline", "lib/timeline.ts"],
   },
+  {
+    slug: "radius",
+    title: "Border Radius",
+    href: "/radius",
+    summary: "모서리 여덟 값을 조절해 덩어리 모양을 만들고 CSS를 복사합니다.",
+    learned: [
+      "border-radius는 `가로 / 세로` 순서로 모서리마다 두 값을 줄 수 있어 타원형 모서리가 된다.",
+      "마주 보는 변의 반지름 합이 100%를 넘으면 브라우저가 비율대로 줄이므로, 덩어리 모양은 합을 100%에 맞춘다.",
+    ],
+    tech: ["border-radius", "lib/radius.ts"],
+  },
 ];
 
 export function getExperiment(slug: string): Experiment | undefined {
