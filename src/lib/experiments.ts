@@ -151,6 +151,18 @@ export const EXPERIMENTS: Experiment[] = [
     tech: ["CSS filter", "lib/filter.ts"],
   },
   {
+    slug: "transform",
+    category: "motion",
+    title: "Transform",
+    href: "/transform",
+    summary: "이동, 회전, 크기, 기울임, 3D 원근을 조절하고 CSS를 복사합니다.",
+    learned: [
+      "transform 함수는 왼쪽에서 오른쪽으로 차례로 적용되므로 rotate와 translate의 순서를 바꾸면 도착 위치가 달라진다.",
+      "rotateX·rotateY의 입체감은 perspective가 있어야 보이고, 값이 작을수록 원근감이 강하다.",
+    ],
+    tech: ["CSS transform", "lib/transform.ts"],
+  },
+  {
     slug: "keyframes",
     category: "motion",
     title: "Keyframes",
