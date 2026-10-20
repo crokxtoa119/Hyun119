@@ -127,6 +127,18 @@ export const EXPERIMENTS: Experiment[] = [
     tech: ["flexbox", "lib/flex.ts"],
   },
   {
+    slug: "grid",
+    category: "shape",
+    title: "Grid",
+    href: "/grid",
+    summary: "열 개수, 간격, 정렬을 바꿔 보며 CSS Grid 동작을 익힙니다.",
+    learned: [
+      "repeat(auto-fit, minmax(96px, 1fr))은 화면 너비에 맞춰 열 개수가 저절로 정해져 미디어 쿼리 없이 반응형 격자를 만든다.",
+      "gap에 값을 두 개 쓰면 행 간격, 열 간격 순서다. justify-items는 칸 안의 가로, align-items는 세로 정렬이다.",
+    ],
+    tech: ["CSS Grid", "lib/grid.ts"],
+  },
+  {
     slug: "keyframes",
     category: "motion",
     title: "Keyframes",
