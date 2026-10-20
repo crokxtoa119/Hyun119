@@ -19,7 +19,7 @@ export default function CodeBlock({ title, code, copyLabel = "복사" }: CodeBlo
         <button
           type="button"
           onClick={() => copy(code)}
-          className="text-xs text-foreground/60 underline hover:text-foreground"
+          className="-my-1.5 px-1 py-1.5 text-xs text-foreground/60 underline hover:text-foreground"
         >
           {copied === code ? "Copied!" : copyLabel}
         </button>
