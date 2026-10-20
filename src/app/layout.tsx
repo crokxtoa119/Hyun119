@@ -55,7 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <PageTransitionProvider>
           <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4 border-b border-foreground/10">
-            <TransitionLink href="/" className="font-mono text-sm font-semibold">
+            <TransitionLink href="/" className="py-1.5 font-mono text-sm font-semibold">
               SketchCraft
             </TransitionLink>
             <nav
@@ -66,7 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 <TransitionLink
                   key={href}
                   href={href}
-                  className="transition-opacity hover:opacity-60 aria-[current=page]:underline aria-[current=page]:underline-offset-4"
+                  className="py-1.5 transition-opacity hover:opacity-60 aria-[current=page]:underline aria-[current=page]:underline-offset-4"
                 >
                   {label}
                 </TransitionLink>

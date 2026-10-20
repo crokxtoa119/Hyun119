@@ -53,24 +53,23 @@ export default function HomeSections() {
           scrollTrigger: { scrub: 0.3, start: 0, end: "max" },
         });
 
-        // 화면 중앙 근처에 온 실험 항목만 또렷하게 보여준다. 스크롤을 되돌리면 다시 흐려진다
-        gsap.utils.toArray<HTMLElement>(".log-body").forEach((body) => {
-          gsap.fromTo(
-            body,
-            { opacity: 0.35, x: 0 },
-            {
-              opacity: 1,
-              x: 8,
-              duration: 0.35,
-              ease: "power2.out",
+        // 화면 중앙 근처에 온 실험 항목에 왼쪽 막대를 세우고 살짝 밀어낸다. 스크롤을 되돌리면 원래대로 돌아온다.
+        // 글자가 흐려지면 대비 기준(4.5:1)을 못 지키므로 불투명도는 건드리지 않는다
+        gsap.utils.toArray<HTMLElement>(".log-item").forEach((item) => {
+          const body = item.querySelector(".log-body");
+          const bar = item.querySelector(".log-bar");
+          gsap
+            .timeline({
+              defaults: { duration: 0.35, ease: "power2.out" },
               scrollTrigger: {
-                trigger: body,
+                trigger: item,
                 start: "top 70%",
                 end: "bottom 40%",
                 toggleActions: "play reverse play reverse",
               },
-            },
-          );
+            })
+            .to(body, { x: 12 }, 0)
+            .to(bar, { scaleY: 1 }, 0);
         });
       });
 
@@ -127,7 +126,11 @@ export default function HomeSections() {
         </p>
         <ol className="mt-6 divide-y divide-foreground/10 border-y border-foreground/10">
           {EXPERIMENTS.map((item, i) => (
-            <li key={item.slug} className="reveal py-6">
+            <li key={item.slug} className="log-item reveal relative py-6">
+              <span
+                aria-hidden
+                className="log-bar absolute inset-y-6 left-0 w-0.5 origin-top scale-y-0 bg-foreground"
+              />
               <div className="log-body flex gap-6">
                 <span className="font-mono text-sm text-foreground/60">0{i + 1}</span>
                 <div>
@@ -140,7 +143,7 @@ export default function HomeSections() {
         </ol>
         <TransitionLink
           href="/log"
-          className="reveal mt-6 inline-block text-sm font-medium underline-offset-4 hover:underline"
+          className="reveal mt-4 inline-block py-2 text-sm font-medium underline-offset-4 hover:underline"
         >
           배운 점 기록 보기 →
         </TransitionLink>
