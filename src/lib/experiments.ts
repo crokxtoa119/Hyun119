@@ -163,6 +163,18 @@ export const EXPERIMENTS: Experiment[] = [
     tech: ["CSS transform", "lib/transform.ts"],
   },
   {
+    slug: "text-effects",
+    category: "type",
+    title: "Text Effects",
+    href: "/text-effects",
+    summary: "글자 그림자, 그라데이션 글자, 줄 수 제한을 만들고 CSS를 복사합니다.",
+    learned: [
+      "그라데이션 글자는 background에 그라데이션을 깔고 background-clip: text와 color: transparent를 함께 써야 한다.",
+      "여러 줄 말줄임은 -webkit-box, -webkit-box-orient: vertical, line-clamp, overflow: hidden이 한 묶음으로 필요하다.",
+    ],
+    tech: ["text-shadow", "background-clip", "lib/textEffect.ts"],
+  },
+  {
     slug: "keyframes",
     category: "motion",
     title: "Keyframes",
