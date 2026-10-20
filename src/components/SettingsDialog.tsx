@@ -20,6 +20,7 @@ const PRESET_PAGES = [
   { key: "sc-filter-presets", label: "Filter" },
   { key: "sc-transform-presets", label: "Transform" },
   { key: "sc-text-effects-presets", label: "Text Effects" },
+  { key: "sc-blend-presets", label: "Blend Mode" },
   { key: "sc-keyframes-presets", label: "Keyframes" },
 ];
 

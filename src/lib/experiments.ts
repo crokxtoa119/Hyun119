@@ -175,6 +175,18 @@ export const EXPERIMENTS: Experiment[] = [
     tech: ["text-shadow", "background-clip", "lib/textEffect.ts"],
   },
   {
+    slug: "blend",
+    category: "color",
+    title: "Blend Mode",
+    href: "/blend",
+    summary: "두 색을 겹쳐 mix-blend-mode 16가지가 어떻게 섞이는지 봅니다.",
+    learned: [
+      "mix-blend-mode는 요소를 자기 뒤의 것과 섞는다. 섞임을 한 영역 안으로 가두려면 부모에 isolation: isolate를 준다.",
+      "multiply는 항상 어두워지고 screen은 항상 밝아지며, overlay는 아래 층의 밝기에 따라 둘을 오간다.",
+    ],
+    tech: ["mix-blend-mode", "lib/blend.ts"],
+  },
+  {
     slug: "keyframes",
     category: "motion",
     title: "Keyframes",
