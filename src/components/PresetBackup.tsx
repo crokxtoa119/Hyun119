@@ -108,7 +108,7 @@ export default function PresetBackup() {
           {MODES.map((m) => (
             <label
               key={m.value}
-              className="cursor-pointer rounded-full border border-foreground/20 px-4 py-1.5 text-sm transition-colors hover:border-foreground/50 has-[:checked]:border-foreground has-[:checked]:bg-foreground has-[:checked]:text-background has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-foreground"
+              className="cursor-pointer rounded-full border border-foreground/20 px-4 py-1.5 text-sm transition-colors hover:border-foreground/50 has-[:checked]:border-accent has-[:checked]:bg-accent has-[:checked]:text-on-accent has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent"
             >
               <input
                 type="radio"

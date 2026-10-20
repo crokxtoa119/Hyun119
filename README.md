@@ -56,7 +56,8 @@
 - **홈 `/`**: GSAP 인트로, 스크롤하면 히어로가 위로 밀리며 흐려지는 효과, 화면 중앙에 온 실험 항목 강조, 마우스에서만 쓰이는 자석 버튼. "움직임 줄이기" 설정이면 모두 꺼집니다.
 - **실험 목록 `/experiments`**: 색, 모양·레이아웃, 글자, 모션으로 묶은 도구 목록.
 - **실험 기록 `/log`, `/log/[slug]`**: 도구마다 무엇을 배웠는지 적은 기록과 이전/다음 이동.
-- **설정 모달**: 헤더의 "설정"에서 테마(Auto, Light, Dark), 페이지 전환 효과 켜기/끄기, 저장된 프리셋 삭제, 프리셋 백업. 테마는 저장되고 첫 화면이 깜빡이지 않도록 렌더링 전에 적용되며, 바꿀 때 누른 버튼에서 원이 퍼집니다.
+- **설정 모달**: 헤더의 "설정"에서 테마(Auto, Light, Dark), 강조 컬러, 페이지 전환 효과 켜기/끄기, 저장된 프리셋 삭제, 프리셋 백업. 테마는 저장되고 첫 화면이 깜빡이지 않도록 렌더링 전에 적용되며, 바꿀 때 누른 버튼에서 원이 퍼집니다.
+- **강조 컬러**: 기본(흑백)과 인디고·청록·초록·주황·분홍·빨강 중에서 고릅니다. 선택한 칩, 슬라이더, 키보드 포커스 링에 쓰이고, 라이트와 다크에서 각각 글자 4.5:1, 배경 3:1 이상이 되도록 정해 둔 색만 있습니다(테스트가 검사). 자유 색상 선택은 대비가 깨질 수 있어 두지 않았습니다. 값은 `accentPalette.ts`와 `globals.css`에 있고, 두 곳이 어긋나면 `accent.test.ts`가 실패합니다.
 - **프리셋 백업**: 설정 모달에서 모든 도구의 프리셋을 JSON 파일 하나로 내려받고(`sketchcraft-presets-날짜.json`), 그 파일로 복원합니다. 가져올 때 "합치기"(기존 유지, 같은 이름과 내용은 건너뜀) 또는 "덮어쓰기"(파일에 들어 있는 도구만 파일 내용으로 교체, 확인 창을 거침)를 고릅니다. 파일은 브라우저 안에서만 처리하고 서버로 보내지 않습니다.
 - **페이지 전환**: 링크를 누르면 GSAP 커튼이 화면을 덮고 새 페이지에서 걷힙니다. 시스템의 "움직임 줄이기" 설정이면 전환 없이 이동합니다.
 - **검색 노출(SEO)**: 페이지별 제목과 설명, `sitemap.xml`, `robots.txt`, 공유 미리보기 이미지(Open Graph). 사이트 주소는 환경 변수 `NEXT_PUBLIC_SITE_URL`(기본 `https://hyun119.vercel.app`)로 바꿉니다.
@@ -107,6 +108,7 @@ npm run dev
 | `presetBackup.test.ts` | 백업 파일 만들기와 읽기 왕복, 큰 파일·깨진 JSON·다른 앱 파일·다른 버전 거부, 알 수 없는 도구와 형식이 틀린 항목 건너뛰기, 이름 20자 제한, 도구당 12개 한도, 합치기·덮어쓰기 규칙, 저장소 연동과 차단 처리 |
 | `presetRegistry.test.ts` | 프리셋 도구 목록이 실험 목록과 일치하는지, 저장 키 규칙, 컴포넌트가 실제로 쓰는 `usePresets` 키와 일치하는지(소스를 읽어 비교) |
 | `motion.test.tsx` · `settings.test.tsx` | "움직임 줄이기" 설정, 테마와 전환 효과 설정, 프리셋 전체 삭제 |
+| `accent.test.ts` | 강조 컬러별 명암비(라이트·다크), CSS와 목록 일치, 저장과 복원 |
 | `app/seo.test.ts` | 사이트맵 주소(모두 절대 주소, 중복 없음), `robots` |
 | `app/log/log.test.tsx` · `app/experiments/experiments.test.tsx` · `components/home.test.tsx` | 기록·목록·홈이 공용 데이터를 순서대로 보여주는지, 링크와 접근성 속성 |
 
@@ -142,7 +144,7 @@ src/
 │  ├─ *Generator/Editor/Visualizer/Playground/Checker.tsx   실험 페이지 본체 (클라이언트 컴포넌트)
 │  ├─ HeroIntro.tsx · HomeSections.tsx              홈 화면 (GSAP 인트로, ScrollTrigger)
 │  ├─ PageTransition.tsx     커튼 전환 Provider와 TransitionLink
-│  ├─ SettingsDialog.tsx     설정 모달 (테마, 전환 효과, 프리셋 삭제)
+│  ├─ SettingsDialog.tsx     설정 모달 (테마, 강조 컬러, 전환 효과, 프리셋 삭제, 백업)
 │  ├─ PresetBackup.tsx       프리셋 내보내기·가져오기 영역
 │  └─ ui/                    공통 부품: Chip, Slider, CodeBlock, PresetBar, Share
 └─ lib/
@@ -159,6 +161,7 @@ src/
    ├─ presetBackup.ts        프리셋 백업 파일 만들기, 검증, 합치기·덮어쓰기
    ├─ shareLink.ts           공유 링크 인코딩/디코딩 훅
    ├─ theme.ts · settings.ts 테마와 전환 효과 설정 저장
+   ├─ accentPalette.ts · accent.ts 강조 컬러 목록(서버·클라이언트 공용)과 저장
    ├─ motion.ts              "움직임 줄이기" 설정 확인
    └─ *.test.ts(x)           단위 테스트 (Vitest 설정: vitest.config.mts)
 ```

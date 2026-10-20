@@ -31,7 +31,7 @@ export function RangeInput({
       aria-label={ariaLabel}
       onChange={(e) => onChange(Number(e.target.value))}
       style={track ? { background: track } : undefined}
-      className="h-2 w-full cursor-pointer appearance-none rounded-full bg-foreground/15 accent-foreground"
+      className="h-2 w-full cursor-pointer appearance-none rounded-full bg-foreground/15 accent-accent"
     />
   );
 }

@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import PresetBackup from "@/components/PresetBackup";
+import { setAccent, useAccent } from "@/lib/accent";
+import { ACCENTS } from "@/lib/accentPalette";
 import { PRESET_TOOLS } from "@/lib/presetRegistry";
 import { clearPresets, usePresetCount } from "@/lib/usePresets";
 import { setTheme, THEMES, useTheme } from "@/lib/theme";
@@ -42,6 +44,7 @@ function PresetRow({ storageKey, label }: { storageKey: string; label: string })
 export default function SettingsDialog() {
   const dialog = useRef<HTMLDialogElement>(null);
   const theme = useTheme();
+  const accent = useAccent();
   const transitions = useTransitionsEnabled();
 
   const open = () => {
@@ -99,7 +102,7 @@ export default function SettingsDialog() {
               {THEMES.map(({ value, label }) => (
                 <label
                   key={value}
-                  className="cursor-pointer rounded-full border border-foreground/20 px-4 py-1.5 font-mono text-xs transition-colors hover:border-foreground/50 has-[:checked]:border-foreground has-[:checked]:bg-foreground has-[:checked]:text-background has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-foreground"
+                  className="cursor-pointer rounded-full border border-foreground/20 px-4 py-1.5 font-mono text-xs transition-colors hover:border-foreground/50 has-[:checked]:border-accent has-[:checked]:bg-accent has-[:checked]:text-on-accent has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent"
                 >
                   <input
                     type="radio"
@@ -119,6 +122,37 @@ export default function SettingsDialog() {
             </div>
             <p className="text-xs text-foreground/60">
               Auto는 기기의 라이트/다크 설정을 따릅니다. 선택은 바로 적용되고 이 브라우저에 저장됩니다.
+            </p>
+          </fieldset>
+
+          <fieldset className="flex flex-col gap-3">
+            <legend className="mb-1 text-sm font-medium">강조 컬러</legend>
+            <div className="flex flex-wrap gap-2">
+              {ACCENTS.map(({ id, label, light }) => (
+                <label
+                  key={id}
+                  className="flex cursor-pointer items-center gap-2 rounded-full border border-foreground/20 px-3 py-1.5 text-xs transition-colors hover:border-foreground/50 has-[:checked]:border-foreground has-[:checked]:bg-foreground/10 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent"
+                >
+                  <input
+                    type="radio"
+                    name="accent"
+                    value={id}
+                    checked={accent === id}
+                    onChange={() => setAccent(id)}
+                    className="sr-only"
+                  />
+                  <span
+                    aria-hidden
+                    className="h-3.5 w-3.5 rounded-full border border-foreground/30"
+                    style={{ background: id === "default" ? "var(--foreground)" : light.accent }}
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-foreground/60">
+              선택한 칩, 슬라이더, 키보드 포커스 링에 쓰는 색입니다. 라이트와 다크에서 모두 글자가 잘
+              읽히도록 정해 둔 색만 고를 수 있습니다.
             </p>
           </fieldset>
 

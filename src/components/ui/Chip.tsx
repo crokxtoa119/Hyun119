@@ -12,7 +12,7 @@ export default function Chip({ active, onClick, children }: ChipProps) {
       aria-pressed={active}
       className={`rounded-full border px-3 py-1 text-sm transition-colors ${
         active
-          ? "border-foreground bg-foreground text-background"
+          ? "border-accent bg-accent text-on-accent"
           : "border-foreground/20 hover:border-foreground/50"
       }`}
     >

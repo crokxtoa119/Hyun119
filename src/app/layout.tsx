@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { PageTransitionProvider, TransitionLink } from "@/components/PageTransition";
 import SettingsDialog from "@/components/SettingsDialog";
+import { ACCENTS } from "@/lib/accentPalette";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -32,8 +33,10 @@ const NAV = [
   { href: "/log", label: "Log" },
 ];
 
-// 저장된 테마를 첫 페인트 전에 적용해 라이트/다크 깜빡임을 막는다
-const THEME_INIT = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}`;
+// 저장된 테마와 강조 컬러를 첫 페인트 전에 적용해 깜빡임을 막는다. 강조 컬러는 ACCENTS에 있는 id만 받는다
+const THEME_INIT = `try{var d=document.documentElement,t=localStorage.getItem("theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);var a=localStorage.getItem("sc-accent");if(${JSON.stringify(
+  ACCENTS.filter((x) => x.id !== "default").map((x) => x.id),
+)}.indexOf(a)>-1)d.setAttribute("data-accent",a)}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -49,7 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </Script>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-lg focus:bg-foreground focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-background"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-on-accent"
         >
           본문으로 건너뛰기
         </a>
