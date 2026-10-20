@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { PageTransitionProvider, TransitionLink } from "@/components/PageTransition";
 import SettingsDialog from "@/components/SettingsDialog";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,8 +17,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SketchCraft",
-  description: "디자인과 인터랙션을 실험하는 학습용 사이트",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  // 제목과 설명은 지정하지 않아야 페이지마다 자기 title/description이 공유 미리보기에 쓰인다
+  openGraph: { type: "website", siteName: SITE_NAME, locale: "ko_KR" },
+  twitter: { card: "summary_large_image" },
 };
 
 const NAV = [
