@@ -107,6 +107,17 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["flexbox", "lib/flex.ts"],
   },
+  {
+    slug: "keyframes",
+    title: "Keyframes",
+    href: "/keyframes",
+    summary: "세 개의 키프레임으로 CSS 애니메이션을 만들고 코드를 복사합니다.",
+    learned: [
+      "@keyframes는 퍼센트 지점마다 상태를 적고, 그 사이는 timing-function이 이어 준다.",
+      "움직임 줄이기를 켠 사용자에게는 prefers-reduced-motion 미디어 쿼리로 자동 재생을 멈춰야 한다.",
+    ],
+    tech: ["@keyframes", "lib/keyframes.ts"],
+  },
 ];
 
 export function getExperiment(slug: string): Experiment | undefined {

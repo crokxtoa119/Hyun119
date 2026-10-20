@@ -37,6 +37,7 @@ const NAV = [
   { href: "/radius", label: "Radius" },
   { href: "/contrast", label: "Contrast" },
   { href: "/flexbox", label: "Flexbox" },
+  { href: "/keyframes", label: "Keyframes" },
   { href: "/log", label: "Log" },
 ];
 
