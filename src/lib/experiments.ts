@@ -85,6 +85,17 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["border-radius", "lib/radius.ts"],
   },
+  {
+    slug: "contrast",
+    title: "Contrast Checker",
+    href: "/contrast",
+    summary: "글자색과 배경색의 명암비를 계산하고 WCAG 통과 여부를 확인합니다.",
+    learned: [
+      "명암비는 두 색의 상대 휘도를 (밝은 쪽 + 0.05) / (어두운 쪽 + 0.05)로 계산하며, 일반 글자는 4.5:1 이상이어야 AA다.",
+      "반올림하면 4.499가 4.50으로 보여 통과한 것처럼 오해하므로 소수는 내림해서 보여준다.",
+    ],
+    tech: ["WCAG", "lib/contrast.ts"],
+  },
 ];
 
 export function getExperiment(slug: string): Experiment | undefined {

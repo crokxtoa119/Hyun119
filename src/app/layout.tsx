@@ -35,6 +35,7 @@ const NAV = [
   { href: "/shadow", label: "Shadow" },
   { href: "/timeline", label: "Timeline" },
   { href: "/radius", label: "Radius" },
+  { href: "/contrast", label: "Contrast" },
   { href: "/log", label: "Log" },
 ];
 
