@@ -144,7 +144,7 @@ export default function RadiusGenerator() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={css} />
+        <CodeBlock title="CSS" code={css} file={{ name: "radius", ext: "css" }} />
       </div>
     </div>
   );

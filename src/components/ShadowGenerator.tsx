@@ -263,7 +263,7 @@ export default function ShadowGenerator() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={css} />
+        <CodeBlock title="CSS" code={css} file={{ name: "shadow", ext: "css" }} />
       </div>
     </div>
   );

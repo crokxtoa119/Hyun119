@@ -159,7 +159,7 @@ export default function GridPlayground() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={gridToCss(state)} />
+        <CodeBlock title="CSS" code={gridToCss(state)} file={{ name: "grid", ext: "css" }} />
       </div>
     </div>
   );

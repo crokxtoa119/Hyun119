@@ -157,7 +157,7 @@ export default function FlexPlayground() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={flexToCss(state)} />
+        <CodeBlock title="CSS" code={flexToCss(state)} file={{ name: "flexbox", ext: "css" }} />
       </div>
     </div>
   );

@@ -244,7 +244,7 @@ export default function TextEffectsPlayground() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={textEffectToCss(state)} />
+        <CodeBlock title="CSS" code={textEffectToCss(state)} file={{ name: "text-effects", ext: "css" }} />
       </div>
     </div>
   );

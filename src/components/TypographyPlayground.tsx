@@ -266,7 +266,7 @@ export default function TypographyPlayground() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={css} />
+        <CodeBlock title="CSS" code={css} file={{ name: "typography", ext: "css" }} />
       </div>
     </div>
   );

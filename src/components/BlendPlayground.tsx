@@ -170,7 +170,7 @@ export default function BlendPlayground() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={blendToCss(state)} />
+        <CodeBlock title="CSS" code={blendToCss(state)} file={{ name: "blend", ext: "css" }} />
       </div>
     </div>
   );

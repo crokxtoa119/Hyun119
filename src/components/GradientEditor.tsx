@@ -216,7 +216,7 @@ export default function GradientEditor() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={declaration} />
+        <CodeBlock title="CSS" code={declaration} file={{ name: "gradient", ext: "css" }} />
       </div>
     </div>
   );

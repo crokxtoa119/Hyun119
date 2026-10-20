@@ -192,7 +192,7 @@ export default function ContrastChecker() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={css} />
+        <CodeBlock title="CSS" code={css} file={{ name: "contrast", ext: "css" }} />
       </div>
     </div>
   );

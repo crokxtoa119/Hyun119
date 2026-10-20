@@ -164,6 +164,7 @@ export default function PaletteGenerator() {
           title="CSS 변수"
           code={`:root {\n${cssVars}\n}`}
           copyLabel="전체 복사"
+          file={{ name: "palette", ext: "css" }}
         />
       </div>
     </div>

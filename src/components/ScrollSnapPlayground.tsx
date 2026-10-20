@@ -150,7 +150,7 @@ export default function ScrollSnapPlayground() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={scrollSnapToCss(state)} />
+        <CodeBlock title="CSS" code={scrollSnapToCss(state)} file={{ name: "scroll-snap", ext: "css" }} />
       </div>
     </div>
   );

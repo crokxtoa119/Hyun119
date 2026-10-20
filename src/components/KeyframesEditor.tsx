@@ -204,7 +204,7 @@ export default function KeyframesEditor() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={keyframesToCss(state)} />
+        <CodeBlock title="CSS" code={keyframesToCss(state)} file={{ name: "keyframes", ext: "css" }} />
       </div>
     </div>
   );

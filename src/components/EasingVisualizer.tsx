@@ -189,7 +189,7 @@ export default function EasingVisualizer() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="GSAP 코드" code={snippet} />
+        <CodeBlock title="GSAP 코드" code={snippet} file={{ name: "easing", ext: "js" }} />
       </div>
     </div>
   );

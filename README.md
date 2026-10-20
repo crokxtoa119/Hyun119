@@ -49,7 +49,7 @@
 
 - **프리셋**: 현재 설정에 이름을 붙여 이 브라우저에 저장하고(최대 12개), 눌러서 불러옵니다. 저장 위치는 `localStorage`입니다.
 - **공유 링크**: 현재 설정을 주소(`#share=...`)에 담아 복사합니다. 링크로 들어오면 안내가 뜨고, "적용"을 눌렀을 때만 반영됩니다.
-- **CSS 복사**: 미리보기와 복사되는 코드는 같은 값에서 만들어집니다.
+- **CSS 복사·저장**: 미리보기와 복사되는 코드는 같은 값에서 만들어집니다. 코드 블록의 "저장"은 보이는 코드를 `도구이름-날짜.css`(GSAP 코드는 `.js`) 파일로 내려받으며, 파일은 브라우저 안에서만 만듭니다. 새 도구의 `CodeBlock`에는 `file` 속성을 넣어야 하고, 빠뜨리면 테스트가 실패합니다.
 
 ## 그 밖의 페이지와 기능
 
@@ -108,6 +108,7 @@ npm run dev
 | `presetBackup.test.ts` | 백업 파일 만들기와 읽기 왕복, 큰 파일·깨진 JSON·다른 앱 파일·다른 버전 거부, 알 수 없는 도구와 형식이 틀린 항목 건너뛰기, 이름 20자 제한, 도구당 12개 한도, 합치기·덮어쓰기 규칙, 저장소 연동과 차단 처리 |
 | `presetRegistry.test.ts` | 프리셋 도구 목록이 실험 목록과 일치하는지, 저장 키 규칙, 컴포넌트가 실제로 쓰는 `usePresets` 키와 일치하는지(소스를 읽어 비교) |
 | `motion.test.tsx` · `settings.test.tsx` | "움직임 줄이기" 설정, 테마와 전환 효과 설정, 프리셋 전체 삭제 |
+| `download.test.ts` · `CodeBlock.test.tsx` | 코드 파일 이름과 내려받기, 모든 도구의 코드 블록에 저장 연결 |
 | `accent.test.ts` | 강조 컬러별 명암비(라이트·다크), CSS와 목록 일치, 저장과 복원 |
 | `app/seo.test.ts` | 사이트맵 주소(모두 절대 주소, 중복 없음), `robots` |
 | `app/log/log.test.tsx` · `app/experiments/experiments.test.tsx` · `components/home.test.tsx` | 기록·목록·홈이 공용 데이터를 순서대로 보여주는지, 링크와 접근성 속성 |
@@ -155,6 +156,7 @@ src/
    │                         도구별 값 보정, 검증, CSS/코드 생성 (순수 함수)
    ├─ fonts.ts               next/font 설정 (한글 폰트는 preload 끔)
    ├─ useCopy.ts             클립보드 복사 훅
+   ├─ download.ts            코드 파일 이름 만들기와 내려받기
    ├─ usePresets.ts          localStorage 프리셋 훅 (형식 검증 포함), 훅 밖 읽기·쓰기 함수
    ├─ presetValidators.ts    도구별 프리셋 타입 가드 (화면 코드와 분리한 순수 모듈)
    ├─ presetRegistry.ts      프리셋을 저장하는 도구 목록 (설정 모달과 백업이 공유)

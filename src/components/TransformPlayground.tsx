@@ -112,7 +112,7 @@ export default function TransformPlayground() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={transformToCss(state)} />
+        <CodeBlock title="CSS" code={transformToCss(state)} file={{ name: "transform", ext: "css" }} />
       </div>
     </div>
   );

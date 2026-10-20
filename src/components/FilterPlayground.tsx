@@ -107,7 +107,7 @@ export default function FilterPlayground() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="CSS" code={filterToCss(state)} />
+        <CodeBlock title="CSS" code={filterToCss(state)} file={{ name: "filter", ext: "css" }} />
       </div>
     </div>
   );

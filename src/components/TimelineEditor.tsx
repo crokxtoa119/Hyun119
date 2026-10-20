@@ -290,7 +290,7 @@ export default function TimelineEditor() {
       </div>
 
       <div className="mt-8">
-        <CodeBlock title="GSAP 코드" code={buildTimelineCode(tweens)} />
+        <CodeBlock title="GSAP 코드" code={buildTimelineCode(tweens)} file={{ name: "timeline", ext: "js" }} />
       </div>
     </div>
   );
