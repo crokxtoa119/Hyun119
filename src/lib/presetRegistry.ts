@@ -7,6 +7,7 @@ import {
   isTypographyPreset,
 } from "./presetValidators";
 import { isBlendState } from "./blend";
+import { isClipState } from "./clipPath";
 import { isContrastState } from "./contrast";
 import { isFilterState } from "./filter";
 import { isFlexState } from "./flex";
@@ -54,4 +55,5 @@ export const PRESET_TOOLS: PresetTool[] = [
   tool("timeline", "Timeline", isTimeline),
   tool("keyframes", "Keyframes", isKeyframesState),
   tool("transform", "Transform", isTransformState),
+  tool("clip-path", "Clip Path", isClipState),
 ];

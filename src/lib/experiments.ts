@@ -210,6 +210,18 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["@keyframes", "lib/keyframes.ts"],
   },
+  {
+    slug: "clip-path",
+    category: "shape",
+    title: "Clip Path",
+    href: "/clip-path",
+    summary: "꼭짓점을 끌어 옮겨 polygon 모양을 만들고 CSS를 복사합니다.",
+    learned: [
+      "polygon()의 좌표는 요소 상자 기준 퍼센트라서 크기가 바뀌어도 모양이 유지되고, 점은 쓴 순서대로 이어져 마지막에서 처음으로 닫힌다.",
+      "clip-path는 보이는 부분만 자르고 상자 자체는 그대로 남는다. 잘려 나간 영역은 클릭도 받지 않는다.",
+    ],
+    tech: ["clip-path", "Pointer Events", "lib/clipPath.ts"],
+  },
 ];
 
 export function categoryLabel(id: CategoryId): string {
