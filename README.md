@@ -59,6 +59,7 @@
 - **홈 `/`**: GSAP 인트로, 스크롤하면 히어로가 위로 밀리며 흐려지는 효과, 화면 중앙에 온 실험 항목 강조, 마우스에서만 쓰이는 자석 버튼. "움직임 줄이기" 설정이면 모두 꺼집니다.
 - **실험 목록 `/experiments`**: 색, 모양·레이아웃, 글자, 모션으로 묶은 도구 목록.
 - **실험 기록 `/log`, `/log/[slug]`**: 도구마다 무엇을 배웠는지 적은 기록과 이전/다음 이동.
+- **내 기록판 `/record`**: 도구별로 연 횟수, 마지막으로 연 날, 저장한 프리셋 수와 써 본 도구 수, 방문한 날, 연속 방문일을 보여 줍니다. 도구 페이지를 열 때마다 이 브라우저의 localStorage(`sc-activity`)에만 기록하고 서버로 보내지 않으며, 검색 결과에는 올리지 않습니다(`noindex`, 사이트맵 제외). 페이지 안의 버튼으로 기록을 지울 수 있고, 프리셋 백업에는 포함되지 않습니다.
 - **설정 모달**: 헤더의 "설정"에서 테마(Auto, Light, Dark), 강조 컬러, 페이지 전환 효과 켜기/끄기, 저장된 프리셋 삭제, 프리셋 백업. 테마는 저장되고 첫 화면이 깜빡이지 않도록 렌더링 전에 적용되며, 바꿀 때 누른 버튼에서 원이 퍼집니다.
 - **강조 컬러**: 기본(흑백)과 인디고·청록·초록·주황·분홍·빨강 중에서 고릅니다. 선택한 칩, 슬라이더, 레이아웃·모션 도구의 미리보기 도형, 홈의 진행 바와 버튼, 현재 메뉴 밑줄, 키보드 포커스 링에 쓰이고, 라이트와 다크에서 각각 글자 4.5:1, 배경 3:1 이상이 되도록 정해 둔 색만 있습니다(테스트가 검사). 자유 색상 선택은 대비가 깨질 수 있어 두지 않았습니다. 값은 `accentPalette.ts`와 `globals.css`에 있고, 두 곳이 어긋나면 `accent.test.ts`가 실패합니다.
 - **프리셋 백업**: 설정 모달에서 모든 도구의 프리셋을 JSON 파일 하나로 내려받고(`sketchcraft-presets-날짜.json`), 그 파일로 복원합니다. 가져올 때 "합치기"(기존 유지, 같은 이름과 내용은 건너뜀) 또는 "덮어쓰기"(파일에 들어 있는 도구만 파일 내용으로 교체, 확인 창을 거침)를 고릅니다. 파일은 브라우저 안에서만 처리하고 서버로 보내지 않습니다.
@@ -116,6 +117,7 @@ npm run dev
 | `ColorConverter.test.tsx` | 표기 변환 결과, 잘못된 입력 처리, 예시 칩, sRGB 밖의 색 안내 |
 | `FluidTypePlayground.test.tsx` | 기본 `clamp()` 출력, 최소가 최대를 넘을 때와 너비가 뒤집힐 때의 보정, 표 행 수 |
 | `accent.test.ts` | 강조 컬러별 명암비(라이트·다크), CSS와 목록 일치, 저장과 복원 |
+| `activityLog.test.ts` · `RecordBoard.test.tsx` | 방문 기록 쌓기, 연속 방문 계산(어제까지 이어짐, 쉬면 0, 월·연 경계), 손상된 저장값 복구, 기록판 표시와 지우기 |
 | `app/seo.test.ts` | 사이트맵 주소(모두 절대 주소, 중복 없음), `robots` |
 | `app/log/log.test.tsx` · `app/experiments/experiments.test.tsx` · `components/home.test.tsx` | 기록·목록·홈이 공용 데이터를 순서대로 보여주는지, 링크와 접근성 속성 |
 
@@ -144,7 +146,7 @@ src/
 │  ├─ layout.tsx             공통 레이아웃: 헤더, 테마 초기화 스크립트, 페이지 전환, 공통 메타데이터
 │  ├─ globals.css            테마 변수(라이트/다크)와 전역 스타일
 │  ├─ sitemap.ts · robots.ts · opengraph-image.tsx   검색 노출용 파일 라우트
-│  ├─ experiments/ · log/ (+ log/[slug])             목록과 기록 페이지
+│  ├─ experiments/ · log/ (+ log/[slug]) · record/   목록, 기록, 내 기록판 페이지
 │  └─ palette · gradient · contrast · color-converter · filter · blend · shadow · radius · flexbox · grid ·
 │     scroll-snap · clip-path · typography · text-effects · fluid-type · easing · timeline ·
 │     keyframes · transform/
@@ -172,6 +174,7 @@ src/
    ├─ shareLink.ts           공유 링크 인코딩/디코딩 훅
    ├─ theme.ts · settings.ts 테마와 전환 효과 설정 저장
    ├─ accentPalette.ts · accent.ts 강조 컬러 목록(서버·클라이언트 공용)과 저장
+   ├─ activityLog.ts · activity.ts 방문 기록 계산(순수 함수)과 localStorage 저장·훅
    ├─ motion.ts              "움직임 줄이기" 설정 확인
    └─ *.test.ts(x)           단위 테스트 (Vitest 설정: vitest.config.mts)
 ```

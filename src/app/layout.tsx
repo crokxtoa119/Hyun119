@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import ActivityTracker from "@/components/ActivityTracker";
 import { PageTransitionProvider, TransitionLink } from "@/components/PageTransition";
 import SettingsDialog from "@/components/SettingsDialog";
 import { ACCENTS } from "@/lib/accentPalette";
@@ -31,6 +32,7 @@ const NAV = [
   { href: "/#about", label: "About" },
   { href: "/experiments", label: "Experiments" },
   { href: "/log", label: "Log" },
+  { href: "/record", label: "Record" },
 ];
 
 // 저장된 테마와 강조 컬러를 첫 페인트 전에 적용해 깜빡임을 막는다. 강조 컬러는 ACCENTS에 있는 id만 받는다
@@ -56,6 +58,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           본문으로 건너뛰기
         </a>
+        <ActivityTracker />
         <PageTransitionProvider>
           <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4 border-b border-foreground/10">
             <TransitionLink href="/" className="py-1.5 font-mono text-sm font-semibold">
