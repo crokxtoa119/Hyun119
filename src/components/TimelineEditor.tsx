@@ -124,7 +124,7 @@ export default function TimelineEditor() {
           {Array.from({ length: BOX_COUNT }, (_, i) => (
             <div key={i} className="flex h-14 items-center justify-center rounded-xl bg-foreground/5">
               <div
-                className="tl-box flex size-10 items-center justify-center rounded-lg bg-foreground font-mono text-sm text-background"
+                className="tl-box flex size-10 items-center justify-center rounded-lg bg-accent font-mono text-sm text-on-accent"
                 aria-label={`상자 ${i + 1}`}
               >
                 {i + 1}

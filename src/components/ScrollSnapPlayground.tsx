@@ -88,7 +88,7 @@ export default function ScrollSnapPlayground() {
         {Array.from({ length: state.items }, (_, i) => (
           <div
             key={i}
-            className="flex h-44 items-center justify-center rounded-xl bg-foreground font-mono text-2xl text-background"
+            className="flex h-44 items-center justify-center rounded-xl bg-accent font-mono text-2xl text-on-accent"
             style={{ ...itemStyle, ...(state.axis === "y" ? { minHeight: 120 } : {}) }}
           >
             {i + 1}

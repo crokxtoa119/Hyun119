@@ -127,7 +127,7 @@ export default function EasingVisualizer() {
 
         <div className="flex flex-col justify-center gap-6">
           <div className="track relative h-14 rounded-full bg-foreground/5">
-            <div className="ball absolute left-2 top-1/2 size-10 -translate-y-1/2 rounded-full bg-foreground" />
+            <div className="ball absolute left-2 top-1/2 size-10 -translate-y-1/2 rounded-full bg-accent" />
           </div>
 
           <div>

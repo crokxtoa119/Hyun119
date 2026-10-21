@@ -122,7 +122,7 @@ export default function KeyframesEditor() {
       >
         <div
           key={run}
-          className="sc-kf-box size-16 rounded-xl bg-foreground"
+          className="sc-kf-box size-16 rounded-xl bg-accent"
           data-played={userPlayed ? "" : undefined}
           style={{ animationPlayState: paused ? "paused" : undefined }}
         />

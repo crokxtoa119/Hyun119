@@ -103,7 +103,7 @@ export default function HomeSections() {
   return (
     <div ref={root}>
       <div
-        className="progress fixed inset-x-0 top-0 z-50 h-0.5 origin-left scale-x-0 bg-foreground"
+        className="progress fixed inset-x-0 top-0 z-50 h-0.5 origin-left scale-x-0 bg-accent"
         aria-hidden
       />
 
@@ -129,7 +129,7 @@ export default function HomeSections() {
             <li key={item.slug} className="log-item reveal relative py-6">
               <span
                 aria-hidden
-                className="log-bar absolute inset-y-6 left-0 w-0.5 origin-top scale-y-0 bg-foreground"
+                className="log-bar absolute inset-y-6 left-0 w-0.5 origin-top scale-y-0 bg-accent"
               />
               <div className="log-body flex gap-6">
                 <span className="font-mono text-sm text-foreground/60">0{i + 1}</span>
@@ -176,7 +176,7 @@ export default function HomeSections() {
               href="https://github.com/crokxtoa119/Hyun119"
               target="_blank"
               rel="noopener noreferrer"
-              className="reveal inline-block rounded-full bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-80"
+              className="reveal inline-block rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-on-accent transition-opacity hover:opacity-80"
             >
               GitHub에서 보기
             </a>

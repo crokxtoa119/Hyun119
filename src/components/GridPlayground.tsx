@@ -77,7 +77,7 @@ export default function GridPlayground() {
         {Array.from({ length: state.items }, (_, i) => (
           <div
             key={i}
-            className="flex items-center justify-center rounded-lg bg-foreground font-mono text-sm text-background"
+            className="flex items-center justify-center rounded-lg bg-accent font-mono text-sm text-on-accent"
             style={{
               gridColumn: state.span && i === 0 ? "span 2" : undefined,
               // stretch가 아닐 때는 칸 안에서 정렬이 보이도록 크기를 줄인다

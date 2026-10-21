@@ -100,7 +100,7 @@ export default function FlexPlayground() {
           return (
             <div
               key={i}
-              className="flex shrink-0 items-center justify-center rounded-lg bg-foreground font-mono text-sm text-background"
+              className="flex shrink-0 items-center justify-center rounded-lg bg-accent font-mono text-sm text-on-accent"
               style={{
                 width: w,
                 // stretch일 때는 교차축 크기를 비워야 늘어나는 모습이 보인다

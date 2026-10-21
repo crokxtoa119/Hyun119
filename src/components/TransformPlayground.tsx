@@ -48,7 +48,7 @@ export default function TransformPlayground() {
           {/* 원래 자리를 점선 틀로 보여 줘서 얼마나 움직였는지 비교할 수 있다 */}
           <div className="absolute inset-0 rounded-xl border-2 border-dashed border-foreground/30" />
           <div
-            className="relative flex h-32 w-48 items-center justify-center rounded-xl bg-foreground font-mono text-sm text-background"
+            className="relative flex h-32 w-48 items-center justify-center rounded-xl bg-accent font-mono text-sm text-on-accent"
             style={{ transform: transformValue(state) }}
           >
             SketchCraft

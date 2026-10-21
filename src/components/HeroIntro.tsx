@@ -67,7 +67,7 @@ export default function HeroIntro() {
             <TransitionLink
               key={title}
               href={href}
-              className="hero-card rounded-xl border border-foreground/10 p-5 transition-colors hover:border-foreground/40"
+              className="hero-card rounded-xl border border-foreground/10 p-5 transition-colors hover:border-accent"
             >
               {card}
             </TransitionLink>

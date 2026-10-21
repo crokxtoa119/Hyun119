@@ -151,8 +151,8 @@ export default function SettingsDialog() {
               ))}
             </div>
             <p className="text-xs text-foreground/60">
-              선택한 칩, 슬라이더, 키보드 포커스 링에 쓰는 색입니다. 라이트와 다크에서 모두 글자가 잘
-              읽히도록 정해 둔 색만 고를 수 있습니다.
+              선택한 칩, 슬라이더, 미리보기 도형, 홈의 진행 표시, 키보드 포커스 링에 쓰는 색입니다.
+              라이트와 다크에서 모두 잘 보이도록 정해 둔 색만 고를 수 있습니다.
             </p>
           </fieldset>
 

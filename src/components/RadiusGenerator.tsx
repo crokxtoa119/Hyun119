@@ -83,7 +83,7 @@ export default function RadiusGenerator() {
       <div className="mt-8 flex items-center justify-center rounded-2xl border border-foreground/10 bg-foreground/5 py-10">
         <div
           aria-hidden
-          className="size-56 bg-foreground sm:size-64"
+          className="size-56 bg-accent sm:size-64"
           style={{
             borderRadius: radiusValue,
             transition: morphing ? `border-radius ${MORPH_MS}ms ease-in-out` : "none",
