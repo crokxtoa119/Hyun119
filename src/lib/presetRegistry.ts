@@ -11,6 +11,7 @@ import { isClipState } from "./clipPath";
 import { isContrastState } from "./contrast";
 import { isFilterState } from "./filter";
 import { isFlexState } from "./flex";
+import { isFluidState } from "./fluidType";
 import { isGridState } from "./grid";
 import { isKeyframesState } from "./keyframes";
 import { isScrollSnapState } from "./scrollSnap";
@@ -56,4 +57,5 @@ export const PRESET_TOOLS: PresetTool[] = [
   tool("keyframes", "Keyframes", isKeyframesState),
   tool("transform", "Transform", isTransformState),
   tool("clip-path", "Clip Path", isClipState),
+  tool("fluid-type", "Fluid Type", isFluidState),
 ];

@@ -5,7 +5,7 @@
 
 **라이브 사이트:** https://hyun119.vercel.app
 
-## 실험 도구 17개
+## 실험 도구 18개
 
 도구 목록은 `/experiments`에서 분류별로 볼 수 있고, 목록의 원본은 [`src/lib/experiments.ts`](src/lib/experiments.ts)입니다. 홈 카드, 실험 목록, 기록 페이지, 사이트맵이 모두 이 한 곳을 읽습니다.
 
@@ -36,6 +36,7 @@
 |---|---|---|
 | Typography Playground | `/typography` | 폰트 7종(한글 폰트 2종 포함)의 크기, 굵기, 자간, 행간, 정렬 조절, CSS 복사 |
 | Text Effects | `/text-effects` | 글자 그림자, 그라데이션 글자, 여러 줄 말줄임 |
+| Fluid Type | `/fluid-type` | 최소·최대 글자 크기와 화면 너비로 `clamp()` 계산, 너비별 크기 그래프와 표, 미리보기 너비 조절 |
 
 ### 모션
 
@@ -100,7 +101,7 @@ npm run dev
 |---|---|
 | `color.test.ts` | HSL→HEX 변환, 글자색 대비 선택, `rgba` 변환, 배색 5종의 규칙과 값 범위 |
 | `contrast.test.ts` | hex 정규화, 상대 휘도와 명암비(알려진 값), 등급 경계, 내림 표시, 자동 보정 |
-| `radius.test.ts` · `flex.test.ts` · `grid.test.ts` · `scrollSnap.test.ts` · `clipPath.test.ts` | 값 보정(범위, 정수), CSS 생성(기본값 생략 규칙), 불러온 데이터 검증 |
+| `radius.test.ts` · `flex.test.ts` · `grid.test.ts` · `scrollSnap.test.ts` · `clipPath.test.ts` · `fluidType.test.ts` | 값 보정(범위, 정수), CSS 생성(기본값 생략 규칙), 불러온 데이터 검증 |
 | `filter.test.ts` · `transform.test.ts` · `textEffect.test.ts` · `blend.test.ts` · `keyframes.test.ts` | 같은 항목, 그리고 함수 순서, 3D일 때만 `perspective`, 색 형식, 모드별 설명 누락 방지 |
 | `timeline.test.ts` | 타임라인 트윈 검증, 범위 보정, 총 길이, GSAP 코드 생성 |
 | `experiments.test.ts` | 실험 목록의 슬러그·경로 규칙, 분류와 묶기, 이전/다음 이동 |
@@ -111,6 +112,7 @@ npm run dev
 | `motion.test.tsx` · `settings.test.tsx` | "움직임 줄이기" 설정, 테마와 전환 효과 설정, 프리셋 전체 삭제 |
 | `download.test.ts` · `CodeBlock.test.tsx` | 코드 파일 이름과 내려받기, 모든 도구의 코드 블록에 저장 연결 |
 | `ClipPathMaker.test.tsx` | 방향키 이동(1칸·Shift 10칸), 범위 제한, 점 추가·삭제와 개수 한도, 모양 칩 |
+| `FluidTypePlayground.test.tsx` | 기본 `clamp()` 출력, 최소가 최대를 넘을 때와 너비가 뒤집힐 때의 보정, 표 행 수 |
 | `accent.test.ts` | 강조 컬러별 명암비(라이트·다크), CSS와 목록 일치, 저장과 복원 |
 | `app/seo.test.ts` | 사이트맵 주소(모두 절대 주소, 중복 없음), `robots` |
 | `app/log/log.test.tsx` · `app/experiments/experiments.test.tsx` · `components/home.test.tsx` | 기록·목록·홈이 공용 데이터를 순서대로 보여주는지, 링크와 접근성 속성 |
@@ -142,8 +144,8 @@ src/
 │  ├─ sitemap.ts · robots.ts · opengraph-image.tsx   검색 노출용 파일 라우트
 │  ├─ experiments/ · log/ (+ log/[slug])             목록과 기록 페이지
 │  └─ palette · gradient · contrast · filter · blend · shadow · radius · flexbox · grid ·
-│     scroll-snap · clip-path · typography · text-effects · easing · timeline · keyframes ·
-│     transform/
+│     scroll-snap · clip-path · typography · text-effects · fluid-type · easing · timeline ·
+│     keyframes · transform/
 ├─ components/
 │  ├─ *Generator/Editor/Visualizer/Playground/Checker.tsx   실험 페이지 본체 (클라이언트 컴포넌트)
 │  ├─ HeroIntro.tsx · HomeSections.tsx              홈 화면 (GSAP 인트로, ScrollTrigger)
@@ -156,7 +158,7 @@ src/
    ├─ site.ts                사이트 이름, 설명, 주소
    ├─ color.ts · contrast.ts · radius.ts · flex.ts · grid.ts · scrollSnap.ts ·
    │  filter.ts · transform.ts · textEffect.ts · blend.ts · keyframes.ts · timeline.ts ·
-   │  clipPath.ts
+   │  clipPath.ts · fluidType.ts
    │                         도구별 값 보정, 검증, CSS/코드 생성 (순수 함수)
    ├─ fonts.ts               next/font 설정 (한글 폰트는 preload 끔)
    ├─ useCopy.ts             클립보드 복사 훅

@@ -222,6 +222,18 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["clip-path", "Pointer Events", "lib/clipPath.ts"],
   },
+  {
+    slug: "fluid-type",
+    category: "type",
+    title: "Fluid Type",
+    href: "/fluid-type",
+    summary: "화면 너비에 따라 부드럽게 변하는 글자 크기 clamp() 값을 계산합니다.",
+    learned: [
+      "clamp(최소, 선호값, 최대)에서 선호값은 `절편 + 기울기 × vw`로, 두 지점(최소 너비의 최소 크기, 최대 너비의 최대 크기)을 지나는 직선이다.",
+      "vw만 쓰면 글자 크기를 키운 사용자의 설정이 무시되므로 선호값에 rem 절편을 섞어 확대가 반영되게 한다.",
+    ],
+    tech: ["clamp()", "rem·vw", "lib/fluidType.ts"],
+  },
 ];
 
 export function categoryLabel(id: CategoryId): string {
