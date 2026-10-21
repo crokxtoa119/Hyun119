@@ -72,7 +72,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 <TransitionLink
                   key={href}
                   href={href}
-                  className="py-1.5 transition-opacity hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-accent aria-[current=page]:underline-offset-4"
+                  className="inline-flex min-h-10 min-w-10 items-center justify-center transition-opacity hover:opacity-60 aria-[current=page]:underline aria-[current=page]:decoration-accent aria-[current=page]:underline-offset-4"
                 >
                   {label}
                 </TransitionLink>

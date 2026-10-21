@@ -68,7 +68,7 @@ export default function SettingsDialog() {
         type="button"
         onClick={open}
         aria-haspopup="dialog"
-        className="rounded-full border border-foreground/20 px-3 py-1 font-mono text-xs transition-colors hover:border-foreground/50"
+        className="min-h-10 rounded-full border border-foreground/20 px-4 py-1 font-mono text-xs transition-colors hover:border-foreground/50"
       >
         설정
       </button>
