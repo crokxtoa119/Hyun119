@@ -8,6 +8,7 @@ import {
 } from "./presetValidators";
 import { isBlendState } from "./blend";
 import { isClipState } from "./clipPath";
+import { isConvState } from "./colorConvert";
 import { isContrastState } from "./contrast";
 import { isFilterState } from "./filter";
 import { isFlexState } from "./flex";
@@ -58,4 +59,5 @@ export const PRESET_TOOLS: PresetTool[] = [
   tool("transform", "Transform", isTransformState),
   tool("clip-path", "Clip Path", isClipState),
   tool("fluid-type", "Fluid Type", isFluidState),
+  tool("color-converter", "Color Converter", isConvState),
 ];

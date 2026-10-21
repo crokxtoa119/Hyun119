@@ -234,6 +234,18 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["clamp()", "rem·vw", "lib/fluidType.ts"],
   },
+  {
+    slug: "color-converter",
+    category: "color",
+    title: "Color Converter",
+    href: "/color-converter",
+    summary: "HEX, RGB, HSL, OKLCH 표기를 서로 바꾸고 CSS를 복사합니다.",
+    learned: [
+      "OKLCH는 밝기(L), 채도(C), 색상(H)을 사람이 느끼는 방식에 가깝게 나눈 표기라서, 밝기만 바꿔도 색이 탁해지거나 다른 색으로 보이지 않는다.",
+      "OKLCH에는 일반 모니터(sRGB)가 표현하지 못하는 색도 있다. 이때 HEX 같은 표기는 가까운 값으로 잘라 내므로 되돌려도 원래 색이 아니다.",
+    ],
+    tech: ["OKLab", "color-space", "lib/colorConvert.ts"],
+  },
 ];
 
 export function categoryLabel(id: CategoryId): string {

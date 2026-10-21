@@ -5,7 +5,7 @@
 
 **라이브 사이트:** https://hyun119.vercel.app
 
-## 실험 도구 18개
+## 실험 도구 19개
 
 도구 목록은 `/experiments`에서 분류별로 볼 수 있고, 목록의 원본은 [`src/lib/experiments.ts`](src/lib/experiments.ts)입니다. 홈 카드, 실험 목록, 기록 페이지, 사이트맵이 모두 이 한 곳을 읽습니다.
 
@@ -18,6 +18,7 @@
 | Contrast Checker | `/contrast` | 글자색과 배경색의 명암비 계산, WCAG AA·AAA 통과 여부, AA를 넘는 글자색 자동 보정 |
 | Filter | `/filter` | `blur`, `brightness`, `contrast` 등 8가지 `filter` 함수 조합, 원본과 나란히 비교, 효과 없는 함수는 CSS에서 생략 |
 | Blend Mode | `/blend` | 두 색을 겹쳐 `mix-blend-mode` 16가지가 섞이는 모습 확인, 모드별 설명 |
+| Color Converter | `/color-converter` | HEX, RGB, HSL, OKLCH 중 아무 표기로 입력해 나머지로 변환, sRGB 밖의 색 안내 |
 
 ### 모양·레이아웃
 
@@ -101,7 +102,7 @@ npm run dev
 |---|---|
 | `color.test.ts` | HSL→HEX 변환, 글자색 대비 선택, `rgba` 변환, 배색 5종의 규칙과 값 범위 |
 | `contrast.test.ts` | hex 정규화, 상대 휘도와 명암비(알려진 값), 등급 경계, 내림 표시, 자동 보정 |
-| `radius.test.ts` · `flex.test.ts` · `grid.test.ts` · `scrollSnap.test.ts` · `clipPath.test.ts` · `fluidType.test.ts` | 값 보정(범위, 정수), CSS 생성(기본값 생략 규칙), 불러온 데이터 검증 |
+| `radius.test.ts` · `flex.test.ts` · `grid.test.ts` · `scrollSnap.test.ts` · `clipPath.test.ts` · `fluidType.test.ts` · `colorConvert.test.ts` | 값 보정(범위, 정수), CSS 생성(기본값 생략 규칙), 불러온 데이터 검증 |
 | `filter.test.ts` · `transform.test.ts` · `textEffect.test.ts` · `blend.test.ts` · `keyframes.test.ts` | 같은 항목, 그리고 함수 순서, 3D일 때만 `perspective`, 색 형식, 모드별 설명 누락 방지 |
 | `timeline.test.ts` | 타임라인 트윈 검증, 범위 보정, 총 길이, GSAP 코드 생성 |
 | `experiments.test.ts` | 실험 목록의 슬러그·경로 규칙, 분류와 묶기, 이전/다음 이동 |
@@ -112,6 +113,7 @@ npm run dev
 | `motion.test.tsx` · `settings.test.tsx` | "움직임 줄이기" 설정, 테마와 전환 효과 설정, 프리셋 전체 삭제 |
 | `download.test.ts` · `CodeBlock.test.tsx` | 코드 파일 이름과 내려받기, 모든 도구의 코드 블록에 저장 연결 |
 | `ClipPathMaker.test.tsx` | 방향키 이동(1칸·Shift 10칸), 범위 제한, 점 추가·삭제와 개수 한도, 모양 칩 |
+| `ColorConverter.test.tsx` | 표기 변환 결과, 잘못된 입력 처리, 예시 칩, sRGB 밖의 색 안내 |
 | `FluidTypePlayground.test.tsx` | 기본 `clamp()` 출력, 최소가 최대를 넘을 때와 너비가 뒤집힐 때의 보정, 표 행 수 |
 | `accent.test.ts` | 강조 컬러별 명암비(라이트·다크), CSS와 목록 일치, 저장과 복원 |
 | `app/seo.test.ts` | 사이트맵 주소(모두 절대 주소, 중복 없음), `robots` |
@@ -143,7 +145,7 @@ src/
 │  ├─ globals.css            테마 변수(라이트/다크)와 전역 스타일
 │  ├─ sitemap.ts · robots.ts · opengraph-image.tsx   검색 노출용 파일 라우트
 │  ├─ experiments/ · log/ (+ log/[slug])             목록과 기록 페이지
-│  └─ palette · gradient · contrast · filter · blend · shadow · radius · flexbox · grid ·
+│  └─ palette · gradient · contrast · color-converter · filter · blend · shadow · radius · flexbox · grid ·
 │     scroll-snap · clip-path · typography · text-effects · fluid-type · easing · timeline ·
 │     keyframes · transform/
 ├─ components/
@@ -158,7 +160,7 @@ src/
    ├─ site.ts                사이트 이름, 설명, 주소
    ├─ color.ts · contrast.ts · radius.ts · flex.ts · grid.ts · scrollSnap.ts ·
    │  filter.ts · transform.ts · textEffect.ts · blend.ts · keyframes.ts · timeline.ts ·
-   │  clipPath.ts · fluidType.ts
+   │  clipPath.ts · fluidType.ts · colorConvert.ts
    │                         도구별 값 보정, 검증, CSS/코드 생성 (순수 함수)
    ├─ fonts.ts               next/font 설정 (한글 폰트는 preload 끔)
    ├─ useCopy.ts             클립보드 복사 훅
