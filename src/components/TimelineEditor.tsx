@@ -141,7 +141,7 @@ export default function TimelineEditor() {
           </button>
           <input
             type="range"
-            className="scrub h-2 w-full cursor-pointer appearance-none rounded-full bg-foreground/15 accent-accent"
+            className="scrub h-6 w-full cursor-pointer appearance-none rounded-full bg-foreground/15 bg-clip-content py-2 accent-accent"
             aria-label="재생 위치"
             min={0}
             max={total}

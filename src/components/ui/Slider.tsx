@@ -30,8 +30,10 @@ export function RangeInput({
       disabled={disabled}
       aria-label={ariaLabel}
       onChange={(e) => onChange(Number(e.target.value))}
-      style={track ? { background: track } : undefined}
-      className="h-2 w-full cursor-pointer appearance-none rounded-full bg-foreground/15 accent-accent"
+      // 눈에 보이는 트랙은 8px로 두고, 위아래 여백으로 손가락이 닿는 높이를 24px로 만든다(WCAG 2.5.8).
+      // background 단축 속성이 background-clip을 되돌리므로 트랙 그라디언트를 쓸 때는 clip을 다시 지정한다
+      style={track ? { background: track, backgroundClip: "content-box" } : undefined}
+      className="h-6 w-full cursor-pointer appearance-none rounded-full bg-foreground/15 bg-clip-content py-2 accent-accent"
     />
   );
 }

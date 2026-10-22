@@ -10,6 +10,20 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+describe("CodeBlock 접근성", () => {
+  it("긴 줄이 가로로 스크롤되므로 키보드로 포커스할 수 있는 이름 붙은 영역이다", () => {
+    render(<CodeBlock title="CSS" code="a{}" />);
+    const region = screen.getByRole("region", { name: "CSS 코드" });
+    expect(region.tagName).toBe("PRE");
+    expect(region.getAttribute("tabindex")).toBe("0");
+  });
+
+  it("제목이 이미 코드로 끝나면 이름에 코드를 한 번 더 붙이지 않는다", () => {
+    render(<CodeBlock title="GSAP 코드" code="gsap.to()" />);
+    expect(screen.getByRole("region", { name: "GSAP 코드" })).toBeTruthy();
+  });
+});
+
 describe("CodeBlock 저장", () => {
   it("file이 없으면 저장 버튼이 없다", () => {
     render(<CodeBlock title="CSS" code="a{}" />);

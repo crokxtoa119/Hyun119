@@ -46,7 +46,13 @@ export default function CodeBlock({ title, code, copyLabel = "복사", file }: C
           {copied === code ? "클립보드에 복사했습니다." : saved}
         </span>
       </div>
-      <pre className="overflow-x-auto rounded-xl bg-foreground/5 p-4 font-mono text-xs leading-relaxed">
+      {/* 긴 줄은 가로로 스크롤되므로 키보드 사용자도 포커스를 줘서 방향키로 읽을 수 있게 한다 */}
+      <pre
+        tabIndex={0}
+        role="region"
+        aria-label={title.endsWith("코드") ? title : `${title} 코드`}
+        className="overflow-x-auto rounded-xl bg-foreground/5 p-4 font-mono text-xs leading-relaxed"
+      >
         {code}
       </pre>
     </div>

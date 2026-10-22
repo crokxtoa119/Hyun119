@@ -178,7 +178,7 @@ export default function GradientEditor() {
                 type="button"
                 onClick={() => removeStop(s.id)}
                 disabled={stops.length <= MIN_STOPS}
-                className="shrink-0 text-foreground/60 hover:text-foreground disabled:opacity-30"
+                className="inline-flex size-6 shrink-0 items-center justify-center text-foreground/60 hover:text-foreground disabled:opacity-30"
                 aria-label="정지점 삭제"
               >
                 ✕

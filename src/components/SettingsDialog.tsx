@@ -95,7 +95,7 @@ export default function SettingsDialog() {
       >
         설정
         {shortcuts && (
-          <kbd aria-hidden className="hidden text-[10px] text-foreground/50 sm:inline">
+          <kbd aria-hidden className="hidden text-[10px] text-foreground/60 sm:inline">
             ,
           </kbd>
         )}

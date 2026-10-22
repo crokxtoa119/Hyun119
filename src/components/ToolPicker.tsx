@@ -99,7 +99,7 @@ export default function ToolPicker() {
         className="inline-flex min-h-10 items-center gap-2 rounded-full border border-foreground/20 px-4 py-1 font-mono text-xs transition-colors hover:border-foreground/50"
       >
         도구
-        <kbd aria-hidden className="hidden text-[10px] text-foreground/50 sm:inline">
+        <kbd aria-hidden className="hidden text-[10px] text-foreground/60 sm:inline">
           Ctrl K
         </kbd>
       </button>

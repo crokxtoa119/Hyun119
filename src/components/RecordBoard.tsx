@@ -35,8 +35,9 @@ function ToolRow({
   const presets = usePresetCount(PRESET_KEY[slug] ?? "");
   return (
     <tr className="border-b border-foreground/10">
-      <th scope="row" className="py-2 pr-3 text-left font-normal">
-        <TransitionLink href={href} className="underline-offset-4 hover:underline">
+      <th scope="row" className="py-0.5 pr-3 text-left font-normal">
+        {/* 링크 높이를 24px 이상으로 맞추려고 링크에 여백을 주고, 줄 간격은 그만큼 줄였다 */}
+        <TransitionLink href={href} className="inline-block py-1.5 underline-offset-4 hover:underline">
           {title}
         </TransitionLink>
       </th>
