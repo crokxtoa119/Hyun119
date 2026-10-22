@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { readableTextColor } from "@/lib/color";
+import { gradientCss } from "@/lib/gradient";
 import { prefersReducedMotion } from "@/lib/motion";
 import { isGradientPreset, type GradientKind, type GradientPreset } from "@/lib/presetValidators";
 import { usePresets } from "@/lib/usePresets";
@@ -30,16 +31,6 @@ const EXTRA_COLORS = ["#F59E0B", "#10B981", "#3B82F6", "#EF4444", "#8B5CF6"];
 const MAX_STOPS = 5;
 const MIN_STOPS = 2;
 
-function buildCss(kind: Kind, angle: number, stops: Stop[]): string {
-  const list = [...stops]
-    .sort((a, b) => a.pos - b.pos)
-    .map((s) => `${s.color} ${s.pos}%`)
-    .join(", ");
-  if (kind === "radial") return `radial-gradient(circle, ${list})`;
-  if (kind === "conic") return `conic-gradient(from ${angle}deg, ${list})`;
-  return `linear-gradient(${angle}deg, ${list})`;
-}
-
 export default function GradientEditor() {
   const root = useRef<HTMLDivElement>(null);
   const nextId = useRef(3);
@@ -50,7 +41,7 @@ export default function GradientEditor() {
     { id: 2, color: "#EC4899", pos: 100 },
   ]);
 
-  const css = buildCss(kind, angle, stops);
+  const css = gradientCss(kind, angle, stops);
   const declaration = `background: ${css};`;
   const textColor = readableTextColor(stops[0].color);
 

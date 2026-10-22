@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { hexToRgba } from "@/lib/color";
+import { boxShadowValue } from "@/lib/shadowCss";
 import { prefersReducedMotion } from "@/lib/motion";
 import { isShadowPreset, type ShadowMode, type ShadowPreset } from "@/lib/presetValidators";
 import { usePresets } from "@/lib/usePresets";
@@ -78,7 +79,7 @@ export default function ShadowGenerator() {
     pop();
   };
 
-  const shadowValue = `${inset ? "inset " : ""}${x}px ${y}px ${blur}px ${spread}px ${hexToRgba(shadowColor, shadowAlpha)}`;
+  const shadowValue = boxShadowValue({ x, y, blur, spread, shadowColor, shadowAlpha, inset });
   const backdrop = `blur(${glassBlur}px) saturate(${saturate}%)`;
   const glassBg = hexToRgba(tint, glassAlpha);
   const glassBorder = `1px solid ${hexToRgba("#FFFFFF", borderAlpha)}`;

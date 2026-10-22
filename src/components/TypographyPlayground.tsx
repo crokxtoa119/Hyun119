@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { FONTS, fontByKey } from "@/lib/fontOptions";
 import { prefersReducedMotion } from "@/lib/motion";
 import { isTypographyPreset, type TypographyAlign, type TypographyPreset } from "@/lib/presetValidators";
 import { usePresets } from "@/lib/usePresets";
@@ -12,76 +13,6 @@ import { ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
-
-type FontOption = {
-  key: string;
-  label: string;
-  /** 미리보기에 쓰는 실제 font-family 값 (next/font CSS 변수) */
-  stack: string;
-  /** 복사용 CSS에 넣는 font-family 값 */
-  cssName: string;
-  wMin: number;
-  wMax: number;
-};
-
-const FONTS: FontOption[] = [
-  {
-    key: "geist",
-    label: "Geist",
-    stack: "var(--font-geist-sans), sans-serif",
-    cssName: '"Geist", sans-serif',
-    wMin: 100,
-    wMax: 900,
-  },
-  {
-    key: "grotesk",
-    label: "Space Grotesk",
-    stack: "var(--font-space-grotesk), sans-serif",
-    cssName: '"Space Grotesk", sans-serif',
-    wMin: 300,
-    wMax: 700,
-  },
-  {
-    key: "playfair",
-    label: "Playfair Display",
-    stack: "var(--font-playfair), serif",
-    cssName: '"Playfair Display", serif',
-    wMin: 400,
-    wMax: 900,
-  },
-  {
-    key: "fraunces",
-    label: "Fraunces",
-    stack: "var(--font-fraunces), serif",
-    cssName: '"Fraunces", serif',
-    wMin: 100,
-    wMax: 900,
-  },
-  {
-    key: "notosans",
-    label: "Noto Sans KR (한글)",
-    stack: "var(--font-noto-sans-kr), sans-serif",
-    cssName: '"Noto Sans KR", sans-serif',
-    wMin: 100,
-    wMax: 900,
-  },
-  {
-    key: "notoserif",
-    label: "Noto Serif KR (한글)",
-    stack: "var(--font-noto-serif-kr), serif",
-    cssName: '"Noto Serif KR", serif',
-    wMin: 200,
-    wMax: 900,
-  },
-  {
-    key: "mono",
-    label: "Geist Mono",
-    stack: "var(--font-geist-mono), monospace",
-    cssName: '"Geist Mono", monospace',
-    wMin: 100,
-    wMax: 900,
-  },
-];
 
 type Align = TypographyAlign;
 const ALIGNS: { value: Align; label: string }[] = [
@@ -104,7 +35,7 @@ export default function TypographyPlayground() {
   const [leading, setLeading] = useState(1.2);
   const [align, setAlign] = useState<Align>("left");
 
-  const font = FONTS.find((f) => f.key === fontKey) ?? FONTS[0];
+  const font = fontByKey(fontKey);
   // 선택한 폰트가 지원하는 굵기 범위로 맞춘다
   const effectiveWeight = clamp(weight, font.wMin, font.wMax);
 
