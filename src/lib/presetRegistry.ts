@@ -15,6 +15,7 @@ import { isFlexState } from "./flex";
 import { isFluidState } from "./fluidType";
 import { isGridState } from "./grid";
 import { isKeyframesState } from "./keyframes";
+import { isLinearEasingState } from "./linearEasing";
 import { isScrollSnapState } from "./scrollSnap";
 import { isScrollTriggerState } from "./scrollTrigger";
 import { isShapeState } from "./svgShape";
@@ -64,4 +65,5 @@ export const PRESET_TOOLS: PresetTool[] = [
   tool("color-converter", "Color Converter", isConvState),
   tool("scroll-trigger", "Scroll Trigger", isScrollTriggerState),
   tool("svg-shape", "Wave & Blob", isShapeState),
+  tool("linear-easing", "Linear Easing", isLinearEasingState),
 ];

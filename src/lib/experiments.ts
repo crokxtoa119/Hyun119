@@ -271,6 +271,18 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["SVG path", "Bézier", "lib/svgShape.ts"],
   },
+  {
+    slug: "linear-easing",
+    category: "motion",
+    title: "Linear Easing",
+    href: "/linear-easing",
+    summary: "바운스와 스프링 같은 움직임을 CSS linear() 이징으로 만듭니다.",
+    learned: [
+      "linear()는 값 목록을 같은 간격의 직선으로 이어서 곡선을 흉내 낸다. 점이 많을수록 원래 곡선에 가깝지만 코드가 길어진다.",
+      "cubic-bezier는 0~1 사이의 부드러운 곡선만 쉽게 만들지만, linear()는 값이 1을 넘었다가 돌아오는 바운스와 스프링도 표현한다.",
+    ],
+    tech: ["CSS linear()", "SVG", "lib/linearEasing.ts"],
+  },
 ];
 
 export function categoryLabel(id: CategoryId): string {
