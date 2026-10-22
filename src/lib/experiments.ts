@@ -295,6 +295,18 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["CSS variables", "rem", "lib/typeScale.ts"],
   },
+  {
+    slug: "grain",
+    category: "color",
+    title: "Grain",
+    href: "/grain",
+    summary: "SVG 노이즈로 종이나 필름 같은 질감을 만들고 CSS로 복사합니다.",
+    learned: [
+      "feTurbulence는 이미지 없이 노이즈를 만든다. baseFrequency가 클수록 알갱이가 곱고, numOctaves를 늘리면 크고 작은 알갱이가 겹쳐 더 복잡해진다.",
+      "SVG를 데이터 주소로 CSS에 넣을 때는 <, >, #, %를 인코딩해야 한다. 특히 %를 먼저 %25로 바꾸지 않으면 뒤따르는 글자와 합쳐져 다르게 해석될 수 있다.",
+    ],
+    tech: ["SVG filter", "mix-blend-mode", "lib/grain.ts"],
+  },
 ];
 
 export function categoryLabel(id: CategoryId): string {

@@ -13,6 +13,7 @@ import { isContrastState } from "./contrast";
 import { isFilterState } from "./filter";
 import { isFlexState } from "./flex";
 import { isFluidState } from "./fluidType";
+import { isGrainState } from "./grain";
 import { isGridState } from "./grid";
 import { isKeyframesState } from "./keyframes";
 import { isLinearEasingState } from "./linearEasing";
@@ -68,4 +69,5 @@ export const PRESET_TOOLS: PresetTool[] = [
   tool("svg-shape", "Wave & Blob", isShapeState),
   tool("linear-easing", "Linear Easing", isLinearEasingState),
   tool("type-scale", "Type Scale", isTypeScaleState),
+  tool("grain", "Grain", isGrainState),
 ];
