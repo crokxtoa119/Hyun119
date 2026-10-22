@@ -283,6 +283,18 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["CSS linear()", "SVG", "lib/linearEasing.ts"],
   },
+  {
+    slug: "type-scale",
+    category: "type",
+    title: "Type Scale",
+    href: "/type-scale",
+    summary: "기준 크기와 비율로 글자 크기 단계를 만들고 CSS 변수로 복사합니다.",
+    learned: [
+      "글자 크기를 하나씩 정하지 않고 기준 크기에 같은 비율을 거듭 곱하면(base × ratio^step) 단계 사이의 간격이 일정해서 위계가 자연스럽다.",
+      "비율이 작으면 단계가 촘촘해 본문 위주의 화면에, 크면 제목이 확 커져서 강한 대비가 필요한 화면에 어울린다. 단계가 늘수록 맨 끝은 금방 너무 커지거나 작아진다.",
+    ],
+    tech: ["CSS variables", "rem", "lib/typeScale.ts"],
+  },
 ];
 
 export function categoryLabel(id: CategoryId): string {

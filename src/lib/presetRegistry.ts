@@ -22,6 +22,7 @@ import { isShapeState } from "./svgShape";
 import { isTextEffectState } from "./textEffect";
 import { isTimeline } from "./timeline";
 import { isTransformState } from "./transform";
+import { isTypeScaleState } from "./typeScale";
 
 export type PresetTool = {
   /** 실험 슬러그와 같다 */
@@ -66,4 +67,5 @@ export const PRESET_TOOLS: PresetTool[] = [
   tool("scroll-trigger", "Scroll Trigger", isScrollTriggerState),
   tool("svg-shape", "Wave & Blob", isShapeState),
   tool("linear-easing", "Linear Easing", isLinearEasingState),
+  tool("type-scale", "Type Scale", isTypeScaleState),
 ];
