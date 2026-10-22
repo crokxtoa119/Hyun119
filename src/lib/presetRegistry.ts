@@ -17,6 +17,7 @@ import { isGrainState } from "./grain";
 import { isGridState } from "./grid";
 import { isKeyframesState } from "./keyframes";
 import { isLinearEasingState } from "./linearEasing";
+import { isMaskState } from "./mask";
 import { isScrollSnapState } from "./scrollSnap";
 import { isScrollTriggerState } from "./scrollTrigger";
 import { isShapeState } from "./svgShape";
@@ -70,4 +71,5 @@ export const PRESET_TOOLS: PresetTool[] = [
   tool("linear-easing", "Linear Easing", isLinearEasingState),
   tool("type-scale", "Type Scale", isTypeScaleState),
   tool("grain", "Grain", isGrainState),
+  tool("mask", "Mask", isMaskState),
 ];

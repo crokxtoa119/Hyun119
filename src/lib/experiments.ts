@@ -307,6 +307,18 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["SVG filter", "mix-blend-mode", "lib/grain.ts"],
   },
+  {
+    slug: "mask",
+    category: "shape",
+    title: "Mask",
+    href: "/mask",
+    summary: "그라디언트로 요소의 가장자리를 부드럽게 지우는 mask-image를 만듭니다.",
+    learned: [
+      "mask-image는 색이 아니라 알파만 본다. 검정(불투명)인 곳은 보이고 transparent인 곳은 사라지며, 그 사이는 그라디언트 멈춤 위치가 정한다.",
+      "clip-path는 모양대로 잘라서 경계가 선명하고, mask-image는 가장자리를 서서히 지울 수 있다. 오래된 브라우저를 위해 -webkit-mask-image를 같은 값으로 함께 쓴다.",
+    ],
+    tech: ["mask-image", "gradients", "lib/mask.ts"],
+  },
 ];
 
 export function categoryLabel(id: CategoryId): string {
