@@ -42,11 +42,11 @@ describe("모든 도구가 코드 저장을 지원한다", () => {
       // 도구는 ToolFooter의 code 속성으로 CodeBlock을 쓰고, 직접 쓰는 곳도 같은 규칙을 지켜야 한다
       const direct = (src.match(/<CodeBlock[\s\S]*?\/>/g) ?? []).map((b) => ({
         b,
-        re: /file=\{\{ name: "([a-z-]+)", ext: "(css|js)" \}\}/,
+        re: /file=\{\{ name: "([a-z-]+)", ext: "(css|js|svg)" \}\}/,
       }));
       const viaFooter = (src.match(/<ToolFooter[\s\S]*?\/>/g) ?? []).map((b) => ({
         b,
-        re: /file: \{ name: "([a-z-]+)", ext: "(css|js)" \}/,
+        re: /file: \{ name: "([a-z-]+)", ext: "(css|js|svg)" \}/,
       }));
       for (const { b, re } of [...direct, ...viaFooter]) {
         const m = re.exec(b);

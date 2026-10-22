@@ -1,8 +1,9 @@
-export type CodeExt = "css" | "js";
+export type CodeExt = "css" | "js" | "svg";
 
 const MIME: Record<CodeExt, string> = {
   css: "text/css",
   js: "text/javascript",
+  svg: "image/svg+xml",
 };
 
 /** 사용자 시간대 기준 YYYY-MM-DD. */

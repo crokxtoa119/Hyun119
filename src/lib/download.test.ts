@@ -10,6 +10,7 @@ describe("localDateStamp / codeFilename", () => {
   it("도구 이름, 날짜, 확장자로 파일 이름을 만든다", () => {
     expect(codeFilename("gradient", "css", new Date(2026, 9, 20))).toBe("gradient-2026-10-20.css");
     expect(codeFilename("easing", "js", new Date(2026, 9, 20))).toBe("easing-2026-10-20.js");
+    expect(codeFilename("svg-shape", "svg", new Date(2026, 9, 20))).toBe("svg-shape-2026-10-20.svg");
   });
 });
 
@@ -32,5 +33,13 @@ describe("downloadText", () => {
     const blob = (create.mock.calls[0] as unknown as [Blob])[0];
     expect(blob.type).toBe("text/css;charset=utf-8");
     expect(document.querySelector("a[download]")).toBeNull();
+  });
+
+  it("svg는 image/svg+xml로 내려받는다", () => {
+    const create = vi.fn(() => "blob:y");
+    Object.assign(URL, { createObjectURL: create, revokeObjectURL: vi.fn() });
+    vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+    downloadText("a.svg", "<svg/>", "svg");
+    expect((create.mock.calls[0] as unknown as [Blob])[0].type).toBe("image/svg+xml;charset=utf-8");
   });
 });

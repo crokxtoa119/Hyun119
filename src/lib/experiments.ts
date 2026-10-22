@@ -259,6 +259,18 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["GSAP ScrollTrigger", "useGSAP", "lib/scrollTrigger.ts"],
   },
+  {
+    slug: "svg-shape",
+    category: "shape",
+    title: "Wave & Blob",
+    href: "/svg-shape",
+    summary: "SVG 웨이브와 블롭 모양을 만들고 코드를 복사합니다.",
+    learned: [
+      "웨이브는 마루와 골을 3차 베지어(C)로 잇는다. 조절점을 구간 가운데에 두면 부드러운 곡선, 끝점에 붙이면 직선이 된다. 처음과 끝 높이를 같게 하면 가로로 이어 붙여도 이음새가 없다.",
+      "블롭은 원 위의 점들의 반지름만 조금씩 줄여서 만들고, 그 점들을 지나는 닫힌 곡선은 Catmull-Rom을 베지어로 바꿔 그린다. 난수에 시드를 쓰면 같은 모양을 다시 만들 수 있다.",
+    ],
+    tech: ["SVG path", "Bézier", "lib/svgShape.ts"],
+  },
 ];
 
 export function categoryLabel(id: CategoryId): string {

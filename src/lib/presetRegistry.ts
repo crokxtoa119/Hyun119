@@ -17,6 +17,7 @@ import { isGridState } from "./grid";
 import { isKeyframesState } from "./keyframes";
 import { isScrollSnapState } from "./scrollSnap";
 import { isScrollTriggerState } from "./scrollTrigger";
+import { isShapeState } from "./svgShape";
 import { isTextEffectState } from "./textEffect";
 import { isTimeline } from "./timeline";
 import { isTransformState } from "./transform";
@@ -62,4 +63,5 @@ export const PRESET_TOOLS: PresetTool[] = [
   tool("fluid-type", "Fluid Type", isFluidState),
   tool("color-converter", "Color Converter", isConvState),
   tool("scroll-trigger", "Scroll Trigger", isScrollTriggerState),
+  tool("svg-shape", "Wave & Blob", isShapeState),
 ];
