@@ -4,7 +4,7 @@ import { groupExperiments } from "@/lib/experiments";
 
 export const metadata: Metadata = {
   title: "Experiments · SketchCraft",
-  description: "색, 모양·레이아웃, 글자, 모션으로 나눈 실험 도구 목록",
+  description: "색, 모양·레이아웃, 글자, 모션, 조합으로 나눈 실험 도구 목록",
 };
 
 export default function ExperimentsPage() {

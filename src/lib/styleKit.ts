@@ -27,6 +27,7 @@ import { isFiniteNumber, isRecord } from "./usePresets";
 // 공유 링크에 담겨도 받는 사람에게 프리셋 목록이 필요 없다. 키트에는 모양에 필요한 값만 둔다
 // (예: 타이포그래피의 예시 글은 뺀다. 공유 링크가 길어지지 않게 하려는 이유도 있다).
 
+/** 폰트는 모든 글자에, 굵기·자간·행간은 제목에 적용한다. */
 export type KitTypography = { fontKey: string; weight: number; tracking: number; leading: number };
 
 export type KitRoles = { primary: number; secondary: number; accent: number };
@@ -46,7 +47,7 @@ export const ROLE_KEYS = ["primary", "secondary", "accent"] as const;
 export type RoleKey = (typeof ROLE_KEYS)[number];
 
 export const DEFAULT_PALETTE: PalettePreset = { h: 220, s: 70, l: 55, harmony: "analogous" };
-export const DEFAULT_TYPOGRAPHY: KitTypography = { fontKey: "geist", weight: 400, tracking: 0, leading: 1.5 };
+export const DEFAULT_TYPOGRAPHY: KitTypography = { fontKey: "geist", weight: 700, tracking: -0.02, leading: 1.2 };
 export const DEFAULT_SHADOW: BoxShadow = {
   x: 0,
   y: 8,
@@ -237,11 +238,12 @@ export function kitTokens(kit: StyleKit, target: "export" | "preview" = "export"
 
   const t = kit.typography ?? DEFAULT_TYPOGRAPHY;
   const font = fontByKey(t.fontKey);
+  // 폰트는 모든 글자에 쓰고, 굵기·자간·행간은 제목용이다(타이포그래피 도구의 값은 큰 글자 기준이라 본문에 쓰면 빽빽하다)
   tokens.push(
     { group: "Typography", name: "--font-family", value: target === "preview" ? font.stack : font.cssName },
-    { group: "Typography", name: "--font-weight", value: String(t.weight) },
-    { group: "Typography", name: "--letter-spacing", value: `${t.tracking.toFixed(2)}em` },
-    { group: "Typography", name: "--line-height", value: t.leading.toFixed(2) },
+    { group: "Typography", name: "--heading-weight", value: String(t.weight) },
+    { group: "Typography", name: "--heading-letter-spacing", value: `${t.tracking.toFixed(2)}em` },
+    { group: "Typography", name: "--heading-line-height", value: t.leading.toFixed(2) },
   );
 
   tokens.push(
@@ -249,6 +251,28 @@ export function kitTokens(kit: StyleKit, target: "export" | "preview" = "export"
     { group: "Shape", name: "--shadow", value: boxShadowValue(kit.shadow ?? DEFAULT_SHADOW) },
   );
   return tokens;
+}
+
+/**
+ * 샘플 화면이 쓰고 싶은 단계 중 키트의 타입 스케일에 실제로 있는 가장 가까운 단계.
+ * 단계 수를 줄여도 var(--step-4)처럼 없는 변수를 가리키지 않게 한다.
+ */
+export function nearestStep(kit: StyleKit, wanted: number): number {
+  const s = kit.typeScale ?? DEFAULT_SCALE;
+  const step = clamp(wanted, -s.down, s.up);
+  // down이 0이면 -0이 나오므로 0으로 정리한다
+  return step === 0 ? 0 : step;
+}
+
+/** 키 순서와 상관없이 같은 값인지. 프리셋의 값과 키트에 담긴 값을 견줄 때 쓴다. */
+export function sameValue(a: unknown, b: unknown): boolean {
+  const canon = (v: unknown): unknown =>
+    Array.isArray(v)
+      ? v.map(canon)
+      : isRecord(v)
+        ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, canon(v[k])]))
+        : v;
+  return JSON.stringify(canon(a)) === JSON.stringify(canon(b));
 }
 
 /** 미리보기 영역에 style로 넘길 CSS 변수 모음. */

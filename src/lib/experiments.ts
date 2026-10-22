@@ -3,6 +3,7 @@ export const CATEGORIES = [
   { id: "shape", label: "모양·레이아웃" },
   { id: "type", label: "글자" },
   { id: "motion", label: "모션" },
+  { id: "kit", label: "조합" },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -306,6 +307,18 @@ export const EXPERIMENTS: Experiment[] = [
       "SVG를 데이터 주소로 CSS에 넣을 때는 <, >, #, %를 인코딩해야 한다. 특히 %를 먼저 %25로 바꾸지 않으면 뒤따르는 글자와 합쳐져 다르게 해석될 수 있다.",
     ],
     tech: ["SVG filter", "mix-blend-mode", "lib/grain.ts"],
+  },
+  {
+    slug: "style-kit",
+    category: "kit",
+    title: "Style Kit",
+    href: "/style-kit",
+    summary: "다른 도구에서 저장한 프리셋을 한 벌로 묶어 샘플 화면에 적용하고 CSS 변수로 복사합니다.",
+    learned: [
+      "디자인 토큰은 색, 글자 크기, 모서리, 그림자 같은 스타일 값에 이름을 붙여 CSS 변수로 모아 둔 것이다. 값이 한곳에 있으면 변수만 바꿔 화면 전체의 느낌을 한 번에 바꿀 수 있다.",
+      "컴포넌트는 var(--color-primary)처럼 역할 이름을 쓰고, 그 변수가 팔레트의 어느 색을 가리킬지는 한곳에서 정한다. 색 위에 올리는 글자색은 휘도로 흑/백을 골라 대비를 지킨다.",
+    ],
+    tech: ["CSS variables", "design tokens", "lib/styleKit.ts"],
   },
   {
     slug: "mask",

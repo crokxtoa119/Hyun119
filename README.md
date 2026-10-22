@@ -5,7 +5,7 @@
 
 **라이브 사이트:** https://hyun119.vercel.app
 
-## 실험 도구 25개
+## 실험 도구 26개
 
 도구 목록은 `/experiments`에서 분류별로 볼 수 있고, 목록의 원본은 [`src/lib/experiments.ts`](src/lib/experiments.ts)입니다. 홈 카드, 실험 목록, 기록 페이지, 사이트맵이 모두 이 한 곳을 읽습니다.
 
@@ -54,6 +54,14 @@
 | Scroll Trigger | `/scroll-trigger` | GSAP ScrollTrigger의 효과 4종, 한 번 재생/scrub, `start`·`end` 기준선과 부드러움을 스크롤 영역에서 확인, 코드 복사 |
 | Linear Easing | `/linear-easing` | 바운스·스프링을 수식으로 만들어 CSS `linear()` 값으로 변환, 곡선 그래프와 실제 전환 비교, 점 개수 조절 |
 
+### 조합
+
+| 도구 | 경로 | 할 수 있는 것 |
+|---|---|---|
+| Style Kit | `/style-kit` | 다른 도구에서 저장한 프리셋(팔레트, 그라디언트, 타입 스케일, 글꼴, 모서리, 그림자)을 한 벌로 묶어 샘플 화면에 적용하고, 주색·보조색·강조색 역할을 정해 `:root` CSS 변수 파일(`--color-*`, `--gradient`, `--step-*`, `--font-family`, `--heading-*`, `--radius`, `--shadow`)로 복사·저장 |
+
+스타일 키트는 프리셋의 id가 아니라 값의 복사본을 담아서, 원래 프리셋을 지우거나 공유 링크로 받아도 같은 모양이 나옵니다. 고르지 않은 항목은 기본값으로 채워서 내려받는 파일이 항상 완전합니다. 글꼴은 모든 글자에, 굵기·자간·행간은 제목에만 적용하고, 색 위에 올리는 글자색(`--color-on-*`)은 휘도로 흑/백을 골라 대비를 지킵니다. 샘플 화면과 내려받는 CSS는 같은 토큰 목록(`lib/styleKit.ts`)에서 만들어집니다.
+
 ### 모든 실험 페이지 공통 기능
 
 - **프리셋**: 현재 설정에 이름을 붙여 이 브라우저에 저장하고(최대 12개), 눌러서 불러옵니다. 저장 위치는 `localStorage`입니다.
@@ -63,7 +71,7 @@
 ## 그 밖의 페이지와 기능
 
 - **홈 `/`**: GSAP 인트로, 스크롤하면 히어로가 위로 밀리며 흐려지는 효과, 화면 중앙에 온 실험 항목 강조, 마우스에서만 쓰이는 자석 버튼. "움직임 줄이기" 설정이면 모두 꺼집니다.
-- **실험 목록 `/experiments`**: 색, 모양·레이아웃, 글자, 모션으로 묶은 도구 목록.
+- **실험 목록 `/experiments`**: 색, 모양·레이아웃, 글자, 모션, 조합으로 묶은 도구 목록.
 - **실험 기록 `/log`, `/log/[slug]`**: 도구마다 무엇을 배웠는지 적은 기록과 이전/다음 이동.
 - **내 기록판 `/record`**: 도구별로 연 횟수, 마지막으로 연 날, 저장한 프리셋 수와 써 본 도구 수, 방문한 날, 연속 방문일을 보여 줍니다. 도구 페이지를 열 때마다 이 브라우저의 localStorage(`sc-activity`)에만 기록하고 서버로 보내지 않으며, 검색 결과에는 올리지 않습니다(`noindex`, 사이트맵 제외). 페이지 안의 버튼으로 기록을 지울 수 있고, 프리셋 백업에는 포함되지 않습니다.
 - **설정 모달**: 헤더의 "설정"에서 테마(Auto, Light, Dark), 강조 컬러, 페이지 전환 효과 켜기/끄기, 저장된 프리셋 삭제, 프리셋 백업. 테마는 저장되고 첫 화면이 깜빡이지 않도록 렌더링 전에 적용되며, 바꿀 때 누른 버튼에서 원이 퍼집니다.
@@ -157,7 +165,7 @@ src/
 │  ├─ experiments/ · log/ (+ log/[slug]) · record/   목록, 기록, 내 기록판 페이지
 │  └─ palette · gradient · contrast · color-converter · filter · blend · shadow · radius · flexbox · grid ·
 │     scroll-snap · clip-path · typography · text-effects · fluid-type · easing · timeline ·
-│     keyframes · transform · scroll-trigger · svg-shape · linear-easing · type-scale · grain · mask/
+│     keyframes · transform · scroll-trigger · svg-shape · linear-easing · type-scale · grain · mask · style-kit/
 ├─ components/
 │  ├─ *Generator/Editor/Visualizer/Playground/Checker.tsx   실험 페이지 본체 (클라이언트 컴포넌트)
 │  ├─ HeroIntro.tsx · HomeSections.tsx              홈 화면 (GSAP 인트로, ScrollTrigger)

@@ -22,6 +22,7 @@ import { isScrollSnapState } from "./scrollSnap";
 import { isScrollTriggerState } from "./scrollTrigger";
 import { isShapeState } from "./svgShape";
 import { isTextEffectState } from "./textEffect";
+import { isStyleKit } from "./styleKit";
 import { isTimeline } from "./timeline";
 import { isTransformState } from "./transform";
 import { isTypeScaleState } from "./typeScale";
@@ -72,4 +73,5 @@ export const PRESET_TOOLS: PresetTool[] = [
   tool("type-scale", "Type Scale", isTypeScaleState),
   tool("grain", "Grain", isGrainState),
   tool("mask", "Mask", isMaskState),
+  tool("style-kit", "Style Kit", isStyleKit),
 ];

@@ -15,6 +15,8 @@ import {
   kitStyleVars,
   kitToCss,
   kitTokens,
+  nearestStep,
+  sameValue,
   toKitRadius,
   toKitShadow,
   toKitTypography,
@@ -78,9 +80,9 @@ describe("기본 키트", () => {
         "",
         "  /* Typography */",
         '  --font-family: "Geist", sans-serif;',
-        "  --font-weight: 400;",
-        "  --letter-spacing: 0.00em;",
-        "  --line-height: 1.50;",
+        "  --heading-weight: 700;",
+        "  --heading-letter-spacing: -0.02em;",
+        "  --heading-line-height: 1.20;",
         "",
         "  /* Shape */",
         "  --radius: 12px;",
@@ -137,12 +139,15 @@ describe("kitTokens: 도구별 반영", () => {
     expect(t["--step--3"]).toMatch(/px$/);
   });
 
-  it("타이포그래피는 폰트·굵기·자간·행간을 쓴다", () => {
+  it("타이포그래피는 폰트는 전체 글자용, 굵기·자간·행간은 제목용 변수로 쓴다", () => {
     const t = tokenMap(kit({ typography: FULL.typography }));
     expect(t["--font-family"]).toBe('"Playfair Display", serif');
-    expect(t["--font-weight"]).toBe("700");
-    expect(t["--letter-spacing"]).toBe("-0.05em");
-    expect(t["--line-height"]).toBe("1.25");
+    expect(t["--heading-weight"]).toBe("700");
+    expect(t["--heading-letter-spacing"]).toBe("-0.05em");
+    expect(t["--heading-line-height"]).toBe("1.25");
+    // 본문 전체에 걸리는 변수 이름은 만들지 않는다
+    expect(Object.keys(t)).not.toContain("--font-weight");
+    expect(Object.keys(t)).not.toContain("--line-height");
   });
 
   it("미리보기용 글꼴은 next/font 변수를, 내려받는 글꼴은 이름을 가리킨다", () => {
@@ -275,6 +280,31 @@ describe("도구 프리셋 → 키트 값", () => {
     const r = toKitRadius({ ...DEFAULT_RADIUS, linked: true });
     expect(r).toEqual(DEFAULT_RADIUS);
     expect("linked" in r).toBe(false);
+  });
+});
+
+describe("nearestStep", () => {
+  it("타입 스케일에 있는 단계는 그대로, 없는 단계는 가장 가까운 끝 단계로 맞춘다", () => {
+    expect(nearestStep(EMPTY_KIT, 4)).toBe(4);
+    expect(nearestStep(EMPTY_KIT, 9)).toBe(5);
+    expect(nearestStep(EMPTY_KIT, -5)).toBe(-2);
+    const short = kit({ typeScale: { base: 16, ratio: 1.25, up: 1, down: 0, unit: "rem" } });
+    expect(nearestStep(short, 4)).toBe(1);
+    expect(nearestStep(short, -1)).toBe(0);
+  });
+});
+
+describe("sameValue", () => {
+  it("키 순서가 달라도 같은 값이면 true다", () => {
+    expect(sameValue({ a: 1, b: { c: [1, 2], d: "x" } }, { b: { d: "x", c: [1, 2] }, a: 1 })).toBe(true);
+    expect(toKitRadius({ ...DEFAULT_RADIUS, linked: false })).toSatisfy((r: unknown) => sameValue(r, DEFAULT_RADIUS));
+  });
+
+  it("값이 하나라도 다르면 false다", () => {
+    expect(sameValue({ a: 1 }, { a: 2 })).toBe(false);
+    expect(sameValue([1, 2], [2, 1])).toBe(false);
+    expect(sameValue(null, {})).toBe(false);
+    expect(sameValue(null, null)).toBe(true);
   });
 });
 
