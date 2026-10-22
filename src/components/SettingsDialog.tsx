@@ -9,6 +9,12 @@ import { PRESET_TOOLS } from "@/lib/presetRegistry";
 import { clearPresets, usePresetCount } from "@/lib/usePresets";
 import { setTheme, THEMES, useTheme } from "@/lib/theme";
 import { setTransitionsEnabled, useTransitionsEnabled } from "@/lib/settings";
+import {
+  haptic,
+  setHapticsEnabled,
+  useHapticsEnabled,
+  useHapticsSupported,
+} from "@/lib/haptics";
 
 function PresetRow({ storageKey, label }: { storageKey: string; label: string }) {
   const count = usePresetCount(storageKey);
@@ -16,6 +22,7 @@ function PresetRow({ storageKey, label }: { storageKey: string; label: string })
   const clear = () => {
     if (window.confirm(`${label} 프리셋 ${count}개를 모두 삭제할까요? 되돌릴 수 없습니다.`)) {
       clearPresets(storageKey);
+      haptic("warn");
     }
   };
 
@@ -46,6 +53,8 @@ export default function SettingsDialog() {
   const theme = useTheme();
   const accent = useAccent();
   const transitions = useTransitionsEnabled();
+  const haptics = useHapticsEnabled();
+  const hapticsSupported = useHapticsSupported();
 
   const open = () => {
     const el = dialog.current;
@@ -113,6 +122,7 @@ export default function SettingsDialog() {
                       // 라벨(보이는 버튼)의 중심에서 원이 퍼지게 한다
                       const r = e.currentTarget.parentElement!.getBoundingClientRect();
                       setTheme(value, { x: r.left + r.width / 2, y: r.top + r.height / 2 });
+                      haptic();
                     }}
                     className="sr-only"
                   />
@@ -138,7 +148,10 @@ export default function SettingsDialog() {
                     name="accent"
                     value={id}
                     checked={accent === id}
-                    onChange={() => setAccent(id)}
+                    onChange={() => {
+                      setAccent(id);
+                      haptic();
+                    }}
                     className="sr-only"
                   />
                   <span
@@ -181,6 +194,43 @@ export default function SettingsDialog() {
                   aria-hidden
                   className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full transition-transform ${
                     transitions ? "translate-x-5 bg-background" : "bg-foreground"
+                  }`}
+                />
+              </button>
+            </div>
+          </section>
+
+          <section className="flex flex-col gap-2">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h3 id="haptics-label" className="text-sm font-medium">
+                  햅틱 피드백
+                </h3>
+                <p className="mt-1 text-xs text-foreground/60">
+                  복사, 저장, 도구 이동처럼 동작이 끝났을 때 짧게 진동합니다.
+                  {hapticsSupported
+                    ? " 기기의 \"움직임 줄이기\" 설정이 켜져 있으면 진동하지 않습니다."
+                    : " 이 기기에서는 지원하지 않아 켜 두어도 진동하지 않습니다. 주로 Android의 Chrome에서 동작합니다."}
+                </p>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={haptics}
+                aria-labelledby="haptics-label"
+                onClick={() => {
+                  setHapticsEnabled(!haptics);
+                  // 켜는 순간 어떤 느낌인지 바로 느끼게 한다
+                  if (!haptics) setTimeout(() => haptic(), 0);
+                }}
+                className={`relative h-6 w-11 shrink-0 rounded-full border border-foreground/30 transition-colors ${
+                  haptics ? "bg-foreground" : "bg-transparent"
+                }`}
+              >
+                <span
+                  aria-hidden
+                  className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full transition-transform ${
+                    haptics ? "translate-x-5 bg-background" : "bg-foreground"
                   }`}
                 />
               </button>

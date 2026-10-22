@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { codeFilename, downloadText, type CodeExt } from "@/lib/download";
+import { haptic } from "@/lib/haptics";
 import { useCopy } from "@/lib/useCopy";
 
 type CodeBlockProps = {
@@ -23,6 +24,7 @@ export default function CodeBlock({ title, code, copyLabel = "복사", file }: C
     if (!file) return;
     const filename = codeFilename(file.name, file.ext, new Date());
     downloadText(filename, code, file.ext);
+    haptic("success");
     setSaved(`${filename} 파일로 저장했습니다.`);
   };
 

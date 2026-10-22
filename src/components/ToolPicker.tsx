@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { TransitionLink } from "@/components/PageTransition";
+import { haptic } from "@/lib/haptics";
 import { CATEGORIES, EXPERIMENTS, categoryLabel, type CategoryId } from "@/lib/experiments";
 
 type Filter = "all" | CategoryId;
@@ -169,7 +170,10 @@ export default function ToolPicker() {
                   role="option"
                   aria-selected={i === activeIndex}
                   href={e.href}
-                  onNavigate={close}
+                  onNavigate={() => {
+                    haptic();
+                    close();
+                  }}
                   onMouseMove={() => setActive(i)}
                   className="flex min-h-14 flex-col justify-center gap-0.5 rounded-xl px-3 py-2 transition-colors aria-selected:bg-foreground/10"
                 >

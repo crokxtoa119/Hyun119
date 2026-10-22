@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
+import { haptic } from "@/lib/haptics";
 
 export type Preset<T> = { id: string; name: string; data: T };
 
@@ -134,6 +135,7 @@ export function usePresets<T>(key: string, validate: (d: unknown) => d is T) {
       if (presets.length >= MAX_PRESETS) return false;
       const nextId = String(Math.max(0, ...presets.map((p) => Number(p.id) || 0)) + 1);
       write([...presets, { id: nextId, name: name.trim() || `프리셋 ${nextId}`, data }]);
+      haptic("success");
       return true;
     },
     [presets, write],
