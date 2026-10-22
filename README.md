@@ -5,7 +5,7 @@
 
 **라이브 사이트:** https://hyun119.vercel.app
 
-## 실험 도구 19개
+## 실험 도구 22개
 
 도구 목록은 `/experiments`에서 분류별로 볼 수 있고, 목록의 원본은 [`src/lib/experiments.ts`](src/lib/experiments.ts)입니다. 홈 카드, 실험 목록, 기록 페이지, 사이트맵이 모두 이 한 곳을 읽습니다.
 
@@ -30,6 +30,7 @@
 | Grid | `/grid` | 고정 열 또는 `auto-fit` 열, 행 높이, 열·행 간격, 정렬, 첫 아이템 2칸 차지 |
 | Scroll Snap | `/scroll-snap` | 축, `mandatory`/`proximity`, 정렬, 아이템 크기, `scroll-padding`을 바꿔 보며 스크롤 멈춤 확인 |
 | Clip Path | `/clip-path` | 꼭짓점(3~12개)을 끌거나 방향키로 옮겨 `polygon()` 만들기, 점 추가·삭제, 기본 모양 9가지 |
+| Wave & Blob | `/svg-shape` | 이어 붙여도 끊기지 않는 SVG 웨이브와 시드로 고정되는 블롭 생성, SVG 코드 복사·저장 |
 
 ### 글자
 
@@ -47,6 +48,8 @@
 | Timeline Editor | `/timeline` | 트윈 최대 3개로 GSAP 타임라인을 만들고, 막대 그래프와 재생 위치 슬라이더로 확인, 코드 복사 |
 | Keyframes | `/keyframes` | 세 개의 키프레임(이동, 회전, 크기, 투명도)과 시간, 이징, 반복, 방향으로 CSS 애니메이션 생성, 재생·일시정지 |
 | Transform | `/transform` | 이동, 회전, 크기, 기울임, 3D 회전과 원근, 원래 자리를 점선 틀로 비교 |
+| Scroll Trigger | `/scroll-trigger` | GSAP ScrollTrigger의 효과 4종, 한 번 재생/scrub, `start`·`end` 기준선과 부드러움을 스크롤 영역에서 확인, 코드 복사 |
+| Linear Easing | `/linear-easing` | 바운스·스프링을 수식으로 만들어 CSS `linear()` 값으로 변환, 곡선 그래프와 실제 전환 비교, 점 개수 조절 |
 
 ### 모든 실험 페이지 공통 기능
 
@@ -149,7 +152,7 @@ src/
 │  ├─ experiments/ · log/ (+ log/[slug]) · record/   목록, 기록, 내 기록판 페이지
 │  └─ palette · gradient · contrast · color-converter · filter · blend · shadow · radius · flexbox · grid ·
 │     scroll-snap · clip-path · typography · text-effects · fluid-type · easing · timeline ·
-│     keyframes · transform/
+│     keyframes · transform · scroll-trigger · svg-shape · linear-easing/
 ├─ components/
 │  ├─ *Generator/Editor/Visualizer/Playground/Checker.tsx   실험 페이지 본체 (클라이언트 컴포넌트)
 │  ├─ HeroIntro.tsx · HomeSections.tsx              홈 화면 (GSAP 인트로, ScrollTrigger)
