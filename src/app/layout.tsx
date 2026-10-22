@@ -4,6 +4,7 @@ import Script from "next/script";
 import ActivityTracker from "@/components/ActivityTracker";
 import { PageTransitionProvider, TransitionLink } from "@/components/PageTransition";
 import SettingsDialog from "@/components/SettingsDialog";
+import Shortcuts from "@/components/Shortcuts";
 import ToolPicker from "@/components/ToolPicker";
 import { ACCENTS } from "@/lib/accentPalette";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
             {children}
           </main>
+          <Shortcuts />
         </PageTransitionProvider>
       </body>
     </html>

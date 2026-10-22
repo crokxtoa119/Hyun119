@@ -102,6 +102,16 @@ export function PageTransitionProvider({ children }: { children: React.ReactNode
   );
 }
 
+/** 링크가 아닌 곳(단축키 등)에서 커튼 전환을 거쳐 이동하는 함수. Provider 밖이면 바로 이동한다. */
+export function usePageNavigate() {
+  const ctx = useContext(TransitionContext);
+  const router = useRouter();
+  return useCallback(
+    (href: string) => (ctx ? ctx.navigate(href) : router.push(href)),
+    [ctx, router],
+  );
+}
+
 type TransitionLinkProps = Omit<ComponentProps<typeof Link>, "href"> & { href: string };
 
 /** next/link와 같지만, 다른 페이지로 갈 때 커튼 전환을 거친다. */

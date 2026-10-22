@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import PresetBackup from "@/components/PresetBackup";
 import { setAccent, useAccent } from "@/lib/accent";
@@ -15,6 +15,12 @@ import {
   useHapticsEnabled,
   useHapticsSupported,
 } from "@/lib/haptics";
+import {
+  OPEN_SETTINGS_EVENT,
+  OPEN_SHORTCUTS_EVENT,
+  setShortcutsEnabled,
+  useShortcutsEnabled,
+} from "@/lib/shortcuts";
 
 function PresetRow({ storageKey, label }: { storageKey: string; label: string }) {
   const count = usePresetCount(storageKey);
@@ -55,6 +61,7 @@ export default function SettingsDialog() {
   const transitions = useTransitionsEnabled();
   const haptics = useHapticsEnabled();
   const hapticsSupported = useHapticsSupported();
+  const shortcuts = useShortcutsEnabled();
 
   const open = () => {
     const el = dialog.current;
@@ -71,15 +78,27 @@ export default function SettingsDialog() {
 
   const close = () => dialog.current?.close();
 
+  // 단축키(,)가 보내는 이벤트로도 연다
+  useEffect(() => {
+    window.addEventListener(OPEN_SETTINGS_EVENT, open);
+    return () => window.removeEventListener(OPEN_SETTINGS_EVENT, open);
+  }, []);
+
   return (
     <>
       <button
         type="button"
         onClick={open}
         aria-haspopup="dialog"
-        className="min-h-10 rounded-full border border-foreground/20 px-4 py-1 font-mono text-xs transition-colors hover:border-foreground/50"
+        aria-keyshortcuts={shortcuts ? "," : undefined}
+        className="inline-flex min-h-10 items-center gap-2 rounded-full border border-foreground/20 px-4 py-1 font-mono text-xs transition-colors hover:border-foreground/50"
       >
         설정
+        {shortcuts && (
+          <kbd aria-hidden className="hidden text-[10px] text-foreground/50 sm:inline">
+            ,
+          </kbd>
+        )}
       </button>
 
       <dialog
@@ -231,6 +250,47 @@ export default function SettingsDialog() {
                   aria-hidden
                   className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full transition-transform ${
                     haptics ? "translate-x-5 bg-background" : "bg-foreground"
+                  }`}
+                />
+              </button>
+            </div>
+          </section>
+
+          <section className="flex flex-col gap-2">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h3 id="shortcuts-label" className="text-sm font-medium">
+                  키보드 단축키
+                </h3>
+                <p className="mt-1 text-xs text-foreground/60">
+                  [ ] 로 이전·다음 도구, , 로 설정, ? 로 도움말을 엽니다. 끄더라도 Ctrl+K는 계속 쓸 수
+                  있습니다.{" "}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      close();
+                      window.dispatchEvent(new Event(OPEN_SHORTCUTS_EVENT));
+                    }}
+                    className="underline hover:text-foreground"
+                  >
+                    단축키 보기
+                  </button>
+                </p>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={shortcuts}
+                aria-labelledby="shortcuts-label"
+                onClick={() => setShortcutsEnabled(!shortcuts)}
+                className={`relative h-6 w-11 shrink-0 rounded-full border border-foreground/30 transition-colors ${
+                  shortcuts ? "bg-foreground" : "bg-transparent"
+                }`}
+              >
+                <span
+                  aria-hidden
+                  className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full transition-transform ${
+                    shortcuts ? "translate-x-5 bg-background" : "bg-foreground"
                   }`}
                 />
               </button>
