@@ -41,11 +41,16 @@ function fourValues(a: number, b: number, c: number, d: number): string {
   return a === b && b === c && c === d ? px(a) : [a, b, c, d].map(px).join(" ");
 }
 
-/** border-radius 선언을 만든다. 가로와 세로가 같으면 `/` 없이 짧게 쓴다. */
-export function radiusToCss(r: Radius): string {
+/** border-radius 값. 가로와 세로가 같으면 `/` 없이 짧게 쓴다. */
+export function radiusValue(r: Radius): string {
   const h = fourValues(r.tlH, r.trH, r.brH, r.blH);
   const v = fourValues(r.tlV, r.trV, r.brV, r.blV);
-  return `border-radius: ${h === v ? h : `${h} / ${v}`};`;
+  return h === v ? h : `${h} / ${v}`;
+}
+
+/** border-radius 선언을 만든다. */
+export function radiusToCss(r: Radius): string {
+  return `border-radius: ${radiusValue(r)};`;
 }
 
 /** 세로 값을 가로 값과 같게 만든다(원형에 가까운 대칭 모서리). */

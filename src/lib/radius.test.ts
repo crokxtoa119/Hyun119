@@ -5,6 +5,7 @@ import {
   clampRadius,
   linkVertical,
   radiusToCss,
+  radiusValue,
   randomBlob,
   type Radius,
 } from "./radius";
@@ -18,6 +19,14 @@ const uniform = (n: number): Radius => ({
   trV: n,
   brV: n,
   blV: n,
+});
+
+describe("radiusValue", () => {
+  it("선언 없이 값만 돌려주고 radiusToCss는 그 값으로 선언을 만든다", () => {
+    expect(radiusValue(DEFAULT_RADIUS)).toBe("30% 70% 70% 30% / 30% 30% 70% 70%");
+    expect(radiusValue(uniform(12))).toBe("12%");
+    expect(radiusToCss(DEFAULT_RADIUS)).toBe(`border-radius: ${radiusValue(DEFAULT_RADIUS)};`);
+  });
 });
 
 describe("radiusToCss", () => {
