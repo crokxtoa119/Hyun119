@@ -17,9 +17,8 @@ import {
 } from "@/lib/clipPath";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 const actionButton =
@@ -77,13 +76,10 @@ export default function ClipPathMaker() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Clip Path</h1>
-      <p className="mt-2 text-foreground/70">
-        꼭짓점을 끌어 옮기거나, 점을 고른 뒤 방향키로 움직여 polygon 모양을 만듭니다. 만든 CSS를
-        복사하세요.
-      </p>
-
+    <ToolPage
+      title="Clip Path"
+      description="꼭짓점을 끌어 옮기거나, 점을 고른 뒤 방향키로 움직여 polygon 모양을 만듭니다. 만든 CSS를 복사하세요."
+    >
       <SharedNotice validate={isClipState} onApply={load} />
 
       <div className="mt-8 rounded-2xl border border-foreground/10 bg-foreground/5 p-8">
@@ -145,7 +141,7 @@ export default function ClipPathMaker() {
         ))}
       </div>
 
-      <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+      <ToolControls>
         <Slider
           label={`꼭짓점 ${sel + 1} 가로`}
           value={current.x}
@@ -160,7 +156,7 @@ export default function ClipPathMaker() {
           display={`${current.y}%`}
           onChange={(n) => move(sel, current.x, n)}
         />
-      </div>
+      </ToolControls>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <button type="button" onClick={add} disabled={points.length >= MAX_POINTS} className={actionButton}>
@@ -174,22 +170,19 @@ export default function ClipPathMaker() {
         </span>
       </div>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={clipToCss(state)} file={{ name: "clip-path", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: clipToCss(state),
+          file: { name: "clip-path", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

@@ -16,9 +16,8 @@ import {
 } from "@/lib/scrollSnap";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 const AXIS_LABEL = { x: "가로 (x)", y: "세로 (y)" } as const;
@@ -67,12 +66,10 @@ export default function ScrollSnapPlayground() {
   const itemStyle = toStyle(itemDeclarations(state));
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Scroll Snap</h1>
-      <p className="mt-2 text-foreground/70">
-        아래 상자를 스크롤하거나 키보드 방향키로 움직여 보세요. 설정에 따라 멈추는 위치가 달라집니다.
-      </p>
-
+    <ToolPage
+      title="Scroll Snap"
+      description="아래 상자를 스크롤하거나 키보드 방향키로 움직여 보세요. 설정에 따라 멈추는 위치가 달라집니다."
+    >
       <SharedNotice validate={isScrollSnapState} onApply={load} />
 
       {/* 키보드로도 스크롤할 수 있도록 포커스를 받는 영역으로 만든다 */}
@@ -96,7 +93,7 @@ export default function ScrollSnapPlayground() {
         ))}
       </div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
+      <ToolControls>
         <Options legend="축" options={AXES} value={state.axis} label={(a) => AXIS_LABEL[a]} onChange={(v) => set("axis", v)} />
         <Options legend="scroll-snap-type" options={SNAP_TYPES} value={state.type} onChange={(v) => set("type", v)} />
         <Options legend="scroll-snap-align" options={SNAP_ALIGNS} value={state.align} onChange={(v) => set("align", v)} />
@@ -134,24 +131,21 @@ export default function ScrollSnapPlayground() {
             초기화
           </Chip>
         </div>
-      </div>
+      </ToolControls>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={scrollSnapToCss(state)} file={{ name: "scroll-snap", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: scrollSnapToCss(state),
+          file: { name: "scroll-snap", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

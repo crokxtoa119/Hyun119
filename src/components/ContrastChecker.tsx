@@ -13,9 +13,8 @@ import {
 } from "@/lib/contrast";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 
 /** 색 선택기와 hex 입력을 함께 쓰는 입력. 잘못된 글자는 입력 중에만 허용하고 유효할 때만 값을 올린다. */
 function ColorField({
@@ -106,15 +105,13 @@ export default function ContrastChecker() {
   const css = `color: ${fg};\nbackground-color: ${bg};`;
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Contrast Checker</h1>
-      <p className="mt-2 text-foreground/70">
-        글자색과 배경색의 명암비를 계산하고 WCAG 2.2 기준을 통과하는지 확인하세요.
-      </p>
-
+    <ToolPage
+      title="Contrast Checker"
+      description="글자색과 배경색의 명암비를 계산하고 WCAG 2.2 기준을 통과하는지 확인하세요."
+    >
       <SharedNotice validate={isContrastState} onApply={load} />
 
-      <div className="mt-8 grid gap-8 md:grid-cols-2">
+      <ToolControls>
         <div className="space-y-6">
           <ColorField
             id="contrast-fg"
@@ -153,7 +150,7 @@ export default function ContrastChecker() {
           </p>
           <p className="text-xs">작은 글자 12px — The quick brown fox jumps over the lazy dog.</p>
         </div>
-      </div>
+      </ToolControls>
 
       <section
         aria-labelledby="ratio-title"
@@ -178,22 +175,19 @@ export default function ContrastChecker() {
         </p>
       </section>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={css} file={{ name: "contrast", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: css,
+          file: { name: "contrast", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

@@ -14,9 +14,8 @@ import {
 import { normalizeHex } from "@/lib/contrast";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 /** 색 선택기와 hex 입력을 함께 쓰는 입력. 유효한 값일 때만 값을 올린다. */
@@ -85,12 +84,10 @@ export default function BlendPlayground() {
   const load = (s: BlendState) => setState(clampBlend(s));
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Blend Mode</h1>
-      <p className="mt-2 text-foreground/70">
-        두 색을 겹쳐 mix-blend-mode가 어떻게 섞는지 보세요. 모드를 고르고 CSS를 복사하세요.
-      </p>
-
+    <ToolPage
+      title="Blend Mode"
+      description="두 색을 겹쳐 mix-blend-mode가 어떻게 섞는지 보세요. 모드를 고르고 CSS를 복사하세요."
+    >
       <SharedNotice validate={isBlendState} onApply={load} />
 
       {/* isolate로 섞임을 이 상자 안으로 가둬서 페이지 배경이 결과에 끼어들지 않게 한다 */}
@@ -133,7 +130,7 @@ export default function BlendPlayground() {
         </div>
       </fieldset>
 
-      <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+      <ToolControls>
         <ColorField id="blend-top" label="위 층 색" value={state.top} onChange={(c) => set("top", c)} />
         <ColorField
           id="blend-bottom"
@@ -154,24 +151,21 @@ export default function BlendPlayground() {
             초기화
           </Chip>
         </div>
-      </div>
+      </ToolControls>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={blendToCss(state)} file={{ name: "blend", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: blendToCss(state),
+          file: { name: "blend", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

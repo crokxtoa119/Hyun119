@@ -7,9 +7,8 @@ import { useReducedMotion } from "@/lib/motion";
 import { isEasingPreset, type EasingDirection, type EasingPreset } from "@/lib/presetValidators";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -95,12 +94,11 @@ export default function EasingVisualizer() {
   const snippet = `gsap.to(".box", { x: 300, duration: ${duration}, ease: "${ease}" });`;
 
   return (
-    <div ref={root} className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Easing Visualizer</h1>
-      <p className="mt-2 text-foreground/70">
-        GSAP 이징을 고르면 곡선과 실제 움직임을 함께 볼 수 있습니다.
-      </p>
-
+    <ToolPage
+      rootRef={root}
+      title="Easing Visualizer"
+      description="GSAP 이징을 고르면 곡선과 실제 움직임을 함께 볼 수 있습니다."
+    >
       <SharedNotice validate={isEasingPreset} onApply={loadPreset} />
 
       <div className="mt-8 grid gap-6 md:grid-cols-[1fr_1.4fr]">
@@ -175,22 +173,19 @@ export default function EasingVisualizer() {
         </div>
       </div>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, { family, direction, duration })}
-          onLoad={loadPreset}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={{ family, direction, duration }} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="GSAP 코드" code={snippet} file={{ name: "easing", ext: "js" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={{ family, direction, duration }}
+        onSave={save}
+        onLoad={loadPreset}
+        onRemove={remove}
+        code={{
+          title: "GSAP 코드",
+          code: snippet,
+          file: { name: "easing", ext: "js" },
+        }}
+      />
+    </ToolPage>
   );
 }

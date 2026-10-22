@@ -10,9 +10,8 @@ import {
 } from "@/lib/colorConvert";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 
 const EXAMPLES = ["#4F46E5", "rgb(15 118 110)", "hsl(24, 90%, 45%)", "oklch(65% 0.2 330)"];
 
@@ -39,15 +38,13 @@ export default function ColorConverter() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Color Converter</h1>
-      <p className="mt-2 text-foreground/70">
-        HEX, RGB, HSL, OKLCH 중 어느 표기로든 입력하면 나머지 표기로 바꿔 줍니다.
-      </p>
-
+    <ToolPage
+      title="Color Converter"
+      description="HEX, RGB, HSL, OKLCH 중 어느 표기로든 입력하면 나머지 표기로 바꿔 줍니다."
+    >
       <SharedNotice validate={isConvState} onApply={load} />
 
-      <div className="mt-8 grid gap-8 md:grid-cols-2">
+      <ToolControls>
         <div className="space-y-4">
           <div>
             <label htmlFor="conv-input" className="mb-1 block text-sm font-medium">
@@ -109,7 +106,7 @@ export default function ColorConverter() {
           className="min-h-40 rounded-2xl border border-foreground/10"
           style={{ backgroundColor: result.hex }}
         />
-      </div>
+      </ToolControls>
 
       <table className="mt-8 w-full max-w-lg text-sm">
         <caption className="mb-2 text-left text-sm font-medium">변환 결과</caption>
@@ -130,29 +127,20 @@ export default function ColorConverter() {
           : "이 색은 일반 모니터(sRGB)로 나타낼 수 없는 범위라서 HEX, RGB, HSL은 가장 가까운 값으로 잘라 낸 것입니다. OKLCH만 원래 색을 그대로 담고 있습니다."}
       </p>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock
-          title="CSS"
-          code={convToCss(result)}
-          file={{ name: "color-converter", ext: "css" }}
-        />
-        <p className="mt-2 text-xs text-foreground/60">
-          네 줄은 모두 같은 색을 나타냅니다. 필요한 표기 한 줄만 쓰면 됩니다.
-        </p>
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: convToCss(result),
+          file: { name: "color-converter", ext: "css" },
+        }}
+        note="네 줄은 모두 같은 색을 나타냅니다. 필요한 표기 한 줄만 쓰면 됩니다."
+      />
+    </ToolPage>
   );
 }

@@ -7,9 +7,8 @@ import { prefersReducedMotion } from "@/lib/motion";
 import { isTypographyPreset, type TypographyAlign, type TypographyPreset } from "@/lib/presetValidators";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -150,12 +149,11 @@ export default function TypographyPlayground() {
   ].join("\n");
 
   return (
-    <div ref={root} className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Typography Playground</h1>
-      <p className="mt-2 text-foreground/70">
-        폰트와 크기, 굵기, 자간, 행간을 조절하며 결과를 미리 보고 CSS를 복사하세요.
-      </p>
-
+    <ToolPage
+      rootRef={root}
+      title="Typography Playground"
+      description="폰트와 크기, 굵기, 자간, 행간을 조절하며 결과를 미리 보고 CSS를 복사하세요."
+    >
       <SharedNotice validate={isTypographyPreset} onApply={loadPreset} />
 
       <div className="mt-8 overflow-hidden rounded-2xl border border-foreground/10 p-6 sm:p-10">
@@ -248,26 +246,19 @@ export default function TypographyPlayground() {
         </div>
       </div>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) =>
-            save(name, { fontKey, text, size, weight, tracking, leading, align })
-          }
-          onLoad={loadPreset}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton
-            current={{ fontKey, text, size, weight, tracking, leading, align }}
-          />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={css} file={{ name: "typography", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={{ fontKey, text, size, weight, tracking, leading, align }}
+        onSave={save}
+        onLoad={loadPreset}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: css,
+          file: { name: "typography", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

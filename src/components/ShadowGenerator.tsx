@@ -8,9 +8,8 @@ import { prefersReducedMotion } from "@/lib/motion";
 import { isShadowPreset, type ShadowMode, type ShadowPreset } from "@/lib/presetValidators";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -95,12 +94,11 @@ export default function ShadowGenerator() {
         ].join("\n");
 
   return (
-    <div ref={root} className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Shadow &amp; Glass</h1>
-      <p className="mt-2 text-foreground/70">
-        box-shadow와 글래스모피즘 값을 조절하고 CSS를 복사하세요.
-      </p>
-
+    <ToolPage
+      rootRef={root}
+      title="Shadow &amp; Glass"
+      description="box-shadow와 글래스모피즘 값을 조절하고 CSS를 복사하세요."
+    >
       <SharedNotice validate={isShadowPreset} onApply={loadPreset} />
 
       <div className="mt-8 flex gap-2">
@@ -144,7 +142,7 @@ export default function ShadowGenerator() {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+      <ToolControls>
         {mode === "shadow" ? (
           <>
             <Slider label="X 오프셋" value={x} min={-50} max={50} display={`${x}px`} onChange={setX} />
@@ -215,56 +213,35 @@ export default function ShadowGenerator() {
             </label>
           </>
         )}
-      </div>
+      </ToolControls>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) =>
-            save(name, {
-              mode,
-              x,
-              y,
-              blur,
-              spread,
-              shadowColor,
-              shadowAlpha,
-              inset,
-              glassBlur,
-              glassAlpha,
-              borderAlpha,
-              saturate,
-              tint,
-            })
-          }
-          onLoad={loadPreset}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton
-            current={{
-              mode,
-              x,
-              y,
-              blur,
-              spread,
-              shadowColor,
-              shadowAlpha,
-              inset,
-              glassBlur,
-              glassAlpha,
-              borderAlpha,
-              saturate,
-              tint,
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={css} file={{ name: "shadow", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={{
+          mode,
+          x,
+          y,
+          blur,
+          spread,
+          shadowColor,
+          shadowAlpha,
+          inset,
+          glassBlur,
+          glassAlpha,
+          borderAlpha,
+          saturate,
+          tint,
+        }}
+        onSave={save}
+        onLoad={loadPreset}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: css,
+          file: { name: "shadow", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

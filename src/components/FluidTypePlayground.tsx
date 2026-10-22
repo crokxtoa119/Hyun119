@@ -12,9 +12,8 @@ import {
   type FluidState,
 } from "@/lib/fluidType";
 import { usePresets } from "@/lib/usePresets";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 const SAMPLE = "빠른 갈색 여우가 게으른 개를 뛰어넘습니다. The quick brown fox.";
@@ -47,12 +46,10 @@ export default function FluidTypePlayground() {
     .join(" ");
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Fluid Type</h1>
-      <p className="mt-2 text-foreground/70">
-        화면 너비에 따라 글자 크기가 부드럽게 변하는 clamp() 값을 계산합니다. 만든 CSS를 복사하세요.
-      </p>
-
+    <ToolPage
+      title="Fluid Type"
+      description="화면 너비에 따라 글자 크기가 부드럽게 변하는 clamp() 값을 계산합니다. 만든 CSS를 복사하세요."
+    >
       <SharedNotice validate={isFluidState} onApply={load} />
 
       <div className="mt-8 grid gap-4 lg:grid-cols-[3fr_2fr]">
@@ -100,7 +97,7 @@ export default function FluidTypePlayground() {
         />
       </div>
 
-      <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+      <ToolControls>
         <Slider
           label="최소 글자 크기"
           value={state.minSize}
@@ -133,7 +130,7 @@ export default function FluidTypePlayground() {
           display={`${state.maxVw}px`}
           onChange={(n) => update({ maxVw: n })}
         />
-      </div>
+      </ToolControls>
 
       <table className="mt-8 w-full max-w-md text-sm">
         <caption className="mb-2 text-left text-sm font-medium">화면 너비별 글자 크기</caption>
@@ -157,27 +154,24 @@ export default function FluidTypePlayground() {
         </tbody>
       </table>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={fluidToCss(state)} file={{ name: "fluid-type", ext: "css" }} />
-        <p className="mt-2 text-xs text-foreground/60">
-          {fluidValue(state).startsWith("clamp")
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: fluidToCss(state),
+          file: { name: "fluid-type", ext: "css" },
+        }}
+        note={
+          fluidValue(state).startsWith("clamp")
             ? "rem은 브라우저 기본 글자 크기(16px) 기준이라, 사용자가 글자 크기를 키워 두면 함께 커집니다."
-            : "최소와 최대 크기가 같아서 clamp 없이 고정 크기입니다."}
-        </p>
-      </div>
-    </div>
+            : "최소와 최대 크기가 같아서 clamp 없이 고정 크기입니다."
+        }
+      />
+    </ToolPage>
   );
 }

@@ -17,9 +17,8 @@ import { useCopy } from "@/lib/useCopy";
 import { isPalettePreset, type PalettePreset } from "@/lib/presetValidators";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -70,12 +69,11 @@ export default function PaletteGenerator() {
   const cssVars = colors.map((c, i) => `  --color-${i + 1}: ${c};`).join("\n");
 
   return (
-    <div ref={root} className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Color Palette</h1>
-      <p className="mt-2 text-foreground/70">
-        기준 색과 배색 규칙을 고르면 5색 팔레트를 만들어 줍니다. 색을 클릭하면 HEX가 복사됩니다.
-      </p>
-
+    <ToolPage
+      rootRef={root}
+      title="Color Palette"
+      description="기준 색과 배색 규칙을 고르면 5색 팔레트를 만들어 줍니다. 색을 클릭하면 HEX가 복사됩니다."
+    >
       <SharedNotice validate={isPalettePreset} onApply={loadPreset} />
 
       <p role="status" className="sr-only">
@@ -98,7 +96,7 @@ export default function PaletteGenerator() {
         ))}
       </div>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+      <ToolControls>
         <div className="space-y-4">
           <Slider
             label="Hue"
@@ -144,29 +142,22 @@ export default function PaletteGenerator() {
             랜덤 생성
           </button>
         </div>
-      </div>
+      </ToolControls>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, { ...base, harmony })}
-          onLoad={loadPreset}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={{ ...base, harmony }} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock
-          title="CSS 변수"
-          code={`:root {\n${cssVars}\n}`}
-          copyLabel="전체 복사"
-          file={{ name: "palette", ext: "css" }}
-        />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={{ ...base, harmony }}
+        onSave={save}
+        onLoad={loadPreset}
+        onRemove={remove}
+        code={{
+          title: "CSS 변수",
+          code: `:root {\n${cssVars}\n}`,
+          copyLabel: "전체 복사",
+          file: { name: "palette", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

@@ -21,9 +21,8 @@ import {
   type TimelineTween,
   type TweenProp,
 } from "@/lib/timeline";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -111,12 +110,11 @@ export default function TimelineEditor() {
     setTweens((list) => (list.length <= 1 ? list : list.filter((_, idx) => idx !== i)));
 
   return (
-    <div ref={root} className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Timeline Editor</h1>
-      <p className="mt-2 text-foreground/70">
-        트윈 최대 3개의 시작 시점과 길이를 조절해 GSAP 타임라인을 만들어 봅니다.
-      </p>
-
+    <ToolPage
+      rootRef={root}
+      title="Timeline Editor"
+      description="트윈 최대 3개의 시작 시점과 길이를 조절해 GSAP 타임라인을 만들어 봅니다."
+    >
       <SharedNotice validate={isTimeline} onApply={loadPreset} />
 
       <div className="mt-8 rounded-2xl border border-foreground/10 p-4">
@@ -276,22 +274,19 @@ export default function TimelineEditor() {
         </div>
       </div>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, tweens)}
-          onLoad={loadPreset}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={tweens} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="GSAP 코드" code={buildTimelineCode(tweens)} file={{ name: "timeline", ext: "js" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={tweens}
+        onSave={save}
+        onLoad={loadPreset}
+        onRemove={remove}
+        code={{
+          title: "GSAP 코드",
+          code: buildTimelineCode(tweens),
+          file: { name: "timeline", ext: "js" },
+        }}
+      />
+    </ToolPage>
   );
 }

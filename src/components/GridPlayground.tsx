@@ -15,9 +15,8 @@ import {
 } from "@/lib/grid";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 function Options<T extends string>({
@@ -54,12 +53,10 @@ export default function GridPlayground() {
   const load = (s: GridState) => setState(clampGrid(s));
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Grid</h1>
-      <p className="mt-2 text-foreground/70">
-        열 개수와 간격, 정렬을 바꾸면 아래 격자가 바로 달라집니다. 만든 CSS를 복사하세요.
-      </p>
-
+    <ToolPage
+      title="Grid"
+      description="열 개수와 간격, 정렬을 바꾸면 아래 격자가 바로 달라집니다. 만든 CSS를 복사하세요."
+    >
       <SharedNotice validate={isGridState} onApply={load} />
 
       <div
@@ -92,7 +89,7 @@ export default function GridPlayground() {
         ))}
       </div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
+      <ToolControls>
         <Options legend="열 방식" options={MODES} value={state.mode} onChange={(v) => set("mode", v)} />
         <Slider
           label="열 개수"
@@ -134,7 +131,7 @@ export default function GridPlayground() {
         />
         <Options legend="justify-items" options={ITEM_ALIGNS} value={state.justify} onChange={(v) => set("justify", v)} />
         <Options legend="align-items" options={ITEM_ALIGNS} value={state.align} onChange={(v) => set("align", v)} />
-      </div>
+      </ToolControls>
 
       <div className="mt-6 flex flex-wrap gap-2">
         <Chip active={state.span} onClick={() => set("span", !state.span)}>
@@ -145,22 +142,19 @@ export default function GridPlayground() {
         </Chip>
       </div>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={gridToCss(state)} file={{ name: "grid", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: gridToCss(state),
+          file: { name: "grid", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

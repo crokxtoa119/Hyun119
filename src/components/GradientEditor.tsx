@@ -8,9 +8,8 @@ import { prefersReducedMotion } from "@/lib/motion";
 import { isGradientPreset, type GradientKind, type GradientPreset } from "@/lib/presetValidators";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider, { RangeInput } from "@/components/ui/Slider";
 
 gsap.registerPlugin(useGSAP);
@@ -104,12 +103,11 @@ export default function GradientEditor() {
   };
 
   return (
-    <div ref={root} className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Gradient Editor</h1>
-      <p className="mt-2 text-foreground/70">
-        색 정지점과 각도를 조절해 CSS 그라디언트를 만들고 코드를 복사하세요.
-      </p>
-
+    <ToolPage
+      rootRef={root}
+      title="Gradient Editor"
+      description="색 정지점과 각도를 조절해 CSS 그라디언트를 만들고 코드를 복사하세요."
+    >
       <SharedNotice validate={isGradientPreset} onApply={loadPreset} />
 
       <div
@@ -119,7 +117,7 @@ export default function GradientEditor() {
         {kind} gradient
       </div>
 
-      <div className="mt-8 grid gap-8 sm:grid-cols-2">
+      <ToolControls>
         <div className="space-y-5">
           <div>
             <p className="mb-2 text-sm font-medium">종류</p>
@@ -188,36 +186,25 @@ export default function GradientEditor() {
             </div>
           ))}
         </div>
-      </div>
+      </ToolControls>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) =>
-            save(name, {
-              kind,
-              angle,
-              stops: stops.map(({ color, pos }) => ({ color, pos })),
-            })
-          }
-          onLoad={loadPreset}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton
-            current={{
-              kind,
-              angle,
-              stops: stops.map(({ color, pos }) => ({ color, pos })),
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={declaration} file={{ name: "gradient", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={{
+          kind,
+          angle,
+          stops: stops.map(({ color, pos }) => ({ color, pos })),
+        }}
+        onSave={save}
+        onLoad={loadPreset}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: declaration,
+          file: { name: "gradient", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

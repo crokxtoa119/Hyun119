@@ -12,9 +12,8 @@ import {
 } from "@/lib/filter";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 // 자주 쓰는 조합. 누르면 모든 값이 이 조합으로 바뀐다.
@@ -33,12 +32,10 @@ export default function FilterPlayground() {
   const load = (s: FilterState) => setState(clampFilter(s));
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Filter</h1>
-      <p className="mt-2 text-foreground/70">
-        슬라이더로 CSS filter 함수를 조합하면 아래 샘플이 바로 바뀝니다. 만든 CSS를 복사하세요.
-      </p>
-
+    <ToolPage
+      title="Filter"
+      description="슬라이더로 CSS filter 함수를 조합하면 아래 샘플이 바로 바뀝니다. 만든 CSS를 복사하세요."
+    >
       <SharedNotice validate={isFilterState} onApply={load} />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -79,7 +76,7 @@ export default function FilterPlayground() {
         </Chip>
       </div>
 
-      <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+      <ToolControls>
         {FILTER_SPECS.map((s) => (
           <Slider
             key={s.key}
@@ -91,24 +88,21 @@ export default function FilterPlayground() {
             onChange={(n) => setState((f) => ({ ...f, [s.key]: n }))}
           />
         ))}
-      </div>
+      </ToolControls>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={filterToCss(state)} file={{ name: "filter", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: filterToCss(state),
+          file: { name: "filter", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

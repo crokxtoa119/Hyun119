@@ -13,9 +13,8 @@ import {
 import { isRadiusPreset, type RadiusPreset } from "@/lib/presetValidators";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 const CORNERS: { key: "tl" | "tr" | "br" | "bl"; label: string }[] = [
@@ -72,12 +71,10 @@ export default function RadiusGenerator() {
   const radiusValue = css.replace("border-radius: ", "").replace(";", "");
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Border Radius</h1>
-      <p className="mt-2 text-foreground/70">
-        모서리 여덟 값을 조절해 둥근 모서리부터 덩어리 모양까지 만들고 CSS를 복사하세요.
-      </p>
-
+    <ToolPage
+      title="Border Radius"
+      description="모서리 여덟 값을 조절해 둥근 모서리부터 덩어리 모양까지 만들고 CSS를 복사하세요."
+    >
       <SharedNotice validate={isRadiusPreset} onApply={loadPreset} />
 
       <div className="mt-8 flex items-center justify-center rounded-2xl border border-foreground/10 bg-foreground/5 py-10">
@@ -103,7 +100,7 @@ export default function RadiusGenerator() {
         </Chip>
       </div>
 
-      <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+      <ToolControls>
         {CORNERS.map(({ key, label }) => {
           const h = `${key}H` as keyof Radius;
           const v = `${key}V` as keyof Radius;
@@ -128,24 +125,21 @@ export default function RadiusGenerator() {
             </fieldset>
           );
         })}
-      </div>
+      </ToolControls>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, { ...radius, linked })}
-          onLoad={loadPreset}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={{ ...radius, linked }} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={css} file={{ name: "radius", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={{ ...radius, linked }}
+        onSave={save}
+        onLoad={loadPreset}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: css,
+          file: { name: "radius", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

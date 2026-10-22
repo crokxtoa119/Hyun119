@@ -13,9 +13,8 @@ import {
 } from "@/lib/transform";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 const LOOKS: { label: string; values: Partial<TransformState> }[] = [
@@ -32,12 +31,10 @@ export default function TransformPlayground() {
   const load = (s: TransformState) => setState(clampTransform(s));
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Transform</h1>
-      <p className="mt-2 text-foreground/70">
-        이동, 회전, 크기, 기울임과 3D 원근을 조절하면 점선 틀 안의 카드가 바로 움직입니다.
-      </p>
-
+    <ToolPage
+      title="Transform"
+      description="이동, 회전, 크기, 기울임과 3D 원근을 조절하면 점선 틀 안의 카드가 바로 움직입니다."
+    >
       <SharedNotice validate={isTransformState} onApply={load} />
 
       <div
@@ -71,7 +68,7 @@ export default function TransformPlayground() {
         </Chip>
       </div>
 
-      <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+      <ToolControls>
         {TRANSFORM_SPECS.map((s) => (
           <Slider
             key={s.key}
@@ -93,27 +90,24 @@ export default function TransformPlayground() {
           display={state.perspective === 0 ? "없음" : `${state.perspective}px`}
           onChange={(n) => setState((t) => ({ ...t, perspective: n }))}
         />
-      </div>
+      </ToolControls>
       <p className="mt-3 text-xs text-foreground/60">
         원근은 X·Y축 회전을 쓸 때만 CSS에 들어갑니다. 값이 작을수록 원근감이 강합니다.
       </p>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={transformToCss(state)} file={{ name: "transform", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: transformToCss(state),
+          file: { name: "transform", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

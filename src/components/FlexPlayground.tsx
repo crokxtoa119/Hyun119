@@ -17,9 +17,8 @@ import {
 } from "@/lib/flex";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 // 정렬 차이가 보이도록 아이템마다 크기를 다르게 한다
@@ -74,12 +73,10 @@ export default function FlexPlayground() {
   const column = state.direction.startsWith("column");
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Flexbox</h1>
-      <p className="mt-2 text-foreground/70">
-        속성을 바꾸면 아래 상자 안의 아이템이 바로 움직입니다. 만든 CSS를 복사하세요.
-      </p>
-
+    <ToolPage
+      title="Flexbox"
+      description="속성을 바꾸면 아래 상자 안의 아이템이 바로 움직입니다. 만든 CSS를 복사하세요."
+    >
       <SharedNotice validate={isFlexState} onApply={load} />
 
       <div
@@ -116,7 +113,7 @@ export default function FlexPlayground() {
         })}
       </div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
+      <ToolControls>
         <Group legend="flex-direction" options={DIRECTIONS} value={state.direction} onChange={(v) => set("direction", v)} />
         <Group legend="flex-wrap" options={WRAPS} value={state.wrap} onChange={(v) => set("wrap", v)} />
         <Group legend="justify-content" options={JUSTIFIES} value={state.justify} onChange={(v) => set("justify", v)} />
@@ -135,7 +132,7 @@ export default function FlexPlayground() {
           max={ITEMS_MAX}
           onChange={(n) => set("items", n)}
         />
-      </div>
+      </ToolControls>
 
       <div className="mt-6">
         <Chip active={false} onClick={() => setState(DEFAULT_FLEX)}>
@@ -143,22 +140,19 @@ export default function FlexPlayground() {
         </Chip>
       </div>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={flexToCss(state)} file={{ name: "flexbox", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: flexToCss(state),
+          file: { name: "flexbox", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

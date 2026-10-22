@@ -14,9 +14,8 @@ import {
 } from "@/lib/textEffect";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 const MODE_LABEL: Record<TextEffectState["mode"], string> = {
@@ -109,12 +108,10 @@ export default function TextEffectsPlayground() {
   );
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Text Effects</h1>
-      <p className="mt-2 text-foreground/70">
-        글자 그림자, 그라데이션 글자, 줄 수 제한 중 하나를 골라 값을 조절하고 CSS를 복사하세요.
-      </p>
-
+    <ToolPage
+      title="Text Effects"
+      description="글자 그림자, 그라데이션 글자, 줄 수 제한 중 하나를 골라 값을 조절하고 CSS를 복사하세요."
+    >
       <SharedNotice validate={isTextEffectState} onApply={load} />
 
       {/* 테마와 관계없이 글자가 보이도록 밝은 고정 배경과 어두운 글자색을 쓴다 */}
@@ -148,7 +145,7 @@ export default function TextEffectsPlayground() {
         </div>
       </fieldset>
 
-      <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+      <ToolControls>
         {state.mode === "shadow" && (
           <>
             <Slider
@@ -221,7 +218,7 @@ export default function TextEffectsPlayground() {
             onChange={(n) => set("lines", n)}
           />
         )}
-      </div>
+      </ToolControls>
 
       {state.mode === "gradient" && (
         <p className="mt-4 text-xs text-foreground/60">
@@ -230,22 +227,19 @@ export default function TextEffectsPlayground() {
         </p>
       )}
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={textEffectToCss(state)} file={{ name: "text-effects", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: textEffectToCss(state),
+          file: { name: "text-effects", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }

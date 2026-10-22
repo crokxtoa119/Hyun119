@@ -182,7 +182,7 @@ src/
 ## 새 도구를 추가하려면
 
 1. `src/lib/<이름>.ts`에 상태 타입, 기본값, 범위 보정(`clamp`), CSS 생성, 타입 가드(`is...State`)를 만들고 옆에 테스트를 둡니다.
-2. `src/components/<이름>.tsx`(클라이언트 컴포넌트)와 `src/app/<경로>/page.tsx`(메타데이터)를 만듭니다. `usePresets`, `ShareButton`, `SharedNotice`, `PresetBar`, `CodeBlock`을 그대로 씁니다.
+2. `src/components/<이름>.tsx`(클라이언트 컴포넌트)와 `src/app/<경로>/page.tsx`(메타데이터)를 만듭니다. `usePresets`, `SharedNotice`를 쓰고, 배치는 `components/ui/ToolLayout.tsx`의 `ToolPage`(제목과 설명, 바깥 틀), `ToolControls`(조절판 격자), `ToolFooter`(프리셋, 공유 링크, 코드)로 맞춥니다. 너비, 간격, 두 열이 되는 화면 크기(md)가 모든 도구에서 같도록 직접 `div`로 틀을 만들지 않습니다. 코드 블록의 `file`은 `ToolFooter`의 `code` 속성에 넣습니다.
 3. `src/lib/experiments.ts`의 `EXPERIMENTS`에 항목(슬러그, 분류, 제목, 요약, 배운 점, 기술)을 추가합니다. 홈, 목록, 기록, 사이트맵에 자동으로 나타납니다. 슬러그는 `/경로`와 같아야 합니다.
 4. `src/lib/presetRegistry.ts`의 `PRESET_TOOLS`에 슬러그, 표시 이름, 타입 가드를 추가합니다. 저장 키는 `sc-<슬러그>-presets`로 정해지고, 설정 모달의 개수 표시와 삭제, 프리셋 백업이 모두 이 목록을 씁니다. 빠뜨리거나 컴포넌트의 키와 다르면 `presetRegistry.test.ts`가 실패합니다.
 

@@ -39,9 +39,17 @@ describe("모든 도구가 코드 저장을 지원한다", () => {
     const names = new Set<string>();
     for (const f of readdirSync(dir).filter((n) => n.endsWith(".tsx") && !n.endsWith(".test.tsx"))) {
       const src = readFileSync(join(dir, f), "utf8");
-      const blocks = src.match(/<CodeBlock[\s\S]*?\/>/g) ?? [];
-      for (const b of blocks) {
-        const m = /file=\{\{ name: "([a-z-]+)", ext: "(css|js)" \}\}/.exec(b);
+      // 도구는 ToolFooter의 code 속성으로 CodeBlock을 쓰고, 직접 쓰는 곳도 같은 규칙을 지켜야 한다
+      const direct = (src.match(/<CodeBlock[\s\S]*?\/>/g) ?? []).map((b) => ({
+        b,
+        re: /file=\{\{ name: "([a-z-]+)", ext: "(css|js)" \}\}/,
+      }));
+      const viaFooter = (src.match(/<ToolFooter[\s\S]*?\/>/g) ?? []).map((b) => ({
+        b,
+        re: /file: \{ name: "([a-z-]+)", ext: "(css|js)" \}/,
+      }));
+      for (const { b, re } of [...direct, ...viaFooter]) {
+        const m = re.exec(b);
         expect(m, `${f}의 CodeBlock에 file이 없습니다`).not.toBeNull();
         names.add(m![1]);
       }

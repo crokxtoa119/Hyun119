@@ -19,9 +19,8 @@ import {
 } from "@/lib/keyframes";
 import { usePresets } from "@/lib/usePresets";
 import Chip from "@/components/ui/Chip";
-import CodeBlock from "@/components/ui/CodeBlock";
-import PresetBar from "@/components/ui/PresetBar";
-import { ShareButton, SharedNotice } from "@/components/ui/Share";
+import { SharedNotice } from "@/components/ui/Share";
+import { ToolControls, ToolFooter, ToolPage } from "@/components/ui/ToolLayout";
 import Slider from "@/components/ui/Slider";
 
 const FRAME_FIELDS: { key: keyof Frame; label: string; unit: string }[] = [
@@ -107,12 +106,10 @@ export default function KeyframesEditor() {
 @media (prefers-reduced-motion: reduce) { .sc-kf-box:not([data-played]) { animation-play-state: paused; } }`;
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-3xl font-bold tracking-tight">Keyframes</h1>
-      <p className="mt-2 text-foreground/70">
-        시작, 가운데, 끝 세 키프레임을 정해 CSS 애니메이션을 만들고 코드를 복사하세요.
-      </p>
-
+    <ToolPage
+      title="Keyframes"
+      description="시작, 가운데, 끝 세 키프레임을 정해 CSS 애니메이션을 만들고 코드를 복사하세요."
+    >
       <SharedNotice validate={isKeyframesState} onApply={load} />
 
       <style>{previewCss}</style>
@@ -175,7 +172,7 @@ export default function KeyframesEditor() {
         <FrameFields legend="끝 (100%)" frame={state.to} onChange={setFrame("to")} />
       </div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
+      <ToolControls>
         <Slider
           label="animation-duration"
           value={state.duration}
@@ -188,24 +185,21 @@ export default function KeyframesEditor() {
         <Options legend="timing-function" options={EASINGS} value={state.easing} onChange={(v) => set("easing", v)} />
         <Options legend="iteration-count" options={ITERATIONS} value={state.iterations} onChange={(v) => set("iterations", v)} />
         <Options legend="direction" options={DIRECTIONS} value={state.direction} onChange={(v) => set("direction", v)} />
-      </div>
+      </ToolControls>
 
-      <div className="mt-8">
-        <PresetBar
-          presets={presets}
-          isFull={isFull}
-          onSave={(name) => save(name, state)}
-          onLoad={load}
-          onRemove={remove}
-        />
-        <div className="mt-4">
-          <ShareButton current={state} />
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <CodeBlock title="CSS" code={keyframesToCss(state)} file={{ name: "keyframes", ext: "css" }} />
-      </div>
-    </div>
+      <ToolFooter
+        presets={presets}
+        isFull={isFull}
+        state={state}
+        onSave={save}
+        onLoad={load}
+        onRemove={remove}
+        code={{
+          title: "CSS",
+          code: keyframesToCss(state),
+          file: { name: "keyframes", ext: "css" },
+        }}
+      />
+    </ToolPage>
   );
 }
