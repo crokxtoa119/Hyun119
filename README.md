@@ -5,7 +5,7 @@
 
 **라이브 사이트:** https://hyun119.vercel.app
 
-## 실험 도구 22개
+## 실험 도구 25개
 
 도구 목록은 `/experiments`에서 분류별로 볼 수 있고, 목록의 원본은 [`src/lib/experiments.ts`](src/lib/experiments.ts)입니다. 홈 카드, 실험 목록, 기록 페이지, 사이트맵이 모두 이 한 곳을 읽습니다.
 
@@ -19,6 +19,7 @@
 | Filter | `/filter` | `blur`, `brightness`, `contrast` 등 8가지 `filter` 함수 조합, 원본과 나란히 비교, 효과 없는 함수는 CSS에서 생략 |
 | Blend Mode | `/blend` | 두 색을 겹쳐 `mix-blend-mode` 16가지가 섞이는 모습 확인, 모드별 설명 |
 | Color Converter | `/color-converter` | HEX, RGB, HSL, OKLCH 중 아무 표기로 입력해 나머지로 변환, sRGB 밖의 색 안내 |
+| Grain | `/grain` | SVG `feTurbulence` 노이즈를 이미지 파일 없이 데이터 주소로 CSS에 넣어 종이·필름 질감 만들기, 알갱이 고움·겹 수·진하기·섞기 방식 조절 |
 
 ### 모양·레이아웃
 
@@ -31,6 +32,7 @@
 | Scroll Snap | `/scroll-snap` | 축, `mandatory`/`proximity`, 정렬, 아이템 크기, `scroll-padding`을 바꿔 보며 스크롤 멈춤 확인 |
 | Clip Path | `/clip-path` | 꼭짓점(3~12개)을 끌거나 방향키로 옮겨 `polygon()` 만들기, 점 추가·삭제, 기본 모양 9가지 |
 | Wave & Blob | `/svg-shape` | 이어 붙여도 끊기지 않는 SVG 웨이브와 시드로 고정되는 블롭 생성, SVG 코드 복사·저장 |
+| Mask | `/mask` | `mask-image` 그라디언트(선형·원형, 방향, 보이는 지점과 사라지는 지점, 반전)로 가장자리를 부드럽게 지우기, 체크무늬 위에서 미리보기 |
 
 ### 글자
 
@@ -39,6 +41,7 @@
 | Typography Playground | `/typography` | 폰트 7종(한글 폰트 2종 포함)의 크기, 굵기, 자간, 행간, 정렬 조절, CSS 복사 |
 | Text Effects | `/text-effects` | 글자 그림자, 그라데이션 글자, 여러 줄 말줄임 |
 | Fluid Type | `/fluid-type` | 최소·최대 글자 크기와 화면 너비로 `clamp()` 계산, 너비별 크기 그래프와 표, 미리보기 너비 조절 |
+| Type Scale | `/type-scale` | 기준 크기와 비율(대표 비율 6종)로 글자 크기 단계를 만들고 `--step-N` CSS 변수를 rem 또는 px로 복사, 단계별 미리보기 |
 
 ### 모션
 
@@ -55,7 +58,7 @@
 
 - **프리셋**: 현재 설정에 이름을 붙여 이 브라우저에 저장하고(최대 12개), 눌러서 불러옵니다. 저장 위치는 `localStorage`입니다.
 - **공유 링크**: 현재 설정을 주소(`#share=...`)에 담아 복사합니다. 링크로 들어오면 안내가 뜨고, "적용"을 눌렀을 때만 반영됩니다.
-- **CSS 복사·저장**: 미리보기와 복사되는 코드는 같은 값에서 만들어집니다. 코드 블록의 "저장"은 보이는 코드를 `도구이름-날짜.css`(GSAP 코드는 `.js`) 파일로 내려받으며, 파일은 브라우저 안에서만 만듭니다. 새 도구의 `CodeBlock`에는 `file` 속성을 넣어야 하고, 빠뜨리면 테스트가 실패합니다.
+- **CSS 복사·저장**: 미리보기와 복사되는 코드는 같은 값에서 만들어집니다. 코드 블록의 "저장"은 보이는 코드를 `도구이름-날짜.css`(GSAP 코드는 `.js`, SVG 코드는 `.svg`) 파일로 내려받으며, 파일은 브라우저 안에서만 만듭니다. 새 도구의 `CodeBlock`에는 `file` 속성을 넣어야 하고, 빠뜨리면 테스트가 실패합니다.
 
 ## 그 밖의 페이지와 기능
 
@@ -154,7 +157,7 @@ src/
 │  ├─ experiments/ · log/ (+ log/[slug]) · record/   목록, 기록, 내 기록판 페이지
 │  └─ palette · gradient · contrast · color-converter · filter · blend · shadow · radius · flexbox · grid ·
 │     scroll-snap · clip-path · typography · text-effects · fluid-type · easing · timeline ·
-│     keyframes · transform · scroll-trigger · svg-shape · linear-easing/
+│     keyframes · transform · scroll-trigger · svg-shape · linear-easing · type-scale · grain · mask/
 ├─ components/
 │  ├─ *Generator/Editor/Visualizer/Playground/Checker.tsx   실험 페이지 본체 (클라이언트 컴포넌트)
 │  ├─ HeroIntro.tsx · HomeSections.tsx              홈 화면 (GSAP 인트로, ScrollTrigger)
