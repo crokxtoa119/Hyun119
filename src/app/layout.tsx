@@ -4,6 +4,7 @@ import Script from "next/script";
 import ActivityTracker from "@/components/ActivityTracker";
 import { PageTransitionProvider, TransitionLink } from "@/components/PageTransition";
 import SettingsDialog from "@/components/SettingsDialog";
+import ToolPicker from "@/components/ToolPicker";
 import { ACCENTS } from "@/lib/accentPalette";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                   {label}
                 </TransitionLink>
               ))}
+              <ToolPicker />
               <SettingsDialog />
             </nav>
           </header>
