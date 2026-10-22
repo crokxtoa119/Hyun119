@@ -246,6 +246,19 @@ export const EXPERIMENTS: Experiment[] = [
     ],
     tech: ["OKLab", "color-space", "lib/colorConvert.ts"],
   },
+  {
+    slug: "scroll-trigger",
+    category: "motion",
+    title: "Scroll Trigger",
+    href: "/scroll-trigger",
+    summary: "스크롤 위치에 맞춰 요소가 움직이는 GSAP ScrollTrigger 설정을 만듭니다.",
+    learned: [
+      "start: \"top 80%\"는 요소의 위쪽이 스크롤 영역 위에서 80% 지점에 닿을 때 시작한다는 뜻이다. 앞 단어는 요소의 기준선, 뒤 값은 화면의 기준선이다.",
+      "scrub을 켜면 애니메이션이 시간이 아니라 스크롤 위치를 따라가고, 숫자를 주면 그 초만큼 뒤따라 부드럽게 움직인다. 이때 이징은 none으로 둬야 스크롤과 움직임이 어긋나 보이지 않는다.",
+      "움직이는 요소 자신을 trigger로 쓰면, 이동한 만큼 요소의 위치가 바뀌어 시작 지점이 밀린다. 움직이지 않는 부모를 trigger로 쓰는 게 안전하다.",
+    ],
+    tech: ["GSAP ScrollTrigger", "useGSAP", "lib/scrollTrigger.ts"],
+  },
 ];
 
 export function categoryLabel(id: CategoryId): string {
